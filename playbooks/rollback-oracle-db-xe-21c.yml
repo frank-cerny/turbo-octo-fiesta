@@ -1,0 +1,45 @@
+# Playbook to remove Oracle Database XE version 21c (rollback of install-oracle-db-xe-21c.yml)
+# @date: 2/27/2022
+# @author: Frank Cerny
+- name: Remove Oracle Database 21c (RHEL)
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  tasks:
+    - name: Remove Oracle Home Enviornment Variables
+    ansible.builtin.shell: |
+      export ORACLE_SID=
+      export ORAENV_ASK=
+    # Uninstall reference: https://docs.oracle.com/en/database/oracle/oracle-database/21/xeinl/deinstalling-oracle-database-xe-software-linux.html)
+    # Note that if we do not back up the database before this step, everything will be removed
+    # Besides the setup work that the pre-install script does (we will not remove that work, as its quite challenging and can be leveraged in the future)
+    - name: Delete Database (only logs and Oracle Home Software will remain)
+      shell: |
+        /etc/init.d/oracle-xe-21c delete
+    - name: Run the Install RPM (via Localinstall) to Remove
+      dnf:
+        name: "/tmp/oracle-21c-xe-install.rpm"
+        state: absent
+        disable_gpg_check: yes
+    - name: Delete Pre-Install RPM
+      file:
+        state: absent
+        path: /tmp/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
+    - name: Delete Install RPM
+      file:
+        state: absent
+        path: /tmp/oracle-21c-xe-install.rpm
+    # Clear out firewall rules
+    - name: Remove Oracle service in the public zone
+      ansible.posix.firewalld:
+        service: oracle_xe_service
+        permanent: yes
+        state: disabled   
+        zone: public
+    - name: Delete Oracle firewall service
+      file:
+        state: absent
+        path: /etc/firewalld/services/oracle_xe_service.xml
+    - name: Restart firewalld
+      ansible.builtin.shell:
+        cmd: sudo firewall-cmd --reload

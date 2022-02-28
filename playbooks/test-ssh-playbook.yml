@@ -1,0 +1,15 @@
+# A rollback of tomcat-playbook.yml
+# @date: 2/27/2022
+# @author: Frank Cerny
+- name: Add a file to all hosts to show SSH connections work 
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  tasks:
+    - name: Create text file
+      file:
+        path: /tmp/hello.txt
+        owner: ansible
+        group: ansible
+        mode: "u+rwx,g+rx,o=rx"
+        recurse: yes

@@ -1,0 +1,51 @@
+# A rollback of install-apache-tomcat-9.yml
+# @date: 2/27/2022
+# @author: Frank Cerny
+- name: Remove Apache Tomcat9 & Java 11 Using Ansible (RHEL)
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  # Resource for DNF: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/dnf_module.html
+  tasks:
+    # Reference: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html
+    - name: Stop Tomcat 9 Server
+      systemd:
+        name: tomcat
+        state: stopped
+    - name: Delete Tomcat service file
+      file:
+        state: absent
+        path: /etc/systemd/system/tomcat.service
+    - name: Remove Tomcat Directory
+      file:
+        state: absent
+        path: /usr/local/tomcat9
+    - name: Uninstall Java 11
+      dnf:
+        name: java-11-openjdk-devel
+        state: absent
+    - name: Remove Tomcat User
+      user:
+        name: tomcat
+        state: absent
+    - name: Remove Tomcat Group
+      group:
+        name: tomcat
+        state: absent
+    - name: Remove Tomcat service in the public zone
+      ansible.posix.firewalld:
+        service: tomcat_service
+        permanent: yes
+        state: disabled   
+        zone: public
+    - name: Delete Tomcat firewall service
+      file:
+        state: absent
+        path: /etc/firewalld/services/tomcat_service.xml
+    - name: Restart firewalld
+      ansible.builtin.shell:
+        cmd: sudo firewall-cmd --reload
+
+
+        
+    

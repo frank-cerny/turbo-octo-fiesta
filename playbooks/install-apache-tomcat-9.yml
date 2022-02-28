@@ -1,0 +1,85 @@
+# Playbook to install Apache Tomcat 9 in RHEL 8.x
+# @date: 2/27/2022
+# @author: Frank Cerny
+# Taken from: https://automateinfra.com/2022/01/08/how-to-deploy-apache-tomcat-using-ansible/
+- name: Install Apache Tomcat9 Using Ansible (RHEL)
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  # Resource for DNF: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/dnf_module.html
+  tasks:
+    - name: Update the System Packages
+      dnf:
+        name: "*"
+        state: latest
+ 
+    - name: Create a Tomcat User
+      user:
+        name: tomcat
+        create_home: no
+ 
+    - name: Create a Tomcat Group
+      group:
+        name: tomcat
+ 
+    - name: Install JAVA
+      dnf:
+        name: java-11-openjdk-devel
+        state: present
+ 
+    - name: Create a Tomcat Directory
+      file:
+        path: /usr/local/tomcat9
+        owner: tomcat
+        group: tomcat
+        mode: 755
+        recurse: yes
+ 
+    - name: Download & Un-Archive Tomcat9 
+      unarchive:
+        src: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.58/bin/apache-tomcat-9.0.58.tar.gz
+        dest: /usr/local/tomcat9
+        remote_src: yes
+        extra_opts: [--strip-components=1]
+ 
+    - name: Change ownership of Tomcat directory
+      file:
+        path: /usr/local/tomcat9
+        owner: tomcat
+        group: tomcat
+        mode: "u+rwx,g+rx,o=rx"
+        recurse: yes
+        state: directory
+ 
+    - name: Copy Tomcat service from local to remote
+      copy:
+        src: ~/.ansible/services/tomcat.service
+        dest: /etc/systemd/system/
+        mode: 0755
+ 
+    # Reference: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html
+    - name: Start and Enable Tomcat 9 on server
+      systemd:
+        name: tomcat
+        state: started
+        daemon_reload: true
+
+    # Reference: https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html
+    # Reference: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-8
+    - name: Copy Tomcat firewall service to firewalld config directory
+      copy:
+        src: ~/.ansible/firewall_services/tomcat_service.xml
+        dest: /etc/firewalld/services/
+        mode: 0755   
+    - name: Restart firewalld
+      ansible.builtin.shell:
+        cmd: sudo firewall-cmd --reload
+    - name: Permit Tomcat service in the public zone
+      ansible.posix.firewalld:
+        service: tomcat_service
+        permanent: yes
+        state: enabled   
+        zone: public
+    - name: Restart firewalld
+      ansible.builtin.shell:
+        cmd: sudo firewall-cmd --reload

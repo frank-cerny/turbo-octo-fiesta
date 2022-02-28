@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Tomcat (HTTP)</short>
+  <description>Apache Tomcat 9</description>
+  <port protocol="tcp" port="8080"/>
+</service>

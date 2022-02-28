@@ -1,0 +1,85 @@
+# Playbook to install Oracle Database XE version 21c
+# @date: 2/27/2022
+# @author: Frank Cerny
+- name: Install Oracle Database 21c (RHEL)
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  # Resource for DNF: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/dnf_module.html
+  tasks:
+    - name: Update the System Packages
+      dnf:
+        name: "*"
+        state: latest
+    # XE Silent Installation docs: https://docs.oracle.com/en/database/oracle/oracle-database/21/xeinl/installing-oracle-database-xe.html#GUID-A5FCC804-5786-4B4B-B1B4-60E36E80B73F
+    - name: Download Pre-Install Script
+      get_url:
+        url:  https://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/getPackage/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
+        dest: /tmp/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
+        mode: '644'
+        force: no
+    - name: Download Database Install Script
+      get_url:
+        url: https://download.oracle.com/otn-pub/otn_software/db-express/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
+        dest: /tmp/oracle-21c-xe-install.rpm
+        mode: '0644'
+        force: no
+        checksum: "sha256:f8357b432de33478549a76557e8c5220ec243710ed86115c65b0c2bc00a848db"
+    - name: Check if Oracle User Exists on System
+      shell: |
+        id oracle
+      register: does_oracle_user_exist
+      ignore_errors: yes
+    # Only run the pre-install a single time per machine (per the Oracle docs)
+    # We can use the registered variable above to get the output of the id command (which tells us if a user exists or not)
+    - name: Run the Pre-Install RPM (via Localinstall)
+      dnf:
+        name: "/tmp/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm"
+        state: present
+        # Both RPMs fail the GPG check for whatever reason, so we are ignoring the check for now. A checksum on download should be good enough for now
+        disable_gpg_check: yes
+      when: does_oracle_user_exist.stderr.find('no such user') != -1
+    - name: Run the Install RPM (via Localinstall)
+      dnf:
+        name: "/tmp/oracle-21c-xe-install.rpm"
+        state: present
+        disable_gpg_check: yes
+    - name: Copy Config File before Database Creation
+      copy:
+        src: ~/.ansible/config/oracle-xe-21c.conf
+        dest: /etc/sysconfig/oracle-xe-21c.conf
+        mode: 0755
+        force: yes
+    # Reference: https://oracle-base.com/articles/21c/oracle-db-21c-xe-rpm-installation-on-oracle-linux-7-and-8
+    # Passes SYS and Admin password as well (we will make these secure later before moving to OCI, this is all internal to the home network for now)
+    - name: Silently Configure Database (CDB=XE, PDB=XEPDB1)
+      ansible.builtin.shell: |
+        sudo /etc/init.d/oracle-xe-21c configure <<EOF
+        Passw0rd1!
+        Pass0wrd1!
+        EOF
+    - name: Configure Oracle Home Enviornment Variables
+      ansible.builtin.shell: |
+        export ORACLE_SID=XE
+        export ORAENV_ASK=NO
+        . /opt/oracle/product/21c/dbhomeXE/bin/oraenv
+    # Reference: https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html
+    # Reference: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-8
+    - name: Copy Oracle DB firewall service to firewalld config directory
+      copy:
+        src: ~/.ansible/firewall_services/oracle_xe_service.xml
+        dest: /etc/firewalld/services/
+        mode: 0755   
+    - name: Restart firewalld
+      ansible.builtin.shell:
+        cmd: sudo firewall-cmd --reload
+    - name: Permit Oracle service in the public zone
+      ansible.posix.firewalld:
+        service: oracle_xe_service
+        permanent: yes
+        state: enabled   
+        zone: public
+    # A second restart is required for the service to be fully added to the public zone
+    - name: Restart firewalld
+      ansible.builtin.shell:
+        cmd: sudo firewall-cmd --reload
