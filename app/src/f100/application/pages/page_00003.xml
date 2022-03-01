@@ -1,0 +1,1068 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+	<changeSet id="559465ed89cb02e3125e8cead521c21bbaa00622" author="(ADMIN)-Generated" failOnError="false"    >
+		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="ADMIN" sourceType="STRING"  >
+			<n0:source><![CDATA[prompt --application/pages/page_00003
+begin
+--   Manifest
+--     PAGE: 00003
+--   Manifest End
+wwv_flow_api.component_begin (
+ p_version_yyyy_mm_dd=>'2021.04.15'
+,p_release=>'21.1.7'
+,p_default_workspace_id=>9006773697014439
+,p_default_application_id=>100
+,p_default_id_offset=>0
+,p_default_owner=>'WKSADMIN'
+);
+wwv_flow_api.create_page(
+ p_id=>3
+,p_user_interface_id=>wwv_flow_api.id(10325719747271546)
+,p_name=>'Project - Edit'
+,p_alias=>'EDIT-PROJECT'
+,p_step_title=>'Edit Project'
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>wwv_flow_api.id(10187784925271444)
+,p_page_template_options=>'#DEFAULT#'
+,p_last_updated_by=>'WKSADMIN'
+,p_last_upd_yyyymmddhh24miss=>'20220117183623'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(10341932860296624)
+,p_plug_name=>'Breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10245532811271478)
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_menu_id=>wwv_flow_api.id(10178561499271422)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>wwv_flow_api.id(10302683604271516)
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(10588007364056334)
+,p_plug_name=>'Project Actions'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>10
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_display_point=>'REGION_POSITION_03'
+,p_list_id=>wwv_flow_api.id(10638145210181430)
+,p_plug_source_type=>'NATIVE_LIST'
+,p_list_template_id=>wwv_flow_api.id(10282626622271500)
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(14661746936564707)
+,p_plug_name=>'Tools '
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>40
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_api.create_report_region(
+ p_id=>wwv_flow_api.id(10394807895692433)
+,p_name=>'Current Tools'
+,p_parent_plug_id=>wwv_flow_api.id(14661746936564707)
+,p_template=>wwv_flow_api.id(10236192890271473)
+,p_display_sequence=>10
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
+,p_display_point=>'BODY'
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT * FROM BSA_VIEW_PROJECT_TOOL',
+'WHERE project_id = :P3_PROJECT_ID'))
+,p_ajax_enabled=>'Y'
+,p_lazy_loading=>false
+,p_query_row_template=>wwv_flow_api.id(10254644259271484)
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_no_data_found=>'No tools have been assigned to this project.'
+,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
+,p_pagination_display_position=>'BOTTOM_RIGHT'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(17694907704720341)
+,p_query_column_id=>1
+,p_column_alias=>'TOOL_ID'
+,p_column_display_sequence=>110
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(11369220857988938)
+,p_query_column_id=>2
+,p_column_alias=>'NAME'
+,p_column_display_sequence=>10
+,p_column_heading=>'Name'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(11369490427988940)
+,p_query_column_id=>3
+,p_column_alias=>'TOOLDESCRIPTION'
+,p_column_display_sequence=>50
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(11369527911988941)
+,p_query_column_id=>4
+,p_column_alias=>'DATEPURCHASED'
+,p_column_display_sequence=>60
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(11369615071988942)
+,p_query_column_id=>5
+,p_column_alias=>'TOTALCOST'
+,p_column_display_sequence=>70
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(17695035976720342)
+,p_query_column_id=>6
+,p_column_alias=>'PROJECT_ID'
+,p_column_display_sequence=>120
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(11368216778988928)
+,p_query_column_id=>7
+,p_column_alias=>'QUANTITY'
+,p_column_display_sequence=>20
+,p_column_heading=>'Quantity'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(12121438354954438)
+,p_query_column_id=>8
+,p_column_alias=>'UNITCOST'
+,p_column_display_sequence=>100
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(12121596228954439)
+,p_query_column_id=>9
+,p_column_alias=>'COSTBASIS'
+,p_column_display_sequence=>30
+,p_column_heading=>'Cost Basis'
+,p_use_as_row_header=>'N'
+,p_column_format=>'FML999G999G999G999G990D00'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(14664952564564739)
+,p_plug_name=>'Total Tool Cost'
+,p_parent_plug_id=>wwv_flow_api.id(14661746936564707)
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'DECLARE',
+'    totalCost number(6,2);',
+'BEGIN',
+'    SELECT sum(costbasis) into totalCost FROM bsa_view_project_tool',
+'    WHERE project_id = :P3_PROJECT_ID;',
+'    sys.htp.paragraph(NULL, NULL, NULL, ''style="color:red"'');',
+'    sys.htp.p(''$'' || totalCost);',
+'END;'))
+,p_plug_source_type=>'NATIVE_PLSQL'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(14665132061564741)
+,p_plug_name=>'Project Details'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>10
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_display_point=>'BODY'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'DECLARE',
+'    projectTitle varchar2(100);',
+'    projectDescription varchar2(500);',
+'    projectDateStarted date;',
+'    projectDateEnded date;',
+'    netValue number(6,2);',
+'BEGIN',
+'    -- Multiple values with INTO is special: https://www.oracletutorial.com/plsql-tutorial/plsql-select-into/',
+'    SELECT p.title, p.description, p.datestarted, p.dateended',
+'    INTO projectTitle, projectDescription, projectDateStarted, projectDateEnded ',
+'    FROM bsa_project p',
+'    WHERE id = :P3_PROJECT_ID;',
+'    -- Now format and print to the screen using the htp package',
+'    htp.header(2, projectTitle);',
+'    htp.header(3, projectDescription);',
+'    htp.header(4, ''Date Started: '' || projectDateStarted);',
+'    htp.header(4, ''Date Ended: '' || projectDateEnded);',
+'    netValue := BSA_FUNC_CALCULATE_NET_PROJECT_VALUE(:P3_PROJECT_ID);',
+'    if netValue < 0 then',
+'        -- Set color to red',
+'        sys.htp.paragraph(NULL, NULL, NULL, ''style="color:red"'');',
+'        htp.p(''Net value: -$'' || netValue * -1);',
+'    else ',
+'        sys.htp.paragraph(NULL, NULL, NULL, ''style="color:green"'');',
+'        htp.p(''Net value: $'' || netValue);',
+'    end if;',
+'END;'))
+,p_plug_source_type=>'NATIVE_PLSQL'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15333286392842201)
+,p_plug_name=>'Single Use Supplies'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>50
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_api.create_report_region(
+ p_id=>wwv_flow_api.id(10395360029692438)
+,p_name=>'Current Single Use Supplies'
+,p_parent_plug_id=>wwv_flow_api.id(15333286392842201)
+,p_template=>wwv_flow_api.id(10236192890271473)
+,p_display_sequence=>10
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
+,p_display_point=>'BODY'
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT ss.id, ss.name, ss.description, ss.datepurchased, ss.project_id, ss.ispending, ss.unitcost, ss.unitspurchased, ss.revenueitem_id, (ss.unitcost * ss.unitspurchased) as totalcost from bsa_single_use_supply ss',
+'WHERE ss.project_id = :P3_PROJECT_ID'))
+,p_ajax_enabled=>'Y'
+,p_lazy_loading=>false
+,p_query_row_template=>wwv_flow_api.id(10254644259271484)
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_no_data_found=>'No single use supplies have been assigned to the project yet.'
+,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
+,p_pagination_display_position=>'BOTTOM_RIGHT'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10395543114692440)
+,p_query_column_id=>1
+,p_column_alias=>'ID'
+,p_column_display_sequence=>10
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10395631649692441)
+,p_query_column_id=>2
+,p_column_alias=>'NAME'
+,p_column_display_sequence=>20
+,p_column_heading=>'Name'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(14663232141564722)
+,p_query_column_id=>3
+,p_column_alias=>'DESCRIPTION'
+,p_column_display_sequence=>40
+,p_column_heading=>'Description'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10395782678692442)
+,p_query_column_id=>4
+,p_column_alias=>'DATEPURCHASED'
+,p_column_display_sequence=>30
+,p_column_heading=>'Date Purchased'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(17695121810720343)
+,p_query_column_id=>5
+,p_column_alias=>'PROJECT_ID'
+,p_column_display_sequence=>100
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(14663476763564724)
+,p_query_column_id=>6
+,p_column_alias=>'ISPENDING'
+,p_column_display_sequence=>60
+,p_column_heading=>'Is Pending'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(14663511585564725)
+,p_query_column_id=>7
+,p_column_alias=>'UNITCOST'
+,p_column_display_sequence=>70
+,p_column_heading=>'Unit Cost'
+,p_use_as_row_header=>'N'
+,p_column_format=>'FML999G999G999G999G990D00'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(14663634200564726)
+,p_query_column_id=>8
+,p_column_alias=>'UNITSPURCHASED'
+,p_column_display_sequence=>80
+,p_column_heading=>'Units Purchased'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(17695240392720344)
+,p_query_column_id=>9
+,p_column_alias=>'REVENUEITEM_ID'
+,p_column_display_sequence=>110
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(14663874038564728)
+,p_query_column_id=>10
+,p_column_alias=>'TOTALCOST'
+,p_column_display_sequence=>90
+,p_column_heading=>'Total Cost'
+,p_use_as_row_header=>'N'
+,p_column_format=>'FML999G999G999G999G990D00'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15333347251842202)
+,p_plug_name=>'Total Single Use Supply Cost'
+,p_parent_plug_id=>wwv_flow_api.id(15333286392842201)
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'DECLARE',
+'    totalCost number(6,2);',
+'BEGIN',
+'    SELECT sum(unitcost*unitspurchased) into totalCost FROM bsa_single_use_supply',
+'    WHERE project_id = :P3_PROJECT_ID;',
+'    sys.htp.paragraph(NULL, NULL, NULL, ''style="color:red"'');',
+'    sys.htp.p(''$'' || totalCost);',
+'END;'))
+,p_plug_source_type=>'NATIVE_PLSQL'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15333404543842203)
+,p_plug_name=>'Fixed Use Supplies'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>60
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_api.create_report_region(
+ p_id=>wwv_flow_api.id(10395936054692444)
+,p_name=>'Current Fixed-Use Supplies'
+,p_parent_plug_id=>wwv_flow_api.id(15333404543842203)
+,p_template=>wwv_flow_api.id(10236192890271473)
+,p_display_sequence=>10
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
+,p_display_point=>'BODY'
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select supply_id,',
+'       NAME,',
+'       QUANTITY,',
+'       project_id,',
+'       COSTBASIS',
+'  from BSA_VIEW_PROJECT_FIXED_SUPPLY',
+' where project_id = :P3_PROJECT_ID'))
+,p_ajax_enabled=>'Y'
+,p_lazy_loading=>false
+,p_query_row_template=>wwv_flow_api.id(10254644259271484)
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_no_data_found=>'No fixed use supplies have been added to the project.'
+,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
+,p_pagination_display_position=>'BOTTOM_RIGHT'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(17695382966720345)
+,p_query_column_id=>1
+,p_column_alias=>'SUPPLY_ID'
+,p_column_display_sequence=>50
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10396170742692446)
+,p_query_column_id=>2
+,p_column_alias=>'NAME'
+,p_column_display_sequence=>20
+,p_column_heading=>'Name'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(12120466589954428)
+,p_query_column_id=>3
+,p_column_alias=>'QUANTITY'
+,p_column_display_sequence=>30
+,p_column_heading=>'Quantity'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(17695445411720346)
+,p_query_column_id=>4
+,p_column_alias=>'PROJECT_ID'
+,p_column_display_sequence=>60
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(13470373885057514)
+,p_query_column_id=>5
+,p_column_alias=>'COSTBASIS'
+,p_column_display_sequence=>40
+,p_column_heading=>'Total Cost Basis'
+,p_use_as_row_header=>'N'
+,p_column_format=>'FML999G999G999G999G990D00'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15333598916842204)
+,p_plug_name=>'Total Fixed Use Supply Cost'
+,p_parent_plug_id=>wwv_flow_api.id(15333404543842203)
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'DECLARE',
+'    totalCost number(6,2);',
+'BEGIN',
+'    SELECT sum(costbasis) into totalCost FROM bsa_view_project_fixed_supply',
+'    WHERE project_id = :P3_PROJECT_ID;',
+'    sys.htp.paragraph(NULL, NULL, NULL, ''style="color:red"'');',
+'    sys.htp.p(''$'' || totalCost);',
+'END;'))
+,p_plug_source_type=>'NATIVE_PLSQL'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15333654306842205)
+,p_plug_name=>'Non-Fixed Use Supplies'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>70
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_api.create_report_region(
+ p_id=>wwv_flow_api.id(12121854800954542)
+,p_name=>'Current Non-Fixed-Use Supplies'
+,p_parent_plug_id=>wwv_flow_api.id(15333654306842205)
+,p_template=>wwv_flow_api.id(10236192890271473)
+,p_display_sequence=>10
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
+,p_display_point=>'BODY'
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select supply_id,',
+'       NAME,',
+'       QUANTITY,',
+'       project_id,',
+'       COSTBASIS',
+'  from BSA_VIEW_PROJECT_NON_FIXED_SUPPLY',
+' where project_id = :P3_PROJECT_ID'))
+,p_ajax_enabled=>'Y'
+,p_lazy_loading=>false
+,p_query_row_template=>wwv_flow_api.id(10254644259271484)
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_no_data_found=>'No non-fixed use supplies have been added to the project.'
+,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
+,p_pagination_display_position=>'BOTTOM_RIGHT'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(17695575003720347)
+,p_query_column_id=>1
+,p_column_alias=>'SUPPLY_ID'
+,p_column_display_sequence=>100
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(12122061930954544)
+,p_query_column_id=>2
+,p_column_alias=>'NAME'
+,p_column_display_sequence=>20
+,p_column_heading=>'Name'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(12122644022954550)
+,p_query_column_id=>3
+,p_column_alias=>'QUANTITY'
+,p_column_display_sequence=>80
+,p_column_heading=>'Quantity'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(17695613203720348)
+,p_query_column_id=>4
+,p_column_alias=>'PROJECT_ID'
+,p_column_display_sequence=>110
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(14662804513564718)
+,p_query_column_id=>5
+,p_column_alias=>'COSTBASIS'
+,p_column_display_sequence=>90
+,p_column_heading=>'Total Cost Basis'
+,p_use_as_row_header=>'N'
+,p_column_format=>'FML999G999G999G999G990D00'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15333780518842206)
+,p_plug_name=>'Total Non-Fixed Supply Cost'
+,p_parent_plug_id=>wwv_flow_api.id(15333654306842205)
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'DECLARE',
+'    totalCost number(6,2);',
+'BEGIN',
+'    SELECT sum(costbasis) into totalCost FROM bsa_view_project_non_fixed_supply',
+'    WHERE project_id = :P3_PROJECT_ID;',
+'    sys.htp.paragraph(NULL, NULL, NULL, ''style="color:red"'');',
+'    sys.htp.p(''$'' || totalCost);',
+'END;'))
+,p_plug_source_type=>'NATIVE_PLSQL'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15333815416842207)
+,p_plug_name=>'Revenue'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>80
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_api.create_report_region(
+ p_id=>wwv_flow_api.id(10396482273692449)
+,p_name=>'Current Revenue Items'
+,p_parent_plug_id=>wwv_flow_api.id(15333815416842207)
+,p_template=>wwv_flow_api.id(10236192890271473)
+,p_display_sequence=>10
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
+,p_display_point=>'BODY'
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ID,',
+'       NAME,',
+'       SALEPRICE,',
+'       PLATFORMSOLDON,',
+'       ISPENDING,',
+'       DATESOLD',
+'  from bsa_revenue_item',
+' where project_id = :P3_PROJECT_ID'))
+,p_ajax_enabled=>'Y'
+,p_lazy_loading=>false
+,p_query_row_template=>wwv_flow_api.id(10254644259271484)
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_no_data_found=>'No revenue items have been assigned to the project yet.'
+,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
+,p_pagination_display_position=>'BOTTOM_RIGHT'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10396577023692450)
+,p_query_column_id=>1
+,p_column_alias=>'ID'
+,p_column_display_sequence=>10
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10584993628056303)
+,p_query_column_id=>2
+,p_column_alias=>'NAME'
+,p_column_display_sequence=>40
+,p_column_heading=>'Name'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10585102179056305)
+,p_query_column_id=>3
+,p_column_alias=>'SALEPRICE'
+,p_column_display_sequence=>60
+,p_column_heading=>'Sale Price'
+,p_use_as_row_header=>'N'
+,p_column_format=>'FML999G999G999G999G990D00'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10585276748056306)
+,p_query_column_id=>4
+,p_column_alias=>'PLATFORMSOLDON'
+,p_column_display_sequence=>70
+,p_column_heading=>'Platform Sold On'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10585323696056307)
+,p_query_column_id=>5
+,p_column_alias=>'ISPENDING'
+,p_column_display_sequence=>80
+,p_column_heading=>'Is Pending'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10585489513056308)
+,p_query_column_id=>6
+,p_column_alias=>'DATESOLD'
+,p_column_display_sequence=>90
+,p_column_heading=>'Date Sold'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15333901301842208)
+,p_plug_name=>'Total Revenue'
+,p_parent_plug_id=>wwv_flow_api.id(15333815416842207)
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'DECLARE',
+'    totalRevenue number(6,2);',
+'BEGIN',
+'    SELECT sum(saleprice) into totalRevenue ',
+'    FROM bsa_revenue_item',
+'    WHERE project_id = :P3_PROJECT_ID;',
+'    sys.htp.paragraph(NULL, NULL, NULL, ''style="color:green"'');',
+'    sys.htp.p(''$'' || totalRevenue);',
+'END;'))
+,p_plug_source_type=>'NATIVE_PLSQL'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15334071467842209)
+,p_plug_name=>'Bike Details'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>30
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_api.create_report_region(
+ p_id=>wwv_flow_api.id(10588437547056338)
+,p_name=>'Bikes'
+,p_parent_plug_id=>wwv_flow_api.id(15334071467842209)
+,p_template=>wwv_flow_api.id(10236192890271473)
+,p_display_sequence=>10
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
+,p_display_point=>'BODY'
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT serialnumber, make, model, year, purchaseprice, datepurchased, description, purchasedfrom',
+'FROM bsa_bike b',
+'WHERE b.project_id = :P3_PROJECT_ID '))
+,p_ajax_enabled=>'Y'
+,p_lazy_loading=>false
+,p_query_row_template=>wwv_flow_api.id(10254644259271484)
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_no_data_found=>'No bikes assigned to this project'
+,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
+,p_pagination_display_position=>'BOTTOM_RIGHT'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10588530766056339)
+,p_query_column_id=>1
+,p_column_alias=>'SERIALNUMBER'
+,p_column_display_sequence=>50
+,p_column_heading=>'Serial Number'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10588694000056340)
+,p_query_column_id=>2
+,p_column_alias=>'MAKE'
+,p_column_display_sequence=>20
+,p_column_heading=>'Make'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10588727680056341)
+,p_query_column_id=>3
+,p_column_alias=>'MODEL'
+,p_column_display_sequence=>30
+,p_column_heading=>'Model'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10588884747056342)
+,p_query_column_id=>4
+,p_column_alias=>'YEAR'
+,p_column_display_sequence=>10
+,p_column_heading=>'Year'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10588909805056343)
+,p_query_column_id=>5
+,p_column_alias=>'PURCHASEPRICE'
+,p_column_display_sequence=>60
+,p_column_heading=>'Purchase Price'
+,p_use_as_row_header=>'N'
+,p_column_format=>'FML999G999G999G999G990D00'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10589014065056344)
+,p_query_column_id=>6
+,p_column_alias=>'DATEPURCHASED'
+,p_column_display_sequence=>70
+,p_column_heading=>'Date Purchased'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(10589122765056345)
+,p_query_column_id=>7
+,p_column_alias=>'DESCRIPTION'
+,p_column_display_sequence=>40
+,p_column_heading=>'Description'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(14663162116564721)
+,p_query_column_id=>8
+,p_column_alias=>'PURCHASEDFROM'
+,p_column_display_sequence=>80
+,p_column_heading=>'Purchased From'
+,p_use_as_row_header=>'N'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15334153898842210)
+,p_plug_name=>'Total Bike Cost'
+,p_parent_plug_id=>wwv_flow_api.id(15334071467842209)
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_display_point=>'BODY'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'DECLARE',
+'    totalCost number(6,2);',
+'BEGIN',
+'    SELECT sum(purchaseprice) into totalCost FROM bsa_bike',
+'    WHERE project_id = :P3_PROJECT_ID;',
+'    sys.htp.paragraph(NULL, NULL, NULL, ''style="color:red"'');',
+'    sys.htp.p(''$'' || totalCost);',
+'END;'))
+,p_plug_source_type=>'NATIVE_PLSQL'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(14665270921564742)
+,p_name=>'P3_PROJECT_ID'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_api.id(14665132061564741)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attribute_01=>'Y'
+);
+wwv_flow_api.create_page_da_event(
+ p_id=>wwv_flow_api.id(11370064760988946)
+,p_name=>'Any Project Action Dialog Close'
+,p_event_sequence=>10
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_api.id(10588007364056334)
+,p_bind_type=>'bind'
+,p_bind_event_type=>'apexafterclosedialog'
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(11370143851988947)
+,p_event_id=>wwv_flow_api.id(11370064760988946)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(10394807895692433)
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(11370323168988949)
+,p_event_id=>wwv_flow_api.id(11370064760988946)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(10588437547056338)
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(12120826697954432)
+,p_event_id=>wwv_flow_api.id(11370064760988946)
+,p_event_result=>'TRUE'
+,p_action_sequence=>30
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(10395360029692438)
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(12120919901954433)
+,p_event_id=>wwv_flow_api.id(11370064760988946)
+,p_event_result=>'TRUE'
+,p_action_sequence=>40
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(10395936054692444)
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(12121028256954434)
+,p_event_id=>wwv_flow_api.id(11370064760988946)
+,p_event_result=>'TRUE'
+,p_action_sequence=>50
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(10396482273692449)
+);
+wwv_flow_api.component_end;
+end;
+/
+begin
+wwv_flow_api.component_begin (
+ p_version_yyyy_mm_dd=>'2021.04.15'
+,p_release=>'21.1.7'
+,p_default_workspace_id=>9006773697014439
+,p_default_application_id=>100
+,p_default_id_offset=>0
+,p_default_owner=>'WKSADMIN'
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(13469519718057506)
+,p_event_id=>wwv_flow_api.id(11370064760988946)
+,p_event_result=>'TRUE'
+,p_action_sequence=>60
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(10395936054692444)
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(13469674011057507)
+,p_event_id=>wwv_flow_api.id(11370064760988946)
+,p_event_result=>'TRUE'
+,p_action_sequence=>70
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(12121854800954542)
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(14665562065564745)
+,p_event_id=>wwv_flow_api.id(11370064760988946)
+,p_event_result=>'TRUE'
+,p_action_sequence=>80
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(14665132061564741)
+);
+wwv_flow_api.create_page_process(
+ p_id=>wwv_flow_api.id(10586754797056321)
+,p_process_sequence=>10
+,p_process_point=>'AFTER_SUBMIT'
+,p_region_id=>wwv_flow_api.id(10394807895692433)
+,p_process_type=>'NATIVE_IG_DML'
+,p_process_name=>'Tools - Save Interactive Grid Data'
+,p_attribute_01=>'REGION_SOURCE'
+,p_attribute_05=>'Y'
+,p_attribute_06=>'Y'
+,p_attribute_08=>'Y'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+);
+wwv_flow_api.component_end;
+end;
+]]></n0:source>
+		</n0:runOracleScript>
+	</changeSet>
+</databaseChangeLog>

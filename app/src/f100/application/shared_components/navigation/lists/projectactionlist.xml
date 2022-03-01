@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+	<changeSet id="10d0a0a2024f04b844d0ba4540a3b0c41005086d" author="(ADMIN)-Generated" failOnError="false"    >
+		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="ADMIN" sourceType="STRING"  >
+			<n0:source><![CDATA[prompt --application/shared_components/navigation/lists/projectactionlist
+begin
+--   Manifest
+--     LIST: ProjectActionList
+--   Manifest End
+wwv_flow_api.component_begin (
+ p_version_yyyy_mm_dd=>'2021.04.15'
+,p_release=>'21.1.7'
+,p_default_workspace_id=>9006773697014439
+,p_default_application_id=>100
+,p_default_id_offset=>0
+,p_default_owner=>'WKSADMIN'
+);
+wwv_flow_api.create_list(
+ p_id=>wwv_flow_api.id(10638145210181430)
+,p_name=>'ProjectActionList'
+,p_list_status=>'PUBLIC'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(15297294996495180)
+,p_list_item_display_sequence=>1
+,p_list_item_link_text=>'Update Project Details'
+,p_list_item_link_target=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.::P17_ID,P17_PROJECT_ID:&P3_PROJECT_ID.,&P3_PROJECT_ID.:'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(10638310334181433)
+,p_list_item_display_sequence=>10
+,p_list_item_link_text=>'Add/Update Bike(s)'
+,p_list_item_link_target=>'f?p=&APP_ID.:4:&SESSION.::&DEBUG.::P4_PROJECT_ID:&P3_PROJECT_ID.:'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(10969438898864721)
+,p_list_item_display_sequence=>20
+,p_list_item_link_text=>'Add/Update Tool(s)'
+,p_list_item_link_target=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.::P10_PROJECT_ID:&P3_PROJECT_ID.:'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(12814711964980226)
+,p_list_item_display_sequence=>40
+,p_list_item_link_text=>'Add/Update Single Use Supply(s)'
+,p_list_item_link_target=>'f?p=&APP_ID.:12:&SESSION.::&DEBUG.::P12_PROJECT_ID:&P3_PROJECT_ID.:'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(12837735021096256)
+,p_list_item_display_sequence=>50
+,p_list_item_link_text=>'Add/Update Revenue Items'
+,p_list_item_link_target=>'f?p=&APP_ID.:14:&SESSION.::&DEBUG.::P14_PROJECT_ID:&P3_PROJECT_ID.:'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(14760145792658995)
+,p_list_item_display_sequence=>60
+,p_list_item_link_text=>'Add/Update Fixed-Use Supplies'
+,p_list_item_link_target=>'f?p=&APP_ID.:9:&SESSION.::&DEBUG.::P9_PROJECT_ID:&P3_PROJECT_ID.:'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(14983626095699245)
+,p_list_item_display_sequence=>70
+,p_list_item_link_text=>'Add/Update Non-Fixed-Use Supplies'
+,p_list_item_link_target=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.::P16_PROJECT_ID:&P3_PROJECT_ID.:'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.component_end;
+end;
+]]></n0:source>
+		</n0:runOracleScript>
+	</changeSet>
+</databaseChangeLog>
