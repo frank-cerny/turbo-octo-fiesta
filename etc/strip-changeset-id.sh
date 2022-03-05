@@ -14,9 +14,3 @@ do
     # Remove the backup file that sed created
     rm *.bak
 done
-
-# TODO
-# 1. Figure out why I am getting permission denied errors from zsh
-# 2. Add code to create a workspace
-# 3. Figure out how to handle Okta secrets
-# 4. Fill out README :)
