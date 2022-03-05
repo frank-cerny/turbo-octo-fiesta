@@ -5,8 +5,8 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="b65f0658a92c9c385c80f9f687d2d5d69512d85d" author="(ADMIN)-Generated" failOnError="false"    >
-		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="ADMIN" sourceType="STRING"  >
+	<changeSet id="b65f0658a92c9c385c80f9f687d2d5d69512d85d" author="(FCERNY)-Generated" failOnError="false"    >
+		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="FCERNY" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/user_interface/templates/list/side_navigation_menu
 begin
 --   Manifest
