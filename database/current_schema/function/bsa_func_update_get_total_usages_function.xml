@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+	<changeSet id="54a5abd304d5c865b8d8e3b37bab05256549b5dd" author="(FCERNY)-Generated" failOnError="false"    >
+		<n0:createOracleFunction objectName="BSA_FUNC_UPDATE_GET_TOTAL_USAGES" objectType="FUNCTION" ownerName="FCERNY"   >
+			<n0:source><![CDATA[
+  CREATE OR REPLACE EDITIONABLE FUNCTION "FCERNY"."BSA_FUNC_UPDATE_GET_TOTAL_USAGES" (toolId IN int) 
+RETURN number 
+AS 
+    totalUsages number := 0; 
+    BEGIN 
+        select sum(quantity) into totalUsages  
+        from bsa_project_tool bpt 
+        where toolId = tool_id; 
+        return totalUsages; 
+    END; 
+/]]></n0:source>
+		</n0:createOracleFunction>
+	</changeSet>
+</databaseChangeLog>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+	<changeSet id="5d79128a31256f484b3eb9bab70a2f74836a430f" author="(FCERNY)-Generated" failOnError="false"    >
+		<n0:createOracleRefConstraint objectName="BSA_PROJECT_FIX_QUANT_SUPP_FK" objectType="REF_CONSTRAINT" ownerName="FCERNY"   >
+			<n0:source><![CDATA[
+  ALTER TABLE "FCERNY"."BSA_PROJECT_FIXED_QUANTITY_SUPPLY" ADD CONSTRAINT "BSA_PROJECT_FIX_QUANT_SUPP_FK" FOREIGN KEY ("SUPPLY_ID")
+	  REFERENCES "FCERNY"."BSA_FIXED_QUANTITY_SUPPLY" ("ID") ON DELETE CASCADE ENABLE;]]></n0:source>
+		</n0:createOracleRefConstraint>
+	</changeSet>
+</databaseChangeLog>

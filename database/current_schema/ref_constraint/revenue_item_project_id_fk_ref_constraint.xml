@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+	<changeSet id="d06e5d51b80f1fdf06fea15f733e99abec2aa71d" author="(FCERNY)-Generated" failOnError="false"    >
+		<n0:createOracleRefConstraint objectName="REVENUE_ITEM_PROJECT_ID_FK" objectType="REF_CONSTRAINT" ownerName="FCERNY"   >
+			<n0:source><![CDATA[
+  ALTER TABLE "FCERNY"."BSA_REVENUE_ITEM" ADD CONSTRAINT "REVENUE_ITEM_PROJECT_ID_FK" FOREIGN KEY ("PROJECT_ID")
+	  REFERENCES "FCERNY"."BSA_PROJECT" ("ID") ON DELETE CASCADE ENABLE;]]></n0:source>
+		</n0:createOracleRefConstraint>
+	</changeSet>
+</databaseChangeLog>

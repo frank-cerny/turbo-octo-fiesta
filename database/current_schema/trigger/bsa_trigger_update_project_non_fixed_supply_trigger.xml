@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+	<changeSet id="5e1d59c9f6f42342f7fa64cb39a9fce3b30fe9f5" author="(FCERNY)-Generated" failOnError="false"    >
+		<n0:createOracleTrigger objectName="BSA_TRIGGER_UPDATE_PROJECT_NON_FIXED_SUPPLY" objectType="TRIGGER" ownerName="FCERNY"   >
+			<n0:source><![CDATA[
+  CREATE OR REPLACE EDITIONABLE TRIGGER "FCERNY"."BSA_TRIGGER_UPDATE_PROJECT_NON_FIXED_SUPPLY" 
+    instead of UPDATE on bsa_view_project_non_fixed_supply 
+    FOR EACH ROW 
+    BEGIN  
+        UPDATE bsa_project_non_fixed_quantity_supply 
+        SET quantity = :new.quantity 
+        WHERE project_id = :new.project_id AND supply_id = :new.supply_id; 
+    END; 
+
+/
+/
+ALTER TRIGGER "FCERNY"."BSA_TRIGGER_UPDATE_PROJECT_NON_FIXED_SUPPLY" ENABLE;]]></n0:source>
+		</n0:createOracleTrigger>
+	</changeSet>
+</databaseChangeLog>
