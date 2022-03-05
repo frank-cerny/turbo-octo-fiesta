@@ -45,7 +45,7 @@ TBA
 
 ## Useful Commands
 
-- Export an APEX app: lb genobject -type apex -id {id} -skipExportDate -expOriginalIds -split -dir {dir}
+- Export an APEX app: lb genobject -type apex -applicationid {id} -skipExportDate -expOriginalIds -expACLAssignments -split -dir {dir}
 
 ## References
 
