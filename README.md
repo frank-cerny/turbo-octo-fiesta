@@ -46,6 +46,7 @@ TBA
 ## Useful Commands
 
 - Export an APEX app: lb genobject -type apex -applicationid {id} -skipExportDate -expOriginalIds -expACLAssignments -split -dir {dir}
+- Delete all XML files in the current_schema directory: rm -rf database/current_schema/**/*.xml
 
 ## References
 
