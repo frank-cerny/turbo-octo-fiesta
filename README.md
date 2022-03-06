@@ -52,3 +52,4 @@ TBA
 [Using Liquibase with Oracle APEX](https://oracle-base.com/articles/misc/liquibase-deploying-oracle-application-express-apex-applications)
 [Creating SQL Changesets](https://docs.liquibase.com/concepts/changelogs/sql-format.html)
 [Liquibase Best Practices](https://docs.liquibase.com/concepts/bestpractices.html)
+[Running PLSQL with Liquibase 1](https://stackoverflow.com/questions/47156510/liquibase-migration-with-oracle-pl-sql-function-gets-pls-00103)

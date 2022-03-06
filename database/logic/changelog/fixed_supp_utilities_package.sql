@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset fcerny:1 runOnChange:true
+--changeset fcerny:1 runOnChange:true endDelimiter:"/"
 create or replace package fixed_supp_utilities
 as 
     function bsa_func_get_fixed_supply_units_remaining(supplyId IN number)
@@ -8,7 +8,7 @@ as
 end fixed_supp_utilities;
 /
 
---changeset fcerny:2 runOnChange:true
+--changeset fcerny:2 runOnChange:true endDelimiter:"/"
 -- Functionality package 
 create or replace package body fixed_supp_utilities
 as
@@ -25,6 +25,5 @@ as
             where id = supplyId;
             return unitsPurchased - totalUsages;
         END;
-    /
 end fixed_supp_utilities;
 /

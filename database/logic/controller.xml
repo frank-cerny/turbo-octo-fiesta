@@ -4,7 +4,13 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+  <!-- These are in dependency order (eg. cannot create project package without all the views)-->
+  <!-- <include file="./changelog/temp.xml" relativeToChangelogFile="true"/> -->
+  <include file="./changelog/non_fixed_supp_utilities_package.sql" relativeToChangelogFile="true"/>
+  <include file="./changelog/fixed_supp_utilities_package.sql" relativeToChangelogFile="true"/>
+  <include file="./changelog/tool_utilities_package.sql" relativeToChangelogFile="true"/>
   <include file="./changelog/project_utilities_package.sql" relativeToChangelogFile="true"/>
-  <!-- <include file="./changelog/views.sql" relativeToChangelogFile="true"/>
-  <include file="./changelog/triggers.sql" relativeToChangelogFile="true"/> -->
+  <include file="./changelog/synonyms.sql" relativeToChangelogFile="true"/> 
+  <include file="./changelog/views.sql" relativeToChangelogFile="true"/>
+  <include file="./changelog/triggers.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog> 

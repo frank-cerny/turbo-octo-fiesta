@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset fcerny:1 runOnChange:true
+--changeset fcerny:1 runOnChange:true endDelimiter:"/"
 create or replace package project_utilities
 as 
     function bsa_func_calculate_net_project_value(projectId IN int)
@@ -8,7 +8,7 @@ as
 end project_utilities;
 /
 
---changeset fcerny:2 runOnChange:true
+--changeset fcerny:2 runOnChange:true endDelimiter:"/"
 -- Functionality package 
 create or replace package body project_utilities
 as

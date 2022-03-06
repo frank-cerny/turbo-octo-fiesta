@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset fcerny:1 runOnChange:true
+--changeset fcerny:1 runOnChange:true endDelimiter:"/"
 create or replace trigger bsa_trigger_insert_project_tool 
     instead of INSERT on bsa_view_project_tool
     FOR EACH ROW
@@ -31,7 +31,7 @@ create or replace trigger bsa_trigger_insert_project_tool
     END;
 /
 
---changeset fcerny:2 runOnChange:true
+--changeset fcerny:2 runOnChange:true endDelimiter:"/"
 create or replace trigger bsa_trigger_delete_project_tool 
     instead of DELETE on bsa_view_project_tool
     FOR EACH ROW
@@ -42,7 +42,7 @@ create or replace trigger bsa_trigger_delete_project_tool
     END;
 /
 
---changeset fcerny:3 runOnChange:true
+--changeset fcerny:3 runOnChange:true endDelimiter:"/"
 create or replace trigger bsa_trigger_update_project_tool 
     instead of UPDATE on bsa_view_project_tool
     FOR EACH ROW
@@ -53,7 +53,7 @@ create or replace trigger bsa_trigger_update_project_tool
     END;
 /
 
---changeset fcerny:4 runOnChange:true
+--changeset fcerny:4 runOnChange:true endDelimiter:"/"
 create or replace trigger bsa_trigger_insert_project_fixed_supply
     instead of INSERT on bsa_view_project_fixed_supply
     FOR EACH ROW
@@ -82,7 +82,7 @@ create or replace trigger bsa_trigger_insert_project_fixed_supply
     END;
 /
 
---changeset fcerny:5 runOnChange:true
+--changeset fcerny:5 runOnChange:true endDelimiter:"/"
 create or replace trigger bsa_trigger_delete_project_fixed_supply
     instead of DELETE on bsa_view_project_fixed_supply
     FOR EACH ROW
@@ -93,7 +93,7 @@ create or replace trigger bsa_trigger_delete_project_fixed_supply
     END;
 /
 
---changeset fcerny:6 runOnChange:true
+--changeset fcerny:6 runOnChange:true endDelimiter:"/"
 create or replace trigger bsa_trigger_update_project_fixed_supply
     instead of UPDATE on bsa_view_project_fixed_supply
     FOR EACH ROW
@@ -104,7 +104,7 @@ create or replace trigger bsa_trigger_update_project_fixed_supply
     END;
 /
 
---changeset fcerny:7 runOnChange:true
+--changeset fcerny:7 runOnChange:true endDelimiter:"/"
 create or replace trigger bsa_trigger_insert_project_non_fixed_supply
     instead of INSERT on bsa_view_project_non_fixed_supply
     FOR EACH ROW
@@ -133,7 +133,7 @@ create or replace trigger bsa_trigger_insert_project_non_fixed_supply
     END;
 /
 
---changeset fcerny:8 runOnChange:true
+--changeset fcerny:8 runOnChange:true endDelimiter:"/"
 create or replace trigger bsa_trigger_delete_project_non_fixed_supply
     instead of DELETE on bsa_view_project_non_fixed_supply
     FOR EACH ROW
@@ -144,7 +144,7 @@ create or replace trigger bsa_trigger_delete_project_non_fixed_supply
     END;
 /
 
---changeset fcerny:9 runOnChange:true
+--changeset fcerny:9 runOnChange:true endDelimiter:"/"
 create or replace trigger bsa_trigger_update_project_non_fixed_supply
     instead of UPDATE on bsa_view_project_non_fixed_supply
     FOR EACH ROW

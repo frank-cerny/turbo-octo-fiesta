@@ -1,14 +1,14 @@
 --liquibase formatted sql
 
---changeset fcerny:1 runOnChange:true
+--changeset fcerny:1 runOnChange:true endDelimiter:"/"
 create or replace package non_fixed_supp_utilities
 as 
-    function bsa_func_get_non_fixed_supply_usages(projectId IN number)
+    function bsa_func_get_non_fixed_supply_usages(supplyId IN number)
     return number;
 end non_fixed_supp_utilities;
 /
 
---changeset fcerny:2 runOnChange:true
+--changeset fcerny:2 runOnChange:true endDelimiter:"/"
 -- Functionality package 
 create or replace package body non_fixed_supp_utilities
 as

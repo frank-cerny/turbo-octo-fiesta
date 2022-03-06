@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset fcerny:1 runOnChange:true
+--changeset fcerny:1 runOnChange:true endDelimiter:"/"
 create or replace package tool_utilities
 as 
     function bsa_func_get_tool_total_usage (toolId IN int)
@@ -8,7 +8,7 @@ as
 end tool_utilities;
 /
 
---changeset fcerny:2 runOnChange:true
+--changeset fcerny:2 runOnChange:true endDelimiter:"/"
 -- Functionality package 
 create or replace package body tool_utilities
 as
@@ -24,6 +24,5 @@ as
             where toolId = tool_id;
             return totalUsages;
         END;
-    /
 end tool_utilities;
 /
