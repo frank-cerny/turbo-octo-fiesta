@@ -10,13 +10,14 @@ begin
 		select object_name, object_type
 		from dba_objects
 		where owner = 'FRANKCERNY'
-		and object_type in ('PACKAGE', 'PROCEDURE', 'SEQUENCE', 'TABLE', 'VIEW')
+		and object_type in ('PACKAGE', 'PROCEDURE', 'SEQUENCE', 'TABLE', 'VIEW', 'FUNCTION')
 	)
 	loop
 		l_priv :=
 		case r_object.object_type
 			when 'PACKAGE' then 'EXECUTE'
 			when 'PROCEDURE' then 'EXECUTE'
+            when 'FUNCTION' then 'EXECUTE'
 			when 'TABLE' then 'ALL'
 			else 'SELECT'
 		end;
