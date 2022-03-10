@@ -45,14 +45,14 @@ as
         -- Create a project
         INSERT INTO frankcerny.bsa_project (description, title, datestarted, dateended)
         VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
-        SELECT p.id INTO projectId FROM frankcerny.bsa_project p where p.title = 'Test Project 112233'
+        SELECT p.id INTO projectId FROM frankcerny.bsa_project p where p.title = 'Test Project 112233';
         -- Insert a single fixed supply into the table
         INSERT INTO frankcerny.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
         VALUES ('Bubble Wrap 112233', '', CURRENT_DATE, 165, 23.45);
         SELECT fqs.id INTO fixedSupplyId FROM frankcerny.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
         -- Add records to the project fixed use supply table directly (do not use the trigger here)
         INSERT INTO frankcerny.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
-        VALUES (projectId, fixedSupplyId, 65)
+        VALUES (projectId, fixedSupplyId, 65);
         -- Act 
         -- fsu is a public synomym for the fixed supply package
         unitsRemaining := frankcerny.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
@@ -70,19 +70,19 @@ as
         -- Create two projects
         INSERT INTO frankcerny.bsa_project (description, title, datestarted, dateended)
         VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
-        SELECT p.id INTO projectId1 FROM frankcerny.bsa_project p where p.title = 'Test Project 112233'
+        SELECT p.id INTO projectId1 FROM frankcerny.bsa_project p where p.title = 'Test Project 112233';
         INSERT INTO frankcerny.bsa_project (description, title, datestarted, dateended)
         VALUES ('A very simple testing project!', 'Test Project 332211', CURRENT_DATE, NULL);
-        SELECT p.id INTO projectId2 FROM frankcerny.bsa_project p where p.title = 'Test Project 332211'
+        SELECT p.id INTO projectId2 FROM frankcerny.bsa_project p where p.title = 'Test Project 332211';
         -- Insert a single fixed supply into the table
         INSERT INTO frankcerny.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
         VALUES ('Bubble Wrap 112233', '', CURRENT_DATE, 165, 23.45);
         SELECT fqs.id INTO fixedSupplyId FROM frankcerny.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
         -- Add records to the project fixed use supply table directly (do not use the trigger here)
         INSERT INTO frankcerny.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
-        VALUES (projectId1, fixedSupplyId, 65)
+        VALUES (projectId1, fixedSupplyId, 65);
         INSERT INTO frankcerny.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
-        VALUES (projectId2, fixedSupplyId, 50)
+        VALUES (projectId2, fixedSupplyId, 50);
         -- Act 
         -- fsu is a public synomym for the fixed supply package
         unitsRemaining := frankcerny.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
@@ -100,7 +100,7 @@ as
         -- Create a project
         INSERT INTO frankcerny.bsa_project (description, title, datestarted, dateended)
         VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
-        SELECT p.id INTO projectId FROM frankcerny.bsa_project p where p.title = 'Test Project 112233'
+        SELECT p.id INTO projectId FROM frankcerny.bsa_project p where p.title = 'Test Project 112233';
         -- Insert a single fixed supply into the table
         INSERT INTO frankcerny.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
         VALUES ('Bubble Wrap 112233', '', CURRENT_DATE, 165, 23.45);
@@ -108,7 +108,7 @@ as
         -- Add records to the project fixed use supply table directly (do not use the trigger here)
         -- For this specific test we want to "use" more than we have to ensure the function does NOT return a negatvie number
         INSERT INTO frankcerny.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
-        VALUES (projectId, fixedSupplyId, 166)
+        VALUES (projectId, fixedSupplyId, 166);
         -- Act 
         -- fsu is a public synomym for the fixed supply package
         unitsRemaining := frankcerny.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
