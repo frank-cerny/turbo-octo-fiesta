@@ -22,7 +22,6 @@ create or replace trigger bsa_trigger_insert_project_tool
             UPDATE BSA_PROJECT_TOOL pj
             SET pj.quantity = quantity + 1
             WHERE project_id = :new.project_id AND tool_id = :new.tool_id;
-            -- TODO Update tool usages number
         ELSE
             -- Insert into the join table (project/tool already exist!) (update quantity if it exists)
             insert into bsa_project_tool (project_id, tool_id, quantity)
