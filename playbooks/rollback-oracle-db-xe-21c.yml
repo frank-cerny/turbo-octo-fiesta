@@ -14,6 +14,7 @@
       ansible.builtin.shell: |
         export ORACLE_SID=
         export ORAENV_ASK=
+        export ORACLE_HOME=
     # Uninstall reference: https://docs.oracle.com/en/database/oracle/oracle-database/21/xeinl/deinstalling-oracle-database-xe-software-linux.html)
     # Note that if we do not back up the database before this step, everything will be removed
     # Besides the setup work that the pre-install script does (we will not remove that work, as its quite challenging and can be leveraged in the future)
@@ -75,4 +76,5 @@
         path: /etc/firewalld/services/oracle_xe_service.xml
     - name: Restart firewalld
       ansible.builtin.shell:
-        cmd: sudo firewall-cmd --reload
+        cmd: firewall-cmd --reload
+      become: yes

@@ -73,7 +73,8 @@
         mode: 0755   
     - name: Restart firewalld
       ansible.builtin.shell:
-        cmd: sudo firewall-cmd --reload
+        cmd: firewall-cmd --reload
+      become: yes
     - name: Permit Tomcat service in the public zone
       ansible.posix.firewalld:
         service: tomcat_service
@@ -82,4 +83,5 @@
         zone: public
     - name: Restart firewalld
       ansible.builtin.shell:
-        cmd: sudo firewall-cmd --reload
+        cmd: firewall-cmd --reload
+      become: yes

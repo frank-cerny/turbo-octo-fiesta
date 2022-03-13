@@ -1,16 +1,27 @@
 # Playbook to install Oracle Database XE version 21c
 # @date: 2/27/2022
 # @author: Frank Cerny
+
 - name: Install Oracle Database 21c (RHEL)
   hosts: APEX
   remote_user: ansible
   become: true
+  vars:
+    oracle_bin_path: "/opt/oracle/product/21c/dbhomeXE/bin"
   # Resource for DNF: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/dnf_module.html
   tasks:
     - name: Update the System Packages
       dnf:
         name: "*"
         state: latest
+      become: true
+    - name: Create the oracle User
+      user:
+        name: oracle
+        create_home: yes
+    - name: Create an oracle group
+      group:
+        name: oracle
     # XE Silent Installation docs: https://docs.oracle.com/en/database/oracle/oracle-database/21/xeinl/installing-oracle-database-xe.html#GUID-A5FCC804-5786-4B4B-B1B4-60E36E80B73F
     - name: Download Pre-Install Script
       get_url:
@@ -57,14 +68,18 @@
     - name: Silently Configure Database (CDB=XE, PDB=XEPDB1)
       ansible.builtin.shell: |
         /etc/init.d/oracle-xe-21c configure <<EOF
-        Passw0rd1!
-        Pass0wrd1!
+        Passw0rd1*()
+        Pass0wrd1*()
         EOF
+      become: true
+    # We need to configure the variable for the oracle user so all we have to do is switch to that user and we are good
     - name: Configure Oracle Home Enviornment Variables
       ansible.builtin.shell: |
         export ORACLE_SID=XE
         export ORAENV_ASK=NO
+        export ORACLE_HOME=/opt/oracle/product/21c/dbhomeXE/
         . /opt/oracle/product/21c/dbhomeXE/bin/oraenv
+      become_user: oracle
     # Reference: https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html
     # Reference: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-8
     - name: Copy Oracle DB firewall service to firewalld config directory
@@ -72,9 +87,11 @@
         src: ~/.ansible/firewall_services/oracle_xe_service.xml
         dest: /etc/firewalld/services/
         mode: 0755   
+      become: yes
     - name: Restart firewalld
       ansible.builtin.shell:
-        cmd: sudo firewall-cmd --reload
+        cmd: firewall-cmd --reload
+      become: yes
     - name: Permit Oracle service in the public zone
       ansible.posix.firewalld:
         service: oracle_xe_service
@@ -87,4 +104,19 @@
         cmd: firewall-cmd --reload
       become: yes
     # Add Oracle home bin to path so oracle utilities are available system wide
-    # TODO
+    # Reference: https://stackoverflow.com/questions/56560173/ansible-how-to-add-modify-path-variable-in-centos
+    - name: 'Add {{ extra_path }} if PATH does not exist'
+      lineinfile:
+        path: /etc/environment
+        line: 'PATH="{{ extra_path }}"'
+        insertafter: EOF
+      when: lookup('file', '/etc/environment') is not search('^\s*PATH\s*=')
+      become_user: oracle
+    - name: 'Append {{ extra_path }} to PATH'
+      lineinfile:
+        path: /etc/environment
+        regexp: 'PATH=(["])((?!.*?{{ extra_path }}).*?)(["])$'
+        line: 'PATH=\1\2:{{ extra_path }}\3'
+        backrefs: yes
+      when: lookup('file', '/etc/environment') is search('^\s*PATH\s*=')
+      become_user: oracle
