@@ -37,7 +37,7 @@
  
     - name: Download & Un-Archive Tomcat9 
       unarchive:
-        src: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.58/bin/apache-tomcat-9.0.58.tar.gz
+        src: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.59/bin/apache-tomcat-9.0.59.tar.gz
         dest: /usr/local/tomcat9
         remote_src: yes
         extra_opts: [--strip-components=1]

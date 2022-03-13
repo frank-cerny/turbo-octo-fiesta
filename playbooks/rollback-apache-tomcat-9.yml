@@ -7,19 +7,26 @@
   become: true
   # Resource for DNF: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/dnf_module.html
   tasks:
+    # Reference: https://stackoverflow.com/questions/30328506/check-if-service-exists-with-ansible
+    - name: Check for existence of the Tomcat 9 systemd service
+      stat: path=/etc/systemd/system/tomcat.service
+      register: service_status
     # Reference: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html
     - name: Stop Tomcat 9 Server
       systemd:
         name: tomcat
         state: stopped
+      when: service_status.stat.exists
     - name: Delete Tomcat service file
       file:
         state: absent
         path: /etc/systemd/system/tomcat.service
+      when: service_status.stat.exists
     - name: Remove Tomcat Directory
       file:
         state: absent
         path: /usr/local/tomcat9
+      when: service_status.stat.exists
     - name: Uninstall Java 11
       dnf:
         name: java-11-openjdk-devel
