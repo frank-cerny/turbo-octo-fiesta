@@ -6,19 +6,40 @@
   remote_user: ansible
   become: true
   tasks:
+    # Ensure init.d service descriptions exist before attempting to delete
+    - name: Check for existence of the Oracle systemd service
+      stat: path=/etc/init.d/oracle-xe-21c
+      register: service_status
     - name: Remove Oracle Home Enviornment Variables
-    ansible.builtin.shell: |
-      export ORACLE_SID=
-      export ORAENV_ASK=
+      ansible.builtin.shell: |
+        export ORACLE_SID=
+        export ORAENV_ASK=
     # Uninstall reference: https://docs.oracle.com/en/database/oracle/oracle-database/21/xeinl/deinstalling-oracle-database-xe-software-linux.html)
     # Note that if we do not back up the database before this step, everything will be removed
     # Besides the setup work that the pre-install script does (we will not remove that work, as its quite challenging and can be leveraged in the future)
     - name: Delete Database (only logs and Oracle Home Software will remain)
       shell: |
         /etc/init.d/oracle-xe-21c delete
+      when: service_status.stat.exists
+    - name: Delete /etc/init.d/oracle-database-preinstall-21c-firstboot
+      file:
+        state: absent
+        path: /etc/init.d/oracle-database-preinstall-21c-firstboot
+      when: service_status.stat.exists
+    - name: Delete /etc/init.d/oracle-xe-21c
+      file:
+        state: absent
+        path: /etc/init.d/oracle-xe-21c
+      when: service_status.stat.exists
+    - name: Delete oracle user home directory
+      file:
+        state: absent
+        path: /home/oracle
+    # Note, the localinstall installs the package under a different name
+    # Reference: https://docs.oracle.com/en/database/oracle/oracle-database/21/xeinl/deinstalling-oracle-database-xe-software-linux.html
     - name: Run the Install RPM (via Localinstall) to Remove
       dnf:
-        name: "/tmp/oracle-21c-xe-install.rpm"
+        name: oracle-database-xe-21c
         state: absent
         disable_gpg_check: yes
     - name: Delete Pre-Install RPM
@@ -29,6 +50,18 @@
       file:
         state: absent
         path: /tmp/oracle-21c-xe-install.rpm
+    - name: Delete /opt/oracle (deletes oracle home)
+      file:
+        state: absent
+        path: /opt/oracle
+    - name: Remove Oracle User
+      user:
+        name: oracle
+        state: absent
+    - name: Remove Oracle Group
+      group:
+        name: oracle
+        state: absent
     # Clear out firewall rules
     - name: Remove Oracle service in the public zone
       ansible.posix.firewalld:

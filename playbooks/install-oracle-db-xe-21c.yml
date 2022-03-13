@@ -39,11 +39,13 @@
         # Both RPMs fail the GPG check for whatever reason, so we are ignoring the check for now. A checksum on download should be good enough for now
         disable_gpg_check: yes
       when: does_oracle_user_exist.stderr.find('no such user') != -1
+      become: yes
     - name: Run the Install RPM (via Localinstall)
       dnf:
         name: "/tmp/oracle-21c-xe-install.rpm"
         state: present
         disable_gpg_check: yes
+      become: yes
     - name: Copy Config File before Database Creation
       copy:
         src: ~/.ansible/config/oracle-xe-21c.conf
@@ -54,7 +56,7 @@
     # Passes SYS and Admin password as well (we will make these secure later before moving to OCI, this is all internal to the home network for now)
     - name: Silently Configure Database (CDB=XE, PDB=XEPDB1)
       ansible.builtin.shell: |
-        sudo /etc/init.d/oracle-xe-21c configure <<EOF
+        /etc/init.d/oracle-xe-21c configure <<EOF
         Passw0rd1!
         Pass0wrd1!
         EOF
@@ -82,4 +84,7 @@
     # A second restart is required for the service to be fully added to the public zone
     - name: Restart firewalld
       ansible.builtin.shell:
-        cmd: sudo firewall-cmd --reload
+        cmd: firewall-cmd --reload
+      become: yes
+    # Add Oracle home bin to path so oracle utilities are available system wide
+    # TODO
