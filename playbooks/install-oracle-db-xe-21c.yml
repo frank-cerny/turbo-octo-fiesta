@@ -34,11 +34,6 @@
         mode: '0644'
         force: no
         checksum: "sha256:f8357b432de33478549a76557e8c5220ec243710ed86115c65b0c2bc00a848db"
-    - name: Check if Oracle User Exists on System
-      shell: |
-        id oracle
-      register: does_oracle_user_exist
-      ignore_errors: yes
     # Only run the pre-install a single time per machine (per the Oracle docs)
     # We can use the registered variable above to get the output of the id command (which tells us if a user exists or not)
     - name: Run the Pre-Install RPM (via Localinstall)
@@ -47,7 +42,6 @@
         state: present
         # Both RPMs fail the GPG check for whatever reason, so we are ignoring the check for now. A checksum on download should be good enough for now
         disable_gpg_check: yes
-      when: does_oracle_user_exist.stderr.find('no such user') != -1
       become: yes
     - name: Run the Install RPM (via Localinstall)
       dnf:

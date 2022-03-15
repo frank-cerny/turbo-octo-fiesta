@@ -51,7 +51,8 @@
         path: /etc/firewalld/services/tomcat_service.xml
     - name: Restart firewalld
       ansible.builtin.shell:
-        cmd: sudo firewall-cmd --reload
+        cmd: firewall-cmd --reload
+      become: true
 
 
         
