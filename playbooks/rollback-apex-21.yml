@@ -11,6 +11,7 @@
     - name: Check for existence of the Apex download folder
       stat: path=/tmp/apex
       register: service_status
+    # TODO run removal script
     - name: Remove Apex download directory
       file:
         state: absent

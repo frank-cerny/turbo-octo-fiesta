@@ -36,3 +36,14 @@
         src: ../apex_install_utilities/
         dest: /tmp/apex/apex_install_utilities
         mode: 0755
+    # TODO run install shell script! (probably could do each one at a time in a playbook?)
+    - name: Configure PGA/SGA memory requirements before installing APEX
+      ansible.builtin.shell: |
+        cd /tmp/apex/apex_install_utilities/bash_scripts
+        ./pre_apex_install.sh
+      become_user: oracle
+    - name: Install APEX
+      ansible.builtin.shell: |
+        cd /tmp/apex/apex_install_utilities/bash_scripts
+        ./apex_install.sh
+      become_user: oracle
