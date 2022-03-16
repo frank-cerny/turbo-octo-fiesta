@@ -1,0 +1,38 @@
+# Playbook to install Oracle Apex 21.2 into an Oracle XE 21c database 
+# @date: 3/15/2022
+# @author: Frank Cerny
+- name: Install APEX 21.2 into Oracle XE 21c (RHEL)
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  # Resource for DNF: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/dnf_module.html
+  tasks:
+    - name: Update the System Packages
+      dnf:
+        name: "*"
+        state: latest
+    - name: Create an Apex download directory
+      file:
+        path: /tmp/apex
+        owner: oracle
+        group: oracle
+        mode: 755
+        recurse: yes
+    - name: Download & Un-Archive Apex
+      unarchive:
+        src: https://download.oracle.com/otn_software/apex/apex_21.2_en.zip
+        dest: /tmp/apex
+        remote_src: yes
+    - name: Change ownership of files within Apex download directory
+      file:
+        path: /tmp/apex
+        owner: oracle
+        group: oracle
+        mode: "u+rwx,g+rx,o=rx"
+        recurse: yes
+        state: directory
+    - name: Copy Apex Utilities to Agent
+      copy:
+        src: ../apex_install_utilities/
+        dest: /tmp/apex/apex_install_utilities
+        mode: 0755

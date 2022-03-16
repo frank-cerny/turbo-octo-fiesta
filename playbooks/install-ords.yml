@@ -1,0 +1,7 @@
+# Playbook to install ORDS into a pre-configured Tomcat instance
+# @date: 3/15/2022
+# @author: Frank Cerny
+- name: Install ORDS into Tomcat (RHEL)
+  hosts: APEX
+  remote_user: ansible
+  become: true
