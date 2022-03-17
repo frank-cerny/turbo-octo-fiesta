@@ -2,7 +2,7 @@
 
 # Perform pre-setup instructions (PGA/SGA memory requirements; 1600M is a guess based on installing the database manually)
 echo "Updating PGA/SGA memory requirements before installing APEX"
-sqlplus -S /nolog << EOF
+sqlplus -s /nolog << EOF
 CONNECT / as sysdba;
 
 whenever sqlerror exit sql.sqlcode;
@@ -28,5 +28,8 @@ echo "Creating APEX tablespace"
 sqlplus -s /nolog << EOF
 CONNECT / as sysdba;
 alter session set container=XEPDB1;
-@../sql_scripts/create_apex_tablespace.sql
+create tablespace apextbsp212
+datafile 'apextbsp212.dbf'
+size 2G
+autoextend on;
 EOF

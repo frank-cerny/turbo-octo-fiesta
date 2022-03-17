@@ -5,3 +5,28 @@
   hosts: APEX
   remote_user: ansible
   become: true
+  tasks:
+    - name: Download & Un-Archive ORDS
+      unarchive:
+        src: https://download.oracle.com/otn_software/java/ords/ords-21.4.2.062.1806.zip
+        dest: /tmp/ords
+        remote_src: yes
+    - name: Copy ORDS Config to host
+      copy:
+        src: ~/.ansible/config/ords_params.properties
+        dest: /opt/ords/conf
+        mode: 0755
+    - name: Change ownership of ORDS config directory
+      file:
+        path: /opt/ords/conf
+        owner: oracle
+        group: oracle
+        mode: "u+rwx,g+rx,o=rx"
+        recurse: yes
+        state: directory
+    - name: Configure ORDS
+      ansible.builtin.shell: |
+        cd /tmp/ords
+        java -jar ords.war --silent --parameterFile /opt/ords/conf/ords_params.properties
+      become_user: oracle
+    # TODO move APEX images to Tomcat, setup security (add as action item), setup ORDS conf directory, then move to tomcat and pray!

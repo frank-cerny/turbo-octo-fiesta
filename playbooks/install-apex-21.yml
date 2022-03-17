@@ -5,6 +5,8 @@
   hosts: APEX
   remote_user: ansible
   become: true
+  vars:
+    script_directory: /tmp/apex/apex_install_utilities/bash_scripts
   # Resource for DNF: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/dnf_module.html
   tasks:
     - name: Update the System Packages
@@ -36,14 +38,23 @@
         src: ../apex_install_utilities/
         dest: /tmp/apex/apex_install_utilities
         mode: 0755
-    # TODO run install shell script! (probably could do each one at a time in a playbook?)
     - name: Configure PGA/SGA memory requirements before installing APEX
-      ansible.builtin.shell: |
-        cd /tmp/apex/apex_install_utilities/bash_scripts
-        ./pre_apex_install.sh
+      ansible.builtin.shell: 
+        cmd: | 
+          {{ script_directory }}/pre_apex_install.sh
+        chdir: /tmp/apex/apex
       become_user: oracle
+      environment:
+        ORACLE_SID: XE
+        ORACLE_HOME: /opt/oracle/product/21c/dbhomeXE/
+        PATH: "{{ ansible_env.PATH }}:/opt/oracle/product/21c/dbhomeXE/bin"
     - name: Install APEX
-      ansible.builtin.shell: |
-        cd /tmp/apex/apex_install_utilities/bash_scripts
-        ./apex_install.sh
+      ansible.builtin.shell:
+        cmd: |
+          {{ script_directory }}/apex_install.sh
+        chdir: /tmp/apex/apex
       become_user: oracle
+      environment: 
+        ORACLE_SID: XE
+        ORACLE_HOME: /opt/oracle/product/21c/dbhomeXE/
+        PATH: "{{ ansible_env.PATH }}:/opt/oracle/product/21c/dbhomeXE/bin"
