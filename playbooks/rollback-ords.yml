@@ -5,3 +5,24 @@
   hosts: APEX
   remote_user: ansible
   become: true
+  tasks:
+    - name: Check for existence of ords download folder
+      stat: path=/tmp/ords
+      register: ords_download_service_status
+    - name: Check for existence of ords.war in tomcat images directory
+      stat: path=/usr/local/tomcat9/webapps
+      register: ords_war_service_status
+    # - name: Uninstall ORDS
+    #   ansible.builtin.shell: 
+    #     cmd: |
+    #       java -jar ords.war uninstall
+    #     chdir: /usr/local/tomcat9/webapps
+    #   become_user: oracle
+    #   when: ords_war_service_status.stat.exists
+    - name: Remove ORDS download directory
+      file:
+        state: absent
+        path: /tmp/ords
+      when: ords_download_service_status.stat.exists
+    # TODO stop tomcat while uninstalling and removing ords.war from webapp directory
+    # TODO remove other directories
