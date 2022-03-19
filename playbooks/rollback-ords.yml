@@ -12,6 +12,12 @@
     - name: Check for existence of ords.war in tomcat images directory
       stat: path=/usr/local/tomcat9/webapps/ords.war
       register: ords_war_service_status
+    - name: Stop Tomcat Server while removing ORDS
+      systemd:
+        name: tomcat
+        state: stopped
+        daemon_reload: true
+      when: ords_war_service_status.stat.exists
     - name: Uninstall ORDS
       ansible.builtin.shell: 
         cmd: |
@@ -24,12 +30,6 @@
         state: absent
         path: /tmp/ords
       when: ords_download_service_status.stat.exists
-    - name: Stop Tomcat Server while removing ORDS
-      systemd:
-        name: tomcat
-        state: stopped
-        daemon_reload: true
-      when: ords_war_service_status.stat.exists
     - name: Remove ords.war
       file:
         state: absent
@@ -39,6 +39,11 @@
       file:
         state: absent
         path: /usr/local/tomcat9/webapps/ords
+      when: ords_war_service_status.stat.exists
+    - name: APEX images directory from Tomcat
+      file:
+        state: absent
+        path: /usr/local/tomcat9/webapps/i
       when: ords_war_service_status.stat.exists
     - name: Start Tomcat 
       systemd:

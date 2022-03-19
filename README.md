@@ -12,4 +12,4 @@ APEX_PUBLIC_USER: ?
 ### APEX Credentials
 
 Instance Admin: INTERNAL:ADMIN:Passw0rd!
-Workspace User: DEV_WS:DEV:Passw0rd!12345
+Workspace User: DEV_WS:DEV:Passw0rd!
