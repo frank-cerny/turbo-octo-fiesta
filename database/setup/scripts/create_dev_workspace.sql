@@ -1,4 +1,3 @@
--- Create the workspace (using SQL+)
 prompt --application/set_environment
 set define off verify off feedback off
 whenever sqlerror exit sql.sqlcode rollback
@@ -7,34 +6,34 @@ whenever sqlerror exit sql.sqlcode rollback
 -- ORACLE Application Express (APEX) export file
 --
 -- You should run the script connected to SQL*Plus as the Oracle user
--- APEX_200100 or as the owner (parsing schema) of the application.
+-- APEX_210100 or as the owner (parsing schema) of the application.
 --
 -- NOTE: Calls to apex_application_install override the defaults below.
 --
 --------------------------------------------------------------------------------
 begin
 wwv_flow_api.import_begin (
- p_version_yyyy_mm_dd=>'2020.03.31'
-,p_default_workspace_id=>2600821031139055
+ p_version_yyyy_mm_dd=>'2021.04.15'
+,p_default_workspace_id=>9020661557912791
 );
 end;
 /
-prompt  WORKSPACE 2600821031139055
+prompt  WORKSPACE 9020661557912791
 --
 -- Workspace, User Group, User, and Team Development Export:
---   Date and Time:   09:35 Sunday June 14, 2020
---   Exported By:     ADMIN
+--   Date and Time:   19:36 Saturday March 19, 2022
+--   Exported By:     FCERNY
 --   Export Type:     Workspace Export
---   Version:         20.1.0.00.13
---   Instance ID:     300187455122586
+--   Version:         21.1.7
+--   Instance ID:     9020540081714451
 --
 -- Import:
 --   Using Instance Administration / Manage Workspaces
 --   or
---   Using SQL*Plus as the Oracle user APEX_200100
+--   Using SQL*Plus as the Oracle user APEX_210100
  
 begin
-    wwv_flow_api.set_security_group_id(p_security_group_id=>2600821031139055);
+    wwv_flow_api.set_security_group_id(p_security_group_id=>9020661557912791);
 end;
 /
 ----------------
@@ -44,8 +43,8 @@ end;
 prompt  Creating workspace DEV_WS...
 begin
 wwv_flow_fnd_user_api.create_company (
-  p_id => 2600921432139085
- ,p_provisioning_company_id => 2600821031139055
+  p_id => 9021027850912991
+ ,p_provisioning_company_id => 9020661557912791
  ,p_short_name => 'DEV_WS'
  ,p_display_name => 'DEV_WS'
  ,p_first_schema_provisioned => 'DEV_WS'
@@ -72,7 +71,7 @@ end;
 prompt  Creating Groups...
 begin
 wwv_flow_fnd_user_api.create_user_group (
-  p_id => 1500953464149253,
+  p_id => 1202204445382011,
   p_GROUP_NAME => 'OAuth2 Client Developer',
   p_SECURITY_GROUP_ID => 10,
   p_GROUP_DESC => 'Users authorized to register OAuth2 Client Applications');
@@ -80,7 +79,7 @@ end;
 /
 begin
 wwv_flow_fnd_user_api.create_user_group (
-  p_id => 1500878956149253,
+  p_id => 1202135432382011,
   p_GROUP_NAME => 'RESTful Services',
   p_SECURITY_GROUP_ID => 10,
   p_GROUP_DESC => 'Users authorized to use RESTful Services with this workspace');
@@ -88,7 +87,7 @@ end;
 /
 begin
 wwv_flow_fnd_user_api.create_user_group (
-  p_id => 1500716368149252,
+  p_id => 1202028989382010,
   p_GROUP_NAME => 'SQL Developer',
   p_SECURITY_GROUP_ID => 10,
   p_GROUP_DESC => 'Users authorized to use SQL Developer with this workspace');
@@ -102,22 +101,22 @@ prompt  Creating group grants...
 prompt  Creating Users...
 begin
 wwv_flow_fnd_user_api.create_fnd_user (
-  p_user_id                      => '2600769969139055',
-  p_user_name                    => 'ADMIN',
+  p_user_id                      => '9020823100912792',
+  p_user_name                    => 'FCERNY',
   p_first_name                   => 'Frank',
   p_last_name                    => 'Cerny',
   p_description                  => '',
-  p_email_address                => 'frank@example.com',
-  p_web_password                 => 'FE624B43F94D0361680D2FEA18556F359B357CFA40B17F34AC507A20C3EA70957D19103D26AEE3C27F8A11B5D50C92B568CF9CF7F73F0BC344E9C79D6A63BF6A',
+  p_email_address                => '',
+  p_web_password                 => '8D5D6947BE3342D87B416F10607CE9FCDBD2133E8088421CE0BDDBF3DE9A6A15322FA9F9B866F847248E3DBCC34A9C7718E77C5E1203AA9ACF84808732528F53',
   p_web_password_format          => '5;5;10000',
   p_group_ids                    => '',
   p_developer_privs              => 'ADMIN:CREATE:DATA_LOADER:EDIT:HELP:MONITOR:SQL',
   p_default_schema               => 'DEV_WS',
   p_account_locked               => 'N',
-  p_account_expiry               => to_date('202006140935','YYYYMMDDHH24MI'),
+  p_account_expiry               => to_date('202202062015','YYYYMMDDHH24MI'),
   p_failed_access_attempts       => 0,
-  p_change_password_on_first_use => 'Y',
-  p_first_password_use_occurred  => 'N',
+  p_change_password_on_first_use => 'N',
+  p_first_password_use_occurred  => 'Y',
   p_allow_app_building_yn        => 'Y',
   p_allow_sql_workshop_yn        => 'Y',
   p_allow_websheet_dev_yn        => 'Y',
