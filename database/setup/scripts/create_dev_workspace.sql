@@ -102,9 +102,9 @@ prompt  Creating Users...
 begin
 wwv_flow_fnd_user_api.create_fnd_user (
   p_user_id                      => '9020823100912792',
-  p_user_name                    => 'FCERNY',
-  p_first_name                   => 'Frank',
-  p_last_name                    => 'Cerny',
+  p_user_name                    => 'DEV',
+  p_first_name                   => 'Dev',
+  p_last_name                    => 'Dev',
   p_description                  => '',
   p_email_address                => '',
   p_web_password                 => '8D5D6947BE3342D87B416F10607CE9FCDBD2133E8088421CE0BDDBF3DE9A6A15322FA9F9B866F847248E3DBCC34A9C7718E77C5E1203AA9ACF84808732528F53',

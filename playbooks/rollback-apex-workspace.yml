@@ -1,0 +1,28 @@
+# Playbook to remove the dev workspace and users from the APEX installation
+# @date: 3/19/2022
+# @author: Frank Cerny
+- name: Install APEX 21.2 into Oracle XE 21c (RHEL)
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  vars:
+    script_directory: /tmp/apex_install_scripts/
+  tasks:
+    - name: Copy Utilities to Agent
+      copy:
+        src: ../database/setup/scripts
+        dest: /tmp/apex_install_scripts
+        mode: 0755
+    - name: Create development database user (schema; DEV_WS)
+      ansible.builtin.shell:
+        cmd: |
+          sqlplus -s /nolog << EOF
+          connect / as sysdba
+          @create_dev_workspace_user.sql
+          EOF
+        chdir: {{ script_directory }}
+      become_user: oracle
+      environment: 
+        ORACLE_SID: XE
+        ORACLE_HOME: /opt/oracle/product/21c/dbhomeXE/
+        PATH: "{{ ansible_env.PATH }}:/opt/oracle/product/21c/dbhomeXE/bin"
