@@ -1,0 +1,29 @@
+# Playbook to remove UTPLSQL from a database
+# @date: 3/15/2022
+# @author: Frank Cerny
+- name: Rollback UTPLSQL
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  tasks:
+    - name: Check for existence of the UTPLSQL download directory
+      stat: path=/tmp/utplsql
+      register: service_status
+    - name: Remove UTPLSQL From Database
+      ansible.builtin.shell:
+        cmd: |
+          sqlplus -s /nolog << EOF
+          connect / as sysdba
+          alter session set container=XEPDB1;
+          drop user ut3 cascade;
+          EOF
+      become_user: oracle
+      environment: 
+        ORACLE_SID: XE
+        ORACLE_HOME: /opt/oracle/product/21c/dbhomeXE/
+        PATH: "{{ ansible_env.PATH }}:/opt/oracle/product/21c/dbhomeXE/bin"
+    - name: Remove UTPLSQL Download Directory
+      file:
+        state: absent
+        path: /tmp/utplsql
+      when: service_status.stat.exists

@@ -1,0 +1,38 @@
+# Playbook to install UTPLSQL into a database
+# @date: 3/15/2022
+# @author: Frank Cerny
+- name: Install UTPLSQL
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  tasks:
+    - name: Create the UTPLSQL directory
+      file:
+        path: /tmp/utplsql
+        owner: oracle
+        group: oracle
+        mode: 0755
+        recurse: yes
+    - name: Download & Un-Archive UTPLSQL (3.1.12)
+      unarchive:
+        src: https://github.com/utPLSQL/utPLSQL/releases/download/v3.1.12/utPLSQL.zip
+        dest: /tmp/utplsql
+        remote_src: yes
+      become_user: oracle
+    - name: Install UTPLSQL
+      ansible.builtin.shell:
+        cmd: |
+          sqlplus -s /nolog << EOF
+          connect / as sysdba
+          alter session set container=XEPDB1;
+          @install_headless.sql
+          ut3
+          x123456x890!!**&&!!
+          apextbsp212
+          EOF
+        chdir: /tmp/utplsql/utPLSQL/source
+      become_user: oracle
+      environment: 
+        ORACLE_SID: XE
+        ORACLE_HOME: /opt/oracle/product/21c/dbhomeXE/
+        PATH: "{{ ansible_env.PATH }}:/opt/oracle/product/21c/dbhomeXE/bin"
