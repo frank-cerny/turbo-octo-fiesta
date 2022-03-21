@@ -1,3 +1,7 @@
+# Bike Selling Inventory Application
+
+TBA
+
 ## Tools
 
 - SQLcl with Liquibase
@@ -7,16 +11,7 @@
 
 ## Project Structure
 
-- ansible: contains all ansible related files for setting up infrastructure (for now only development servers)
-- app: contains deploy and src
-    - deploy: contains full exports of the application, used to import into other workspaces (ie. for deployments)
-    - src: contains split exports (with stripped changeset ids) used for source control purposes (easier to see what changed than in a full deployment)
-- database: contains current_schema, logic, and schema_updates
-    - current_schema: contains split exports of the entire schema (with stripped changeset ids) used for source control purposes
-    - logic: contains changelogs/scripts for logical pieces of database functionality (functions, stored procedures, etc.) all changelogs are runOnChange=true
-    - schema_updates: contains changelogs/scripts for non-logical pieces of database functionality (tables, constraints, etc.) 
-- etc: contains various helper scripts 
-- tests: contains changelogs and scripts which are UTPLSQL unit tests
+TBA
 
 ## Development Process
 
@@ -55,3 +50,16 @@ TBA
 [Creating SQL Changesets](https://docs.liquibase.com/concepts/changelogs/sql-format.html)
 [Liquibase Best Practices](https://docs.liquibase.com/concepts/bestpractices.html)
 [Running PLSQL with Liquibase 1](https://stackoverflow.com/questions/47156510/liquibase-migration-with-oracle-pl-sql-function-gets-pls-00103)
+
+## Default Credentials
+
+### Database Credentials
+
+SYS/ADMIN: ?  
+APEX_PUBLIC_USER: ?  
+ut3:x123456x890!!**&&!!  
+
+### APEX Credentials
+
+Instance Admin: INTERNAL:ADMIN:Passw0rd!  
+Workspace User: DEV_WS:DEV:Passw0rd!

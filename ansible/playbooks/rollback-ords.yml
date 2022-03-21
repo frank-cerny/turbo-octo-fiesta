@@ -1,0 +1,53 @@
+# Playbook to rollback ORDS installation into a pre-configured Tomcat instance
+# @date: 3/15/2022
+# @author: Frank Cerny
+- name: Rollback ORDS installation into Tomcat (RHEL)
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  tasks:
+    - name: Check for existence of ords download folder
+      stat: path=/tmp/ords
+      register: ords_download_service_status
+    - name: Check for existence of ords.war in tomcat images directory
+      stat: path=/usr/local/tomcat9/webapps/ords.war
+      register: ords_war_service_status
+    - name: Stop Tomcat Server while removing ORDS
+      systemd:
+        name: tomcat
+        state: stopped
+        daemon_reload: true
+      when: ords_war_service_status.stat.exists
+    - name: Uninstall ORDS
+      ansible.builtin.shell: 
+        cmd: |
+          java -jar ords.war uninstall --parameterFile /tmp/ords/params/ords_params.properties --silent
+        chdir: /usr/local/tomcat9/webapps
+      become_user: oracle
+      when: ords_war_service_status.stat.exists
+    - name: Remove ORDS download directory
+      file:
+        state: absent
+        path: /tmp/ords
+      when: ords_download_service_status.stat.exists
+    - name: Remove ords.war
+      file:
+        state: absent
+        path: /usr/local/tomcat9/webapps/ords.war
+      when: ords_war_service_status.stat.exists
+    - name: Remove ords directory within Tomcat
+      file:
+        state: absent
+        path: /usr/local/tomcat9/webapps/ords
+      when: ords_war_service_status.stat.exists
+    - name: APEX images directory from Tomcat
+      file:
+        state: absent
+        path: /usr/local/tomcat9/webapps/i
+      when: ords_war_service_status.stat.exists
+    - name: Start Tomcat 
+      systemd:
+        name: tomcat
+        state: started
+        daemon_reload: true
+      when: ords_war_service_status.stat.exists
