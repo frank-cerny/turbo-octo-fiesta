@@ -1,0 +1,31 @@
+# Playbook to rollback Oracle Apex 21.2 install into an Oracle XE 21c database
+# @date: 3/15/2022
+# @author: Frank Cerny
+- name: Remove APEX from Oracle 21c XE (RHEL)
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  vars:
+    script_directory: /tmp/apex/apex_install_utilities/bash_scripts
+  # Resource for DNF: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/dnf_module.html
+  tasks:
+    # Reference: https://stackoverflow.com/questions/30328506/check-if-service-exists-with-ansible
+    - name: Check for existence of the Apex download folder
+      stat: path=/tmp/apex
+      register: service_status
+    - name: Remove APEX and APEX tablespace
+      ansible.builtin.shell:
+        cmd: |
+          {{ script_directory }}/rollback_apex.sh
+        chdir: /tmp/apex/apex
+      become_user: oracle
+      when: service_status.stat.exists
+      environment:
+        ORACLE_SID: XE
+        ORACLE_HOME: /opt/oracle/product/21c/dbhomeXE/
+        PATH: "{{ ansible_env.PATH }}:/opt/oracle/product/21c/dbhomeXE/bin"
+    - name: Remove Apex download directory
+      file:
+        state: absent
+        path: /tmp/apex
+      when: service_status.stat.exists

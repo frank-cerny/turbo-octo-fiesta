@@ -1,6 +1,7 @@
 # Playbook to install Oracle Database XE version 21c
 # @date: 2/27/2022
 # @author: Frank Cerny
+
 - name: Install Oracle Database 21c (RHEL)
   hosts: APEX
   remote_user: ansible
@@ -11,6 +12,14 @@
       dnf:
         name: "*"
         state: latest
+      become: true
+    - name: Create the oracle User
+      user:
+        name: oracle
+        create_home: yes
+    - name: Create an oracle group
+      group:
+        name: oracle
     # XE Silent Installation docs: https://docs.oracle.com/en/database/oracle/oracle-database/21/xeinl/installing-oracle-database-xe.html#GUID-A5FCC804-5786-4B4B-B1B4-60E36E80B73F
     - name: Download Pre-Install Script
       get_url:
@@ -25,11 +34,6 @@
         mode: '0644'
         force: no
         checksum: "sha256:f8357b432de33478549a76557e8c5220ec243710ed86115c65b0c2bc00a848db"
-    - name: Check if Oracle User Exists on System
-      shell: |
-        id oracle
-      register: does_oracle_user_exist
-      ignore_errors: yes
     # Only run the pre-install a single time per machine (per the Oracle docs)
     # We can use the registered variable above to get the output of the id command (which tells us if a user exists or not)
     - name: Run the Pre-Install RPM (via Localinstall)
@@ -38,12 +42,13 @@
         state: present
         # Both RPMs fail the GPG check for whatever reason, so we are ignoring the check for now. A checksum on download should be good enough for now
         disable_gpg_check: yes
-      when: does_oracle_user_exist.stderr.find('no such user') != -1
+      become: yes
     - name: Run the Install RPM (via Localinstall)
       dnf:
         name: "/tmp/oracle-21c-xe-install.rpm"
         state: present
         disable_gpg_check: yes
+      become: yes
     - name: Copy Config File before Database Creation
       copy:
         src: ~/.ansible/config/oracle-xe-21c.conf
@@ -54,15 +59,19 @@
     # Passes SYS and Admin password as well (we will make these secure later before moving to OCI, this is all internal to the home network for now)
     - name: Silently Configure Database (CDB=XE, PDB=XEPDB1)
       ansible.builtin.shell: |
-        sudo /etc/init.d/oracle-xe-21c configure <<EOF
-        Passw0rd1!
-        Pass0wrd1!
+        /etc/init.d/oracle-xe-21c configure <<EOF
+        Passw0rd1
+        Passw0rd1
         EOF
+      become: true
+    # We need to configure the variable for the oracle user so all we have to do is switch to that user and we are good
+    # By adding the the oracle users .bashrc, we are guaranteed these will take affect in all future sessions as the oracle user (in theory)
     - name: Configure Oracle Home Enviornment Variables
       ansible.builtin.shell: |
-        export ORACLE_SID=XE
-        export ORAENV_ASK=NO
-        . /opt/oracle/product/21c/dbhomeXE/bin/oraenv
+        printf "\nexport ORACLE_SID=XE\n" >> ~/.bashrc
+        printf "\nexport ORACLE_HOME=/opt/oracle/product/21c/dbhomeXE/\n" >> ~/.bashrc
+        printf "\nexport PATH=\"$PATH:/opt/oracle/product/21c/dbhomeXE/bin\"\n" >> ~/.bashrc
+      become_user: oracle
     # Reference: https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html
     # Reference: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-8
     - name: Copy Oracle DB firewall service to firewalld config directory
@@ -70,9 +79,11 @@
         src: ~/.ansible/firewall_services/oracle_xe_service.xml
         dest: /etc/firewalld/services/
         mode: 0755   
+      become: yes
     - name: Restart firewalld
       ansible.builtin.shell:
-        cmd: sudo firewall-cmd --reload
+        cmd: firewall-cmd --reload
+      become: yes
     - name: Permit Oracle service in the public zone
       ansible.posix.firewalld:
         service: oracle_xe_service
@@ -82,4 +93,5 @@
     # A second restart is required for the service to be fully added to the public zone
     - name: Restart firewalld
       ansible.builtin.shell:
-        cmd: sudo firewall-cmd --reload
+        cmd: firewall-cmd --reload
+      become: yes

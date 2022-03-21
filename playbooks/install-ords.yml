@@ -1,0 +1,52 @@
+# Playbook to install ORDS into a pre-configured Tomcat instance
+# @date: 3/15/2022
+# @author: Frank Cerny
+# References:
+# - https://docs.oracle.com/database/ords-18.1/AELIG/installing-REST-data-services.htm#AELIG7182
+- name: Install ORDS into Tomcat (RHEL)
+  hosts: APEX
+  remote_user: ansible
+  become: true
+  tasks:
+    - name: Create an ORDS directory
+      file:
+        path: /tmp/ords
+        owner: oracle
+        group: oracle
+        mode: 0755
+        recurse: yes
+    - name: Download & Un-Archive ORDS
+      unarchive:
+        src: https://download.oracle.com/otn_software/java/ords/ords-21.4.2.062.1806.zip
+        dest: /tmp/ords
+        remote_src: yes
+    # This will overwrite the current params file on the host
+    - name: Copy ORDS Config to host
+      copy:
+        src: ~/.ansible/config/ords_params.properties
+        dest: /tmp/ords/params
+        mode: 0755
+    - name: Change ownership of ORDS download directory
+      file:
+        path: /tmp/ords
+        owner: oracle
+        group: oracle
+        mode: "u+rwx,g+rx,o=rx"
+        recurse: yes
+        state: directory
+    - name: Configure ORDS
+      ansible.builtin.shell: 
+        cmd: |
+          java -jar ords.war install --silent --parameterFile /tmp/ords/params/ords_params.properties <<EOF
+          /tmp/ords/params
+          EOF
+        chdir: /tmp/ords
+      become_user: oracle
+    - name: Move ORDS to Tomcat Webapp directory
+      ansible.builtin.command: 
+        cmd: mv ords.war /usr/local/tomcat9/webapps/ords.war
+        chdir: /tmp/ords
+    - name: Move APEX images from apex install to Tomcat installation
+      ansible.builtin.command: 
+        cmd: cp -r /tmp/apex/apex/images/ /usr/local/tomcat9/webapps/i
+    # setup security (add as action item)
