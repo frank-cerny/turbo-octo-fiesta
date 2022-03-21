@@ -1,6 +1,8 @@
 #!/bin/bash
 # update-app.sh
 # Based on the directroy structure of the application, deploy all changes by using the liquibase change logs
+# References:
+# 1. How to run SQLcl in non-interactive mode: https://stackoverflow.com/questions/64350609/how-to-make-oracle-sqlplus-command-line-utility-non-interactive
 
 ROOT_DIR="$PWD"
 SECURITY_ID_SCRIPT_DIRECTORY="$ROOT_DIR/etc/"
@@ -21,8 +23,8 @@ printf "App Install Dir: $APP_INSTALL_CHANGELOG_DIRECTORY\n"
 # Run pre-step which sets the security id of the instance based on the workspace id (not sure why this is needed)
 cd $SECURITY_ID_SCRIPT_DIRECTORY
 sql -s /nolog <<EOF
-CONNECT sys@$DB_IP:$DB_PORT/XEPDB1 as sysdba;
-$DB_PASSWORD
+whenever sqlerror exit sql.sqlcode
+CONNECT sys/$DB_PASSWORD@$DB_IP:$DB_PORT/XEPDB1 as sysdba
 @pre-deploy.sql
 EOF
 
