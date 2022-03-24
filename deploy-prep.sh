@@ -24,5 +24,5 @@ echo "Exporting Application (Single File) to f100.xml"
 cd "$APP_EXPORT_DIR"
 sql -s /nolog <<EOF
 CONNECT dev_ws/$USER_DB_PASSWORD@$DB_IP:$DB_PORT/XEPDB1
-lb genobject -type apex -applicationid 100 -skipExportDate -expOriginalIds -expACLAssignments -split -sql -dir .
+lb genobject -type apex -applicationid 100 -skipExportDate -expOriginalIds -expACLAssignments -sql -dir .
 EOF
