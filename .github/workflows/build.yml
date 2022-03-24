@@ -39,7 +39,7 @@ jobs:
   
       # Step: Moves Logic Updates to Staging Directory
       - name: Copy Logic Updates
-        run: cp $GITHUB_WORKSPACE/database/logic /tmp/staging/logic
+        run: cp -r $GITHUB_WORKSPACE/database/logic /tmp/staging/logic
         
       # Zip Artifact
       - name: Zip Artifact
