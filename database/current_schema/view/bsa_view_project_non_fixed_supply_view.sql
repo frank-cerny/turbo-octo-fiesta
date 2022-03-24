@@ -1,4 +1,4 @@
-CREATE OR REPLACE FORCE EDITIONABLE VIEW "FRANKCERNY"."BSA_VIEW_PROJECT_NON_FIXED_SUPPLY" 
+CREATE OR REPLACE FORCE EDITIONABLE VIEW "DEV_WS"."BSA_VIEW_PROJECT_NON_FIXED_SUPPLY" 
  ( "SUPPLY_ID", "NAME", "DESCRIPTION", "DATEPURCHASED", "COST", "QUANTITY", "PROJECT_ID", "UNITCOST", "COSTBASIS"
   )  AS 
   select nfqs.id as supply_id, nfqs.name, nfqs.description, nfqs.datepurchased, nfqs.cost, pt.quantity, pt.project_id, (nfqs.cost / NFSU.bsa_func_get_non_fixed_supply_usages(nfqs.id)) as unitcost, ((nfqs.cost / NFSU.bsa_func_get_non_fixed_supply_usages(nfqs.id)) * quantity) as costbasis
