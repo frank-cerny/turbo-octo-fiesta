@@ -31,7 +31,7 @@ jobs:
 
       # Step: Moves the Application Export to a temporary directory for staging
       - name: Copy Application Export
-        run: cp $GITHUB_WORKSPACE/app/deploy/f100.xml /tmp/stagings/app
+        run: cp $GITHUB_WORKSPACE/app/deploy/f100.xml /tmp/staging/app
   
       # Step: Moves the Schema Updates to the Staging directory
       - name: Copy Schema Updates
@@ -39,7 +39,7 @@ jobs:
   
       # Step: Moves Logic Updates to Staging Directory
       - name: Copy Logic Updates
-        run: cp $GITHUB_WORKSPACE/database/logic /tmp/stagings/logic
+        run: cp $GITHUB_WORKSPACE/database/logic /tmp/staging/logic
         
       # Zip Artifact
       - name: Zip Artifact
