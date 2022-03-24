@@ -1,0 +1,52 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Step: Creates a temporary staging directory for export
+      - name: Create Staging Directory
+        run: mkdir /tmp/staging && mkdir /tmp/staging/app && mkdir /tmp/staging/schema && mkdir /tmp/staging/logic
+
+      # Step: Moves the Application Export to a temporary directory for staging
+      - name: Copy Application Export
+        run: cp $GITHUB_WORKSPACE/app/deploy/f100.xml /tmp/stagings/app
+  
+      # Step: Moves the Schema Updates to the Staging directory
+      - name: Copy Schema Updates
+        run: cp -r $GITHUB_WORKSPACE/database/schema_updates/ /tmp/staging/schema
+  
+      # Step: Moves Logic Updates to Staging Directory
+      - name: Copy Logic Updates
+        run: cp $GITHUB_WORKSPACE/database/logic /tmp/stagings/logic
+        
+      # Zip Artifact
+      - name: Zip Artifact
+        run: tar -cvf /tmp/app.tar /tmp/staging/
+        
+      # Release Artifact (https://github.com/marketplace/actions/gh-release)
+      - name: GitHub Release
+        uses: softprops/action-gh-release@v0.1.14
+        with:
+          files: /tmp/app.tar
