@@ -9,7 +9,7 @@ begin
 	(
 		select object_name, object_type
 		from dba_objects
-		where owner = 'FRANKCERNY'
+		where owner = 'DEV_WS'
 		and object_type in ('PACKAGE', 'PROCEDURE', 'SEQUENCE', 'TABLE', 'VIEW', 'FUNCTION')
 	)
 	loop
@@ -22,7 +22,7 @@ begin
 			else 'SELECT'
 		end;
 		dbms_output.put_line('Granting '||l_priv||' on '||r_object.object_name);
-		execute immediate 'grant '||l_priv||' on frankcerny.'||r_object.object_name||' to ut3';
+		execute immediate 'grant '||l_priv||' on dev_ws.'||r_object.object_name||' to ut3';
 	end loop;
 end;
 /
