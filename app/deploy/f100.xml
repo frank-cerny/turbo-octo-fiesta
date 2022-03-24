@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="ce283e9d9655b9d87dad61b78ccfb1721e2a3200" author="(FCERNY)-Generated" failOnError="false"    >
+	<changeSet id="ce283e9d9655b9d87dad61b78ccfb1721e2a3201" author="(FCERNY)-Generated" failOnError="true"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="FCERNY" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/set_environment
 set define off verify off feedback off

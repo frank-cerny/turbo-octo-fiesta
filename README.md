@@ -62,4 +62,4 @@ ut3:x123456x890!!**&&!!
 ### APEX Credentials
 
 Instance Admin: INTERNAL:ADMIN:Passw0rd!  
-Workspace User: DEV_WS:DEV:Passw0rd!
+Workspace User: DEV_WS:DEV:Passw0rd! (Default Schema is DEV_WS)
