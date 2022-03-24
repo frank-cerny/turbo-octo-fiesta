@@ -31,7 +31,7 @@ jobs:
 
       # Step: Moves the Application Export to a temporary directory for staging
       - name: Copy Application Export
-        run: cp $GITHUB_WORKSPACE/app/deploy/f100.xml /tmp/stagings/app
+        run: cp $GITHUB_WORKSPACE/app/deploy/f100.xml /tmp/staging/app
   
       # Step: Moves the Schema Updates to the Staging directory
       - name: Copy Schema Updates
@@ -39,14 +39,16 @@ jobs:
   
       # Step: Moves Logic Updates to Staging Directory
       - name: Copy Logic Updates
-        run: cp $GITHUB_WORKSPACE/database/logic /tmp/stagings/logic
+        run: cp -r $GITHUB_WORKSPACE/database/logic /tmp/staging/logic
         
       # Zip Artifact
       - name: Zip Artifact
         run: tar -cvf /tmp/app.tar /tmp/staging/
         
       # Release Artifact (https://github.com/marketplace/actions/gh-release)
+      # This step only runs on tagged commits (useful to ensure releases happen as we need them to)
       - name: GitHub Release
         uses: softprops/action-gh-release@v0.1.14
         with:
           files: /tmp/app.tar
+        if: startsWith(github.ref, 'refs/tags/')

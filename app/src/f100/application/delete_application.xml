@@ -5,8 +5,8 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="4f16cdc25dccc7cbf3750ca2925396558c8a64a7" author="(ADMIN)-Generated" failOnError="false"    >
-		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="ADMIN" sourceType="STRING"  >
+	<changeSet id="4f16cdc25dccc7cbf3750ca2925396558c8a64a7" author="(FCERNY)-Generated" failOnError="false"    >
+		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="FCERNY" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/delete_application
 begin
 wwv_flow_api.component_begin (

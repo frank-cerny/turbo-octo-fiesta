@@ -5,8 +5,8 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="2c226d61651fbebadfaacc7edcefc8f31519ed3d" author="(ADMIN)-Generated" failOnError="false"    >
-		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="ADMIN" sourceType="STRING"  >
+	<changeSet id="2c226d61651fbebadfaacc7edcefc8f31519ed3d" author="(FCERNY)-Generated" failOnError="false"    >
+		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="FCERNY" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/globalization/dyntranslations
 begin
 --   Manifest
