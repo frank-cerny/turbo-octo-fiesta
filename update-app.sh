@@ -1,6 +1,8 @@
 #!/bin/bash
 # update-app.sh
 # Based on the directroy structure of the application, deploy all changes by using the liquibase change logs
+# References:
+# 1. How to run SQLcl in non-interactive mode: https://stackoverflow.com/questions/64350609/how-to-make-oracle-sqlplus-command-line-utility-non-interactive
 
 ROOT_DIR="$PWD"
 SECURITY_ID_SCRIPT_DIRECTORY="$ROOT_DIR/etc/"
