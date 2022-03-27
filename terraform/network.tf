@@ -108,6 +108,30 @@ resource "oci_core_network_security_group_security_rule" "private_public_network
     }
 }
 
+# Allow Port 22 from the public NSG only (from the Bastion)
+resource "oci_core_network_security_group_security_rule" "private_public_network_security_group_security_rule_ingress_22" {
+    network_security_group_id = oci_core_network_security_group.private_network_security_group.id
+    direction = "INGRESS"
+    # 6 = TCP
+    protocol = "6"
+
+    description = "Allow HTTP Web Traffic into Private Subnet"
+    destination = oci_core_network_security_group.private_network_security_group.id
+    destination_type = "NETWORK_SECURITY_GROUP"
+
+    source = oci_core_network_security_group.public_network_security_group.id
+    source_type = "NETWORK_SECURITY_GROUP"
+    # Stateless rules are uni-directional (egress rules must also be added then )
+    stateless = true
+    tcp_options {
+        destination_port_range {
+            max = 22
+            min = 22
+        }
+        # As we have left off source port ranges, all ports are valid from a source perspective
+    }
+}
+
 # Allow all ports from private -> public NSG
 resource "oci_core_network_security_group_security_rule" "private_public_network_security_group_security_rule_egress_all" {
     network_security_group_id = oci_core_network_security_group.private_network_security_group.id

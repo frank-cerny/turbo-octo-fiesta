@@ -37,3 +37,7 @@ variable "utility_image_source_id" {
   type = string
   default = "ocid1.image.oc1.iad.aaaaaaaajpsx7e3rlozmcgczok5u2wpgsxsikzpbachb42h26ztp3i3d7o7a"
 }
+
+variable "bastion_public_key" {
+  type = string
+}
