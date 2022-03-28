@@ -108,14 +108,14 @@ resource "oci_core_network_security_group_security_rule" "private_public_network
     }
 }
 
-# Allow Port 22 from the public NSG only (from the Bastion)
+# Allow Port 22 from the public NSG only 
 resource "oci_core_network_security_group_security_rule" "private_public_network_security_group_security_rule_ingress_22" {
     network_security_group_id = oci_core_network_security_group.private_network_security_group.id
     direction = "INGRESS"
     # 6 = TCP
     protocol = "6"
 
-    description = "Allow HTTP Web Traffic into Private Subnet"
+    description = "Allow SSH Traffic into Private Subnet from Public Subnet"
     destination = oci_core_network_security_group.private_network_security_group.id
     destination_type = "NETWORK_SECURITY_GROUP"
 
@@ -148,3 +148,46 @@ resource "oci_core_network_security_group_security_rule" "private_public_network
     # Stateless rules are uni-directional 
     stateless = true
 }
+
+# # Security Lists (for Bastion subnet)
+# # Security list to allow 22 ingress, everything egress (to allow for port forwarding sessions and managed SSH sessions)
+# resource "oci_core_security_list" "bastion_security_list_to_private" {
+#     #Required
+#     compartment_id = var.compartment_id
+#     vcn_id = oci_core_vcn.main_vcn.id
+#     display_name = "Bastion Subnet Security List - 22"
+#     egress_security_rules {
+#         destination = "192.168.2.0/24"
+#         protocol = "TCP"
+#         description = "EGRESS Rules"
+#         destination_type = "CIDR BLOCK"
+#         stateless = false
+#         # As we have left off the egress TCP block, all TCP egress is allowed
+#     }
+#     ingress_security_rules {
+#         protocol = "TCP"
+#         source = var.security_list_ingress_security_rules_source
+#         description = "INGRESS Rules"
+#         source_type = "CIDR BLOCK"
+#         stateless = false
+#         tcp_options {
+#             max = 22
+#             min = 22
+#             source_port_range {
+#                 max = 22
+#                 min = 22
+#             }
+#         }
+# }
+
+# Service Gateway so that private subnet can access Oracle Resources (so that instance plugins work)
+resource "oci_core_service_gateway" "private_service_gateway" {
+    compartment_id = var.root_compartment_id
+    services {
+        service_id = data.oci_core_services.bastion_services.services[1]["id"]
+    }
+    vcn_id = oci_core_vcn.main_vcn.id
+    display_name = "Private Subnet Service Gateway"
+}
+
+# TODO NAT so compute instance can connect to internet to get packages LOL

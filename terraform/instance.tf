@@ -19,6 +19,14 @@ resource "oci_core_instance" "utility_instance" {
         subnet_id = oci_core_subnet.private_bsa_subnet.id
     }
 
+    agent_config {
+      # This allows us to use managed SSH sessions from a bastion host (instead of port forwarding)
+      plugins_config  {
+        desired_state = "ENABLED"
+        name          = "Bastion"
+      }
+  }
+
     # TODO Add a real key! (Via variables, do NOT check in LOL)
     # metadata = {
     #     ssh_authorized_keys = "ssh-rsa == TEMP"
