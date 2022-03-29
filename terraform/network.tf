@@ -139,7 +139,7 @@ resource "oci_core_network_security_group_security_rule" "private_public_network
     # 6 = TCP
     protocol = "6"
 
-    description = "Allow HTTP Web Traffic into Private Subnet"
+    description = "Allow All Egress Traffic to Public Subnet"
     destination = oci_core_network_security_group.public_network_security_group.id
     destination_type = "NETWORK_SECURITY_GROUP"
 
@@ -164,6 +164,13 @@ resource "oci_core_network_security_group_security_rule" "internet_public_networ
     source_type = "CIDR_BLOCK"
     # Stateless rules are uni-directional 
     stateless = true
+    tcp_options {
+        destination_port_range {
+            max = 80
+            min = 80
+        }
+        # As we have left off source port ranges, all ports are valid from a source perspective
+    }
 }
 
 # Allow port 443 from internet to public subnet
@@ -181,6 +188,13 @@ resource "oci_core_network_security_group_security_rule" "internet_public_networ
     source_type = "CIDR_BLOCK"
     # Stateless rules are uni-directional 
     stateless = true
+    tcp_options {
+        destination_port_range {
+            max = 443
+            min = 443
+        }
+        # As we have left off source port ranges, all ports are valid from a source perspective
+    }
 }
 
 # Allow all traffic from Public Subnet to Internet
@@ -190,11 +204,28 @@ resource "oci_core_network_security_group_security_rule" "internet_public_networ
     # 6 = TCP
     protocol = "6"
 
-    description = "Allow HTTPS Web Traffic into Public Subnet from Internet"
+    description = "Allow all egress traffic to Internet"
     destination = "0.0.0.0/0"
     destination_type = "CIDR_BLOCK"
 
     source = oci_core_network_security_group.public_network_security_group.id
+    source_type = "NETWORK_SECURITY_GROUP"
+    # Stateless rules are uni-directional 
+    stateless = true
+}
+
+# Allow all traffic from Private Subnet to NAT
+resource "oci_core_network_security_group_security_rule" "nat_private_network_security_group_security_rule_egress_all" {
+    network_security_group_id = oci_core_network_security_group.private_network_security_group.id
+    direction = "EGRESS"
+    # 6 = TCP
+    protocol = "6"
+
+    description = "Allow all egress traffic to NAT Gateway"
+    destination = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+
+    source = oci_core_network_security_group.private_network_security_group.id
     source_type = "NETWORK_SECURITY_GROUP"
     # Stateless rules are uni-directional 
     stateless = true
@@ -239,7 +270,7 @@ resource "oci_core_nat_gateway" "nat_gateway" {
 }
 
 output "nat_public_ip" {
-    oci_core_nat_gateway.nat_gateway.nat_ip
+    value = oci_core_nat_gateway.nat_gateway.nat_ip
 }
 
 # Routing table and rules for private subnet to use NAT gateway

@@ -2,7 +2,8 @@
 resource "oci_database_autonomous_database" "tf_bsa_adb" {
   compartment_id           = var.root_compartment_id
   cpu_core_count           = 1
-  data_storage_size_in_gbs = 20
+  data_storage_size_in_gb  = 20
+  data_storage_size_in_tbs = 0
   db_name                  = "bsaapex"
   admin_password           = var.adb_admin_password
   db_version               = "21C"
@@ -18,7 +19,7 @@ resource "oci_database_autonomous_database" "tf_bsa_adb" {
 
 # Outputs
 output "db_name" {
-  value = oci_database_autonomous_database.tf_adb.display_name
+  value = oci_database_autonomous_database.tf_bsa_adb.display_name
 }
 
 output "db_state" {
