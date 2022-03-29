@@ -180,14 +180,34 @@ resource "oci_core_network_security_group_security_rule" "private_public_network
 #         }
 # }
 
-# Service Gateway so that private subnet can access Oracle Resources (so that instance plugins work)
-resource "oci_core_service_gateway" "private_service_gateway" {
+# TODO NAT to connect private subnet to internet (mono-directional)
+
+# Internet gateway to connect public subnet to the internet (bi-directional)
+resource "oci_core_internet_gateway" "internet_gateway" {
     compartment_id = var.root_compartment_id
-    services {
-        service_id = data.oci_core_services.bastion_services.services[1]["id"]
-    }
     vcn_id = oci_core_vcn.main_vcn.id
-    display_name = "Private Subnet Service Gateway"
+    enabled = true
+    display_name = "Internet Gateway"
 }
 
-# TODO NAT so compute instance can connect to internet to get packages LOL
+# Routing table and rules for public subnet to access internet gateway
+resource "oci_core_route_table" "internet_route_table" {
+    compartment_id = var.root_compartment_id
+    vcn_id = oci_core_vcn.main_vcn.id
+
+    route_rules {
+        # Routes private subnet traffic to the private subnet
+        network_entity_id = oci_core_internet_gateway.internet_gateway.id
+        description = "Public Internet Traffic"
+        destination = "0.0.0.0/0"
+        destination_type = "CIDR_BLOCK"
+    }
+
+    # Per: https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingroutetables.htm
+    # All inter-VCN traffic is automatically routed for us, so no need to create a rule for that
+}
+
+resource "oci_core_route_table_attachment" "route_table_attachment_public" {   
+  subnet_id = oci_core_subnet.public_bsa_subnet.id
+  route_table_id =oci_core_route_table.internet_route_table.id
+}

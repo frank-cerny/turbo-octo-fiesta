@@ -41,3 +41,7 @@ variable "utility_image_source_id" {
 variable "bastion_public_key" {
   type = string
 }
+
+variable "adb_admin_password" {
+  type = string
+}

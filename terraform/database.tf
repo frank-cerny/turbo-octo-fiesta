@@ -1,9 +1,10 @@
+# Reference: https://oracle-base.com/articles/misc/terraform-oci-autonomous-database
 resource "oci_database_autonomous_database" "tf_bsa_adb" {
   compartment_id           = var.root_compartment_id
   cpu_core_count           = 1
-  data_storage_size_in_tbs = 0.02
-  db_name                  = "bsa-apex"
-  admin_password           = "?"
+  data_storage_size_in_gbs = 20
+  db_name                  = "bsaapex"
+  admin_password           = var.adb_admin_password
   db_version               = "21C"
   db_workload              = "DW"
   display_name             = "BSA_AEPX"

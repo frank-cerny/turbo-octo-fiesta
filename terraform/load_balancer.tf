@@ -1,0 +1,1 @@
+# Reference: https://github.com/terraform-providers/terraform-provider-oci/blob/master/examples/load_balancer/lb_full/lb_full.tf
