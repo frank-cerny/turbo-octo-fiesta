@@ -149,6 +149,57 @@ resource "oci_core_network_security_group_security_rule" "private_public_network
     stateless = true
 }
 
+# Allow port 80 from internet to public subnet
+resource "oci_core_network_security_group_security_rule" "internet_public_network_security_group_security_rule_ingress_80" {
+    network_security_group_id = oci_core_network_security_group.public_network_security_group.id
+    direction = "INGRESS"
+    # 6 = TCP
+    protocol = "6"
+
+    description = "Allow HTTP Web Traffic into Public Subnet from Internet"
+    destination = oci_core_network_security_group.public_network_security_group.id
+    destination_type = "NETWORK_SECURITY_GROUP"
+
+    source = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    # Stateless rules are uni-directional 
+    stateless = true
+}
+
+# Allow port 443 from internet to public subnet
+resource "oci_core_network_security_group_security_rule" "internet_public_network_security_group_security_rule_ingress_443" {
+    network_security_group_id = oci_core_network_security_group.public_network_security_group.id
+    direction = "INGRESS"
+    # 6 = TCP
+    protocol = "6"
+
+    description = "Allow HTTPS Web Traffic into Public Subnet from Internet"
+    destination = oci_core_network_security_group.public_network_security_group.id
+    destination_type = "NETWORK_SECURITY_GROUP"
+
+    source = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    # Stateless rules are uni-directional 
+    stateless = true
+}
+
+# Allow all traffic from Public Subnet to Internet
+resource "oci_core_network_security_group_security_rule" "internet_public_network_security_group_security_rule_egress_all" {
+    network_security_group_id = oci_core_network_security_group.public_network_security_group.id
+    direction = "EGRESS"
+    # 6 = TCP
+    protocol = "6"
+
+    description = "Allow HTTPS Web Traffic into Public Subnet from Internet"
+    destination = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+
+    source = oci_core_network_security_group.public_network_security_group.id
+    source_type = "NETWORK_SECURITY_GROUP"
+    # Stateless rules are uni-directional 
+    stateless = true
+}
+
 # # Security Lists (for Bastion subnet)
 # # Security list to allow 22 ingress, everything egress (to allow for port forwarding sessions and managed SSH sessions)
 # resource "oci_core_security_list" "bastion_security_list_to_private" {
@@ -180,7 +231,39 @@ resource "oci_core_network_security_group_security_rule" "private_public_network
 #         }
 # }
 
-# TODO NAT to connect private subnet to internet (mono-directional)
+# NAT to connect private subnet to internet (mono-directional)
+resource "oci_core_nat_gateway" "nat_gateway" {
+    compartment_id = var.root_compartment_id
+    vcn_id = oci_core_vcn.main_vcn.id
+    display_name = "Private NAT"
+}
+
+output "nat_public_ip" {
+    oci_core_nat_gateway.nat_gateway.nat_ip
+}
+
+# Routing table and rules for private subnet to use NAT gateway
+resource "oci_core_route_table" "nat_route_table" {
+    compartment_id = var.root_compartment_id
+    vcn_id = oci_core_vcn.main_vcn.id
+
+    route_rules {
+        # Routes private subnet traffic to the private subnet
+        network_entity_id = oci_core_nat_gateway.nat_gateway.id
+        description = "Private NAT Traffic"
+        destination = "0.0.0.0/0"
+        destination_type = "CIDR_BLOCK"
+    }
+
+    # Per: https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingroutetables.htm
+    # All inter-VCN traffic is automatically routed for us, so no need to create a rule for that
+}
+
+resource "oci_core_route_table_attachment" "route_table_attachment_private" {   
+  subnet_id = oci_core_subnet.private_bsa_subnet.id
+  route_table_id =oci_core_route_table.nat_route_table.id
+}
+
 
 # Internet gateway to connect public subnet to the internet (bi-directional)
 resource "oci_core_internet_gateway" "internet_gateway" {
@@ -211,3 +294,5 @@ resource "oci_core_route_table_attachment" "route_table_attachment_public" {
   subnet_id = oci_core_subnet.public_bsa_subnet.id
   route_table_id =oci_core_route_table.internet_route_table.id
 }
+
+# TODO Add Security List to public subnet to allow traffic on certain ports (in lieu of using a NSG? Or Both?)
