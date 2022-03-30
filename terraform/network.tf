@@ -132,6 +132,31 @@ resource "oci_core_network_security_group_security_rule" "private_public_network
     }
 }
 
+# Allow everything from the NAT -> Private Subnet
+resource "oci_core_network_security_group_security_rule" "private_nat_network_security_group_security_rule_ingress_all" {
+    network_security_group_id = oci_core_network_security_group.private_network_security_group.id
+    direction = "INGRESS"
+    # 6 = TCP
+    protocol = "6"
+
+    description = "Allow All Traffic into Private Subnet from NAT"
+    destination = oci_core_network_security_group.private_network_security_group.id
+    destination_type = "NETWORK_SECURITY_GROUP"
+
+    # This should allow all traffic from the NAT gateway (and in theory would allow all traffic from everywhere? TODO)
+    source = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    # Stateless rules are uni-directional (egress rules must also be added then )
+    stateless = true
+    tcp_options {
+        destination_port_range {
+            min = 1
+            max = 65535
+        }
+        # As we have left off source port ranges, all ports are valid from a source perspective
+    }
+}
+
 # Allow all ports from private -> public NSG
 resource "oci_core_network_security_group_security_rule" "private_public_network_security_group_security_rule_egress_all" {
     network_security_group_id = oci_core_network_security_group.private_network_security_group.id
