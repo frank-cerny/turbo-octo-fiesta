@@ -37,6 +37,14 @@ resource "oci_load_balancer_backend_set" "lb-bes-http" {
   }
 }
 
+# Add the Apache Server (compute instance) to the backend set
+resource "oci_load_balancer_backend" "web_server" {
+    backendset_name = oci_load_balancer_backend_set.lb-bes-http.name
+    ip_address = oci_core_instance.utility_instance.private_ip
+    load_balancer_id = oci_load_balancer.lb1.id
+    port = 80
+}
+
 # HTTP Listener
 resource "oci_load_balancer_listener" "lb-listener1" {
   load_balancer_id         = oci_load_balancer.lb1.id

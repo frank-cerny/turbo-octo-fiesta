@@ -239,6 +239,24 @@ resource "oci_core_network_security_group_security_rule" "internet_public_networ
     stateless = true
 }
 
+# TODO Lock down to 80/443 only in future
+# Allow all traffic from Public Subnet to Private Subnet
+resource "oci_core_network_security_group_security_rule" "public_private_network_security_group_security_rule_egress_all" {
+    network_security_group_id = oci_core_network_security_group.public_network_security_group.id
+    direction = "EGRESS"
+    # 6 = TCP
+    protocol = "6"
+
+    description = "Allow all egress traffic to Private Subnet"
+    destination = oci_core_network_security_group.private_network_security_group.id
+    destination_type = "NETWORK_SECURITY_GROUP"
+
+    source = oci_core_network_security_group.public_network_security_group.id
+    source_type = "NETWORK_SECURITY_GROUP"
+    # Stateless rules are uni-directional 
+    stateless = true
+}
+
 # Allow all traffic from Private Subnet to NAT
 resource "oci_core_network_security_group_security_rule" "nat_private_network_security_group_security_rule_egress_all" {
     network_security_group_id = oci_core_network_security_group.private_network_security_group.id

@@ -67,3 +67,25 @@ data "oci_identity_availability_domain" "ad" {
   compartment_id = var.tenancy_ocid
   ad_number      = 1
 }
+
+# # Borrowed and modified from: https://github.com/terraform-providers/terraform-provider-oci/blob/master/examples/load_balancer/lb_full/lb_full.tf
+# variable "user-data" {
+#   default = <<EOF
+# #!/bin/bash -x
+# echo '################### webserver userdata begins #####################'
+# touch ~opc/userdata.`date +%s`.start
+# # echo '########## yum update all ###############'
+# sudo yum update -y
+# echo '########## basic webserver ##############'
+# sudo yum install -y httpd
+# sudo systemctl start  httpd.service
+# sudo systemctl enable  httpd.service
+# echo '<html><head></head><body>' > /var/www/html/index.html
+# echo 'Hello World' > /var/www/html/index.html
+# sudo firewall-cmd --add-service=http --zone=public --permanent
+# sudo firewall-cmd --reload
+# touch ~opc/userdata.`date +%s`.finish
+# echo '################### webserver userdata ends #######################'
+# EOF
+
+# }
