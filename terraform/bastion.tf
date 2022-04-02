@@ -22,22 +22,3 @@ data "oci_bastion_bastions" "bastions" {
 # TODO (What the heck does this do?)
 data "oci_core_services" "bastion_services" {
 }
-
-# Example session
-# resource "oci_bastion_session" "test_session" {
-#     #Required
-#     bastion_id = oci_bastion_bastion.main_bastion.id
-#     key_details {
-#         public_key_content = var.bastion_public_key
-#     }
-#     target_resource_details {
-#         session_type = "PORT_FORWARDING"
-#         target_resource_id = oci_core_instance.utility_instance.id
-#         # target_resource_operating_system_user_name = oci_identity_user.test_user.name
-#         target_resource_port = 22
-#         # target_resource_private_ip_address = var.session_target_resource_details_target_resource_private_ip_address
-#     }
-
-#     display_name = "Admin Session"
-#     # session_ttl_in_seconds = var.session_session_ttl_in_seconds
-# }
