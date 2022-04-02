@@ -15,7 +15,7 @@ resource "oci_core_instance" "utility_instance" {
             oci_core_network_security_group.private_network_security_group.id
         ]
         private_ip = "192.168.2.50"
-        # skip_source_dest_check = var.instance_create_vnic_details_skip_source_dest_check
+        skip_source_dest_check = false
         subnet_id = oci_core_subnet.private_bsa_subnet.id
     }
 
@@ -30,6 +30,7 @@ resource "oci_core_instance" "utility_instance" {
     # TODO Add a real key! (Via variables, do NOT check in LOL)
     # metadata = {
     #     ssh_authorized_keys = "ssh-rsa == TEMP"
+    #     user_data = var.user_data
     # }
 
     shape_config {
@@ -69,7 +70,7 @@ data "oci_identity_availability_domain" "ad" {
 }
 
 # # Borrowed and modified from: https://github.com/terraform-providers/terraform-provider-oci/blob/master/examples/load_balancer/lb_full/lb_full.tf
-# variable "user-data" {
+# variable "user_data" {
 #   default = <<EOF
 # #!/bin/bash -x
 # echo '################### webserver userdata begins #####################'
