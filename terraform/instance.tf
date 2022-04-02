@@ -27,25 +27,23 @@ resource "oci_core_instance" "utility_instance" {
       }
   }
 
-    # TODO Add a real key! (Via variables, do NOT check in LOL)
-    # metadata = {
-    #     ssh_authorized_keys = "ssh-rsa == TEMP"
-    #     user_data = var.user_data
-    # }
+  # metadata = {
+  #     user_data = var.user_data
+  # }
 
-    shape_config {
-        # BASELINE_1_1 = non-burstable
-        baseline_ocpu_utilization = "BASELINE_1_1"
-        memory_in_gbs = 24
-        ocpus = 4
-    }
+  shape_config {
+      # BASELINE_1_1 = non-burstable
+      baseline_ocpu_utilization = "BASELINE_1_1"
+      memory_in_gbs = 12
+      ocpus = 2
+  }
 
-    source_details {
-        # Get the first supported image from the list
-        source_id = var.utility_image_source_id
-        source_type = "image"
-        # Use the default boot volume size (we will add block storage below to extend the storage capacity)
-    }
+  source_details {
+      # Get the first supported image from the list
+      source_id = var.utility_image_source_id
+      source_type = "image"
+      # Use the default boot volume size (we will add block storage below to extend the storage capacity)
+  }
 }
 
 # Create Boot Volumes and Storage Volumes for the Instance
@@ -69,24 +67,19 @@ data "oci_identity_availability_domain" "ad" {
   ad_number      = 1
 }
 
-# # Borrowed and modified from: https://github.com/terraform-providers/terraform-provider-oci/blob/master/examples/load_balancer/lb_full/lb_full.tf
-# variable "user_data" {
-#   default = <<EOF
-# #!/bin/bash -x
-# echo '################### webserver userdata begins #####################'
-# touch ~opc/userdata.`date +%s`.start
-# # echo '########## yum update all ###############'
-# sudo yum update -y
-# echo '########## basic webserver ##############'
-# sudo yum install -y httpd
-# sudo systemctl start  httpd.service
-# sudo systemctl enable  httpd.service
-# echo '<html><head></head><body>' > /var/www/html/index.html
-# echo 'Hello World' > /var/www/html/index.html
-# sudo firewall-cmd --add-service=http --zone=public --permanent
-# sudo firewall-cmd --reload
-# touch ~opc/userdata.`date +%s`.finish
-# echo '################### webserver userdata ends #######################'
-# EOF
-
-# }
+# Borrowed and modified from: https://github.com/terraform-providers/terraform-provider-oci/blob/master/examples/load_balancer/lb_full/lb_full.tf
+# Install instructions from: https://oracle-base.com/articles/linux/letsencrypt-free-certificates-on-oracle-linux
+variable "user_data" {
+  default = <<EOF
+#!/bin/bash -x
+echo '################### webserver userdata begins #####################'
+touch ~opc/userdata.`date +%s`.start
+# echo '########## yum update all ###############'
+sudo yum update -y
+sudo yum install -y certbot
+sudo firewall-cmd --add-port=80/tcp --zone=public --permanent
+sudo firewall-cmd --reload
+touch ~opc/userdata.`date +%s`.finish
+echo '################### webserver userdata ends #######################'
+EOF
+}
