@@ -257,6 +257,23 @@ resource "oci_core_network_security_group_security_rule" "public_private_network
     stateless = true
 }
 
+# Allow all ingress traffic from private NSG to public NSG
+resource "oci_core_network_security_group_security_rule" "public_private_network_security_group_security_rule_ingress_all" {
+    network_security_group_id = oci_core_network_security_group.public_network_security_group.id
+    direction = "INGRESS"
+    # 6 = TCP
+    protocol = "6"
+
+    description = "Allow all ingress traffic from Private Subnet"
+    destination = oci_core_network_security_group.public_network_security_group.id
+    destination_type = "NETWORK_SECURITY_GROUP"
+
+    source = oci_core_network_security_group.private_network_security_group.id
+    source_type = "NETWORK_SECURITY_GROUP"
+    # Stateless rules are uni-directional 
+    stateless = true
+}
+
 # Allow all traffic from Private Subnet to NAT
 resource "oci_core_network_security_group_security_rule" "nat_private_network_security_group_security_rule_egress_all" {
     network_security_group_id = oci_core_network_security_group.private_network_security_group.id
