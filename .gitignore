@@ -1,1 +1,7 @@
 *_key*
+
+# Terraform Code
+*.auto.tfvars
+.terraform
+terraform.*
+.terraform.*

@@ -36,6 +36,10 @@ This means that Developers can still do "everything" within an APEX instance, bu
 
 ## Deployment Process (to "Production")
 
+Production is a public Oracle Cloud (OCI) hosted Autonomous Database instance running version 21c
+
+Created inside that database are a workspace and schema called PROD_WS
+
 TBA
 
 ## Useful Commands
