@@ -15,10 +15,10 @@ pipeline {
             steps {
                 script {
                     sh '''#!/bin/bash 
-                            sql -s /nolog <<EOF
+                            /opt/sqlcl/sql -s /nolog <<EOF
                             CONNECT ${PROD_ADB_CREDS_USR}/${PROD_ADB_CREDS_PSW}@bsaapex_high
                             show con_name;
-                        EOF
+                            EOF
                     '''
                 }
             }
