@@ -7,7 +7,7 @@ resource "oci_database_autonomous_database" "tf_bsa_adb" {
   db_name                  = "bsaapex"
   admin_password           = var.adb_admin_password
   db_version               = "21c"
-  db_workload              = "DW"
+  db_workload              = "OLTP"
   display_name             = "BSA_AEPX"
   is_free_tier             = true
   license_model            = "LICENSE_INCLUDED"
