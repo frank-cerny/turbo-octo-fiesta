@@ -16,7 +16,7 @@ pipeline {
                 script {
                     sh ''' 
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect $PROD_ADB_CREDS_USR/$PROD_ADB_CREDS_PSW@bsaapex_high
+                    connect user/password@bsaapex_high
                     '''
                 }
             }
