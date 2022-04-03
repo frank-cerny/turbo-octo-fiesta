@@ -13,7 +13,9 @@ pipeline {
 
     stages {
         stage ('Test') {
-            sh "sqlplus --version"
+            steps {
+                sh "sqlplus --version"
+            }
         }
         // TODO - Add PR testing stage locally (for PRs) have to be manually triggered sadly
         stage('Deploy') {
