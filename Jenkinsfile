@@ -14,7 +14,7 @@ pipeline {
         stage ('Test') {
             steps {
                 script {
-                    sh '/opt/sqlcl/bin/sql -L $PROD_ADB_CREDS_USR/$PROD_ADB_CREDS_PSW@bsaapex_high show con_name;'
+                    sh '/opt/sqlcl/bin/sql $PROD_ADB_CREDS_USR/$PROD_ADB_CREDS_PSW@bsaapex_high'
                 }
             }
         }
