@@ -13,13 +13,9 @@ pipeline {
     stages {
         stage ('Test') {
             steps {
-                // sh "sql -s /nolog <<EOF
-                //     CONNECT ${PROD_ADB_CREDS_USR}/${PROD_ADB_CREDS_PSW}@bsaapex_high
-                //     show con_name;
-                //     EOF"
                 script {
-                    bash'''#!/bin/bash 
-                        sql -s /nolog <<EOF
+                    sh '''#!/bin/bash 
+                            sql -s /nolog <<EOF
                             CONNECT ${PROD_ADB_CREDS_USR}/${PROD_ADB_CREDS_PSW}@bsaapex_high
                             show con_name;
                         EOF
