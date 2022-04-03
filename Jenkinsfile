@@ -15,8 +15,7 @@ pipeline {
             steps {
                 script {
                     sh '''#!/bin/bash 
-                            /opt/sqlcl/bin/sql -s /nolog
-                            CONNECT ${PROD_ADB_CREDS_USR}/${PROD_ADB_CREDS_PSW}@bsaapex_high
+                            /opt/sqlcl/bin/sql ${PROD_ADB_CREDS_USR}/${PROD_ADB_CREDS_PSW}@bsaapex_high
                             show con_name;
                     '''
                 }
