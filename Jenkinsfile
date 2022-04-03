@@ -14,6 +14,9 @@ pipeline {
         stage ('Test') {
             steps {
                 script {
+                    sh "ls ${WORKSPACE}"
+                    sh "curl -L -o app.tar https://github.com/frank-cerny/turbo-octo-fiesta/releases/download/0.1.1/app.tar"
+                    sh "ls ${WORKSPACE}"
                     sh ''' 
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect "$PROD_ADB_CREDS_USR"/"$PROD_ADB_CREDS_PSW"@bsaapex_high
