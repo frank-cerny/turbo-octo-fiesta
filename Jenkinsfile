@@ -8,16 +8,15 @@ pipeline {
         TNS_ADMIN = "/opt/wallet/"
         // Reference on how to use creds: https://mtijhof.wordpress.com/2019/06/03/jenkins-working-with-credentials-in-your-pipeline/
         PROD_ADB_CREDS = credentials('bsa-prod-creds')
-        ORACLE_HOME = "/usr/lib/oracle/21/client64"
     }
 
     stages {
         stage ('Test') {
             steps {
-                // Reference: https://plugins.jenkins.io/sqlplus-script-runner/
-                step([$class: 'SQLPlusRunnerBuilder',credentialsId:'bsa-prod-creds', 
-                    instance:'bsaapex_high',scriptType:'userDefined', script: '', scriptContent: 
-                    'show con_name;'])
+                sh "sql -s /nolog <<EOF
+                    CONNECT ${PROD_ADB_CREDS_USR}/${PROD_ADB_CREDS_PSW}@bsaapex_high
+                    show con_name;
+                    EOF"
             }
         }
         // TODO - Add PR testing stage locally (for PRs) have to be manually triggered sadly
