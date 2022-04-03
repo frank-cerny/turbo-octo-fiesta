@@ -14,7 +14,10 @@ pipeline {
         stage ('Test') {
             steps {
                 script {
-                    sh '/opt/sqlcl/bin/sql $PROD_ADB_CREDS_USR//$PROD_ADB_CREDS_PSW@bsaapex_high'
+                    sh ''' 
+                        /opt/sqlcl/bin/sql /nolog' 
+                        connect hey@bsaapex 
+                    '''
                 }
             }
         }
