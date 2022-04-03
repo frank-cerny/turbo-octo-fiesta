@@ -15,8 +15,9 @@ pipeline {
             steps {
                 script {
                     sh ''' 
-                    /opt/sqlcl/bin/sql /nolog
+                    /opt/sqlcl/bin/sql /nolog <<EOF
                     connect hey@bsaapex 
+                    EOF
                     '''
                 }
             }
