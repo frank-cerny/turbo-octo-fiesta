@@ -5,8 +5,8 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="42e26f14f036af26522652a0032a9c6e554be500" author="(FCERNY)-Generated" failOnError="false"    >
-		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="FCERNY" sourceType="STRING"  >
+	<changeSet id="00e4d55434dc0da7c8e317502417c66cbc7201c0" author="(DEV_WS)-Generated" failOnError="false"    >
+		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --install
 @@application/set_environment.sql
 @@application/delete_application.sql
@@ -19,8 +19,8 @@
 @@application/shared_components/files/app_icon_css.sql
 @@application/plugin_settings.sql
 @@application/shared_components/security/authorizations/administration_rights.sql
-@@application/shared_components/security/authorizations/admin_rights.sql
 @@application/shared_components/security/authorizations/user.sql
+@@application/shared_components/security/app_access_control/user.sql
 @@application/shared_components/security/app_access_control/admin.sql
 @@application/shared_components/navigation/navigation_bar.sql
 @@application/shared_components/logic/application_settings.sql
@@ -97,7 +97,6 @@
 @@application/shared_components/user_interface/themes.sql
 @@application/shared_components/user_interface/theme_style.sql
 @@application/shared_components/user_interface/theme_files.sql
-@@application/shared_components/user_interface/theme_display_points.sql
 @@application/shared_components/user_interface/template_opt_groups.sql
 @@application/shared_components/user_interface/template_options.sql
 @@application/shared_components/globalization/language.sql

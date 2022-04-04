@@ -5,16 +5,16 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="49aef09a722432694e284b9f4329201637ca0f28" author="(FCERNY)-Generated" failOnError="false"    >
-		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="FCERNY" sourceType="STRING"  >
+	<changeSet id="c0bd5f42014e2535ca2dc0cebb1fd893e775e9b0" author="(DEV_WS)-Generated" failOnError="false"    >
+		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/security/app_access_control/admin
 begin
 --   Manifest
 --     ACL ROLE: Admin
 --   Manifest End
 wwv_flow_api.component_begin (
- p_version_yyyy_mm_dd=>'2021.04.15'
-,p_release=>'21.1.7'
+ p_version_yyyy_mm_dd=>'2021.10.15'
+,p_release=>'21.2.0'
 ,p_default_workspace_id=>9006773697014439
 ,p_default_application_id=>100
 ,p_default_id_offset=>0
@@ -25,7 +25,7 @@ wwv_flow_api.create_acl_role(
 ,p_static_id=>'ADMIN'
 ,p_name=>'Admin'
 ,p_description=>'Admin privileges. Can perform any action within the application.'
-,p_users=>wwv_flow_t_varchar2()
+,p_users=>wwv_flow_t_varchar2('DEV')
 );
 wwv_flow_api.component_end;
 end;

@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="b80fb4acd21ac504d1d97ce556df334e4fef3620" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="3488a99b9a7672cbf27e9c4e39abf71eac051a76" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/set_environment
 set define off verify off feedback off
@@ -43,7 +43,7 @@ prompt APPLICATION 100 - Bike Selling Application
 --     Pages:                     23
 --       Items:                   66
 --       Processes:               32
---       Regions:                 78
+--       Regions:                 76
 --       Buttons:                 46
 --       Dynamic Actions:         25
 --     Shared Components:
@@ -54,8 +54,8 @@ prompt APPLICATION 100 - Bike Selling Application
 --           Entries:             21
 --       Security:
 --         Authentication:         2
---         Authorization:          3
---         ACL Roles:              1
+--         Authorization:          2
+--         ACL Roles:              2
 --       User Interface:
 --         Themes:                 1
 --         Templates:
@@ -115,16 +115,19 @@ wwv_flow_api.create_flow(
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
 ,p_flow_version=>'Release 1.0'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
+,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
+,p_security_scheme=>wwv_flow_api.id(22430574793507174)
+,p_authorize_public_pages_yn=>'Y'
 ,p_rejoin_existing_sessions=>'N'
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Bike Selling Application'
-,p_last_updated_by=>'FCERNY'
-,p_last_upd_yyyymmddhh24miss=>'20220304222400'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404071053'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -139,7 +142,7 @@ wwv_flow_api.create_credential(
  p_id=>wwv_flow_api.id(22425201463512403)
 ,p_name=>'Okta'
 ,p_static_id=>'Okta'
-,p_authentication_type=>'BASIC'
+,p_authentication_type=>'OAUTH2_CLIENT_CREDENTIALS'
 ,p_prompt_on_install=>true
 );
 end;
@@ -425,23 +428,12 @@ begin
 wwv_flow_api.create_security_scheme(
  p_id=>wwv_flow_api.id(10328323081271560)
 ,p_name=>'Administration Rights'
-,p_scheme_type=>'NATIVE_FUNCTION_BODY'
-,p_attribute_01=>'return true;'
-,p_error_message=>'Insufficient privileges, user is not an Administrator'
-,p_caching=>'BY_USER_BY_PAGE_VIEW'
-);
-end;
-/
-prompt --application/shared_components/security/authorizations/admin_rights
-begin
-wwv_flow_api.create_security_scheme(
- p_id=>wwv_flow_api.id(22430337059485266)
-,p_name=>'Admin Rights'
 ,p_scheme_type=>'NATIVE_IS_IN_GROUP'
 ,p_attribute_01=>'Admin'
 ,p_attribute_02=>'A'
-,p_error_message=>'Error. You do not possess the admin role.'
-,p_caching=>'BY_USER_BY_SESSION'
+,p_error_message=>'Insufficient privileges, user is not an Administrator'
+,p_caching=>'BY_USER_BY_PAGE_VIEW'
+,p_comments=>'Updated on 4/4/2022 to point towards new Admin role.'
 );
 end;
 /
@@ -450,11 +442,22 @@ begin
 wwv_flow_api.create_security_scheme(
  p_id=>wwv_flow_api.id(22430574793507174)
 ,p_name=>'User'
-,p_scheme_type=>'NATIVE_IS_NOT_IN_GROUP'
-,p_attribute_01=>'Admin'
+,p_scheme_type=>'NATIVE_IS_IN_GROUP'
+,p_attribute_01=>'Admin,User'
 ,p_attribute_02=>'A'
 ,p_error_message=>'Error. You are not a user. This is for testing purposes only.'
 ,p_caching=>'BY_USER_BY_SESSION'
+);
+end;
+/
+prompt --application/shared_components/security/app_access_control/user
+begin
+wwv_flow_api.create_acl_role(
+ p_id=>wwv_flow_api.id(3203352261377276)
+,p_static_id=>'USER'
+,p_name=>'User'
+,p_description=>'General application user. Does not possess any administrative capabilities.'
+,p_users=>wwv_flow_t_varchar2()
 );
 end;
 /
@@ -465,7 +468,7 @@ wwv_flow_api.create_acl_role(
 ,p_static_id=>'ADMIN'
 ,p_name=>'Admin'
 ,p_description=>'Admin privileges. Can perform any action within the application.'
-,p_users=>wwv_flow_t_varchar2()
+,p_users=>wwv_flow_t_varchar2('DEV')
 );
 end;
 /
@@ -12831,8 +12834,9 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Bike Selling Application'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220203203120'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070618'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10336693829271601)
@@ -12848,34 +12852,6 @@ wwv_flow_api.create_page_plug(
 ,p_attribute_02=>'HTML'
 ,p_attribute_03=>'Y'
 );
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(21842178196927413)
-,p_plug_name=>'Test Content 1'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>wwv_flow_api.id(10236192890271473)
-,p_plug_display_sequence=>20
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_source=>'Hey there! You''re an admin!'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_plug_required_role=>wwv_flow_api.id(22430337059485266)
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(21842232419927414)
-,p_plug_name=>'Test Content 2'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>wwv_flow_api.id(10236192890271473)
-,p_plug_display_sequence=>30
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_source=>'Hey there! You''re a user!'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_plug_required_role=>wwv_flow_api.id(22430574793507174)
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
 end;
 /
 prompt --application/pages/page_00002
@@ -12888,9 +12864,10 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Projects'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'FCERNY'
-,p_last_upd_yyyymmddhh24miss=>'20220304222400'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070701'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10339568574286207)
@@ -12961,8 +12938,9 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>wwv_flow_api.id(10187784925271444)
 ,p_page_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117183623'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070713'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10341932860296624)
@@ -13990,9 +13968,10 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Update Bike'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117182509'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070723'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10953429684436348)
@@ -14225,9 +14204,10 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117182639'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070737'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10942261438436333)
@@ -14594,9 +14574,10 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Fixed Use Supplies'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117182715'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070747'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12381699667230872)
@@ -14809,9 +14790,10 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Tools'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117183143'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070757'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(11357589178948037)
@@ -15015,9 +14997,10 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117182942'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070805'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(11347756890948029)
@@ -15293,8 +15276,9 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Modify Fixed Use Supplies'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117184240'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070814'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(26104277233596281)
@@ -15885,8 +15869,9 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Modify Tools'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117184217'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070824'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(11366338251988909)
@@ -16435,9 +16420,10 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117182804'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070833'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12371149045230853)
@@ -16727,9 +16713,10 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Project Single Use Supplies'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117184705'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070842'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12808383565974029)
@@ -16951,9 +16938,10 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117184520'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070851'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12799238478974018)
@@ -17289,9 +17277,10 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Project Revenue Items'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117184742'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070859'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12830357885090356)
@@ -17506,9 +17495,10 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117184821'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070909'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12819805017090348)
@@ -17835,8 +17825,9 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Add Non-Fixed Supply Mapping'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117184857'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070920'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(41069894378275582)
@@ -18427,9 +18418,10 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117182402'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070930'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(15286579441476402)
@@ -18711,9 +18703,10 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Locations'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20211230003008'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404071053'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16783055307917335)
@@ -18831,9 +18824,10 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117184834'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070948'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16776764538917313)
@@ -19037,9 +19031,10 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Non-Fixed Use Supplies'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117185014'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404070957'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16851652096019574)
@@ -19239,9 +19234,10 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
-,p_last_updated_by=>'WKSADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20220117181655'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220404071006'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16841776842019565)
