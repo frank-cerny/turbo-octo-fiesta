@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="20bbed1eae61ea3811cf5fcc144239c47b8904c6" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="3885e26f253de496c1892390d98f14c8236835a3" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00005
 begin
@@ -33,7 +33,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220404070737'
+,p_last_upd_yyyymmddhh24miss=>'20220406070635'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10942261438436333)
@@ -131,6 +131,19 @@ wwv_flow_api.create_page_button(
 ,p_database_action=>'INSERT'
 );
 wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(3414724802720601)
+,p_name=>'P5_PROJECT_ID'
+,p_source_data_type=>'NUMBER'
+,p_item_sequence=>100
+,p_item_plug_id=>wwv_flow_api.id(10942261438436333)
+,p_item_source_plug_id=>wwv_flow_api.id(10942261438436333)
+,p_source=>'PROJECT_ID'
+,p_source_type=>'REGION_SOURCE_COLUMN'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_is_persistent=>'N'
+,p_attribute_01=>'Y'
+);
+wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(10942598154436334)
 ,p_name=>'P5_ID'
 ,p_source_data_type=>'NUMBER'
@@ -183,7 +196,7 @@ wwv_flow_api.create_page_item(
 ,p_source_type=>'REGION_SOURCE_COLUMN'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>32
-,p_cMaxlength=>4000
+,p_cMaxlength=>200
 ,p_field_template=>wwv_flow_api.id(10298784641271512)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -205,7 +218,7 @@ wwv_flow_api.create_page_item(
 ,p_source_type=>'REGION_SOURCE_COLUMN'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>32
-,p_cMaxlength=>4000
+,p_cMaxlength=>200
 ,p_field_template=>wwv_flow_api.id(10298784641271512)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -324,20 +337,6 @@ wwv_flow_api.create_page_item(
 ,p_attribute_03=>'N'
 ,p_attribute_04=>'TEXT'
 ,p_attribute_05=>'NONE'
-);
-wwv_flow_api.create_page_item(
- p_id=>wwv_flow_api.id(12120708445954431)
-,p_name=>'P5_PROJECT'
-,p_source_data_type=>'NUMBER'
-,p_item_sequence=>100
-,p_item_plug_id=>wwv_flow_api.id(10942261438436333)
-,p_item_source_plug_id=>wwv_flow_api.id(10942261438436333)
-,p_source=>'PROJECT'
-,p_source_type=>'REGION_SOURCE_COLUMN'
-,p_display_as=>'NATIVE_HIDDEN'
-,p_is_persistent=>'N'
-,p_encrypt_session_state_yn=>'N'
-,p_attribute_01=>'Y'
 );
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(10949326210436340)

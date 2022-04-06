@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="b1dacc94281f38ed79affeda1e58f037d1171550" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="ac006d960686bfa8f04311d3cc0a52119626efc6" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00020
 begin
@@ -31,7 +31,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220404070957'
+,p_last_upd_yyyymmddhh24miss=>'20220406071930'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16851652096019574)
@@ -41,7 +41,7 @@ wwv_flow_api.create_page_plug(
 ,p_plug_display_sequence=>10
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT ID, NAME, DATEPURCHASED, DESCRIPTION, COST,  bsa_func_get_non_fixed_supply_usages(ID) as Usages, COST/bsa_func_get_non_fixed_supply_usages(ID) as UnitCost',
+'SELECT ID, NAME, DATEPURCHASED, DESCRIPTION, COST,  NFSU.bsa_func_get_non_fixed_supply_usages(ID) as Usages, COST/NFSU.bsa_func_get_non_fixed_supply_usages(ID) as UnitCost',
 'FROM bsa_non_fixed_quantity_supply'))
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'

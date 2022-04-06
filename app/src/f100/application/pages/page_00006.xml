@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="0c0bfa9d2f05309ba2c1a61ce7c33c9b03ccf39d" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="38c7c2f2fc4d0bd79a22013e172a1e8c1e7dd676" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00006
 begin
@@ -31,7 +31,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220404070747'
+,p_last_upd_yyyymmddhh24miss=>'20220406071716'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12381699667230872)
@@ -46,7 +46,7 @@ wwv_flow_api.create_page_plug(
 '       DESCRIPTION,',
 '       DATEPURCHASED,',
 '       UNITSPURCHASED,',
-'       bsa_func_get_fixed_supply_units_remaining(ID) as UnitsRemaining,',
+'       FSU.bsa_func_get_fixed_supply_units_remaining(ID) as UnitsRemaining,',
 '       TOTALCOST,',
 '       (TOTALCOST/UNITSPURCHASED) as UNITCOST',
 '  from BSA_FIXED_QUANTITY_SUPPLY'))

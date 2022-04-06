@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="0fd58c39941977bc4a9cebd671cef04dd28f9f14" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="410e47c6324ebf399ae0ec6ab9171d196284eb84" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00004
 begin
@@ -32,7 +32,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220404070723'
+,p_last_upd_yyyymmddhh24miss=>'20220406070426'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10953429684436348)
@@ -221,7 +221,7 @@ wwv_flow_api.create_page_button(
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Create'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
-,p_button_redirect_url=>'f?p=&APP_ID.:5:&SESSION.::&DEBUG.:5:P5_PROJECT:&P4_PROJECT_ID.'
+,p_button_redirect_url=>'f?p=&APP_ID.:5:&SESSION.::&DEBUG.:5:P5_PROJECT_ID:&P4_PROJECT_ID.'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(10589208567056346)
