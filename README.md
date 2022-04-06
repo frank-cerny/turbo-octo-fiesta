@@ -62,6 +62,7 @@ TBA
 SYS/ADMIN: ?  
 APEX_PUBLIC_USER: ?  
 ut3:x123456x890!!**&&!!  
+dev_ws:dev_ws
 
 ### APEX Credentials
 

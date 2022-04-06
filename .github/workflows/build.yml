@@ -44,6 +44,10 @@ jobs:
       # Step: Move tests to Staging Directory (not to be run in production of course)
       - name: Copy Tests
         run: cp -r $GITHUB_WORKSPACE/tests /tmp/staging/tests
+
+      # Step: Move deployment utilities to the staging directory
+      - name: Copy Deployment Utilities
+        run: cp -r $GITHUB_WORKSPACE/deploy_utilities /tmp/staging/deploy_utilities
         
       # Zip Artifact
       - name: Zip Artifact
