@@ -61,14 +61,6 @@ CONNECT dev_ws/$USER_DB_PASSWORD@$DB_IP:$DB_PORT/XEPDB1
 @sample_data.sql
 EOF
 
-# # Run pre-step which sets the security id of the instance based on the workspace id (not sure why this is needed)
-# echo "Updating Security Flow ID (Pre-Req)"
-# cd $SECURITY_ID_SCRIPT_DIRECTORY
-# sql -s /nolog <<EOF
-# CONNECT sys/$SYS_DB_PASSWORD@$DB_IP:$DB_PORT/XEPDB1 as sysdba
-# @pre-deploy.sql
-# EOF
-
 # Run the application install
 echo "Installing Application"
 cd $APP_INSTALL_CHANGELOG_DIRECTORY

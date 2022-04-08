@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="663b16ee4da2357d5f90667bd2c64242b515dbec" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="de09ad81e48bf8003b76002b8ad970568a1fe814" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00010
 begin
@@ -31,7 +31,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220406071622'
+,p_last_upd_yyyymmddhh24miss=>'20220408071801'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(11366338251988909)
@@ -126,7 +126,7 @@ wwv_flow_api.create_region_column(
 ,p_display_sequence=>30
 ,p_value_alignment=>'LEFT'
 ,p_attribute_05=>'BOTH'
-,p_is_required=>true
+,p_is_required=>false
 ,p_max_length=>255
 ,p_enable_filter=>true
 ,p_filter_operators=>'C:S:CASE_INSENSITIVE:REGEXP'

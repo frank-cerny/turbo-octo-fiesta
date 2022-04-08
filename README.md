@@ -34,6 +34,14 @@ TBA
 
 This means that Developers can still do "everything" within an APEX instance, but they **must** ensure all changes are added to changesets, otherwise their changes will not be carried over to other environments.
 
+## Testing
+
+1. Write updated tests within tests/changelogs
+2. Run update-tests.sh (handles updating tests and permissions as neccessary)
+3. Login to the DB as ut3
+4. Run `set serveroutput on;`
+5. Run neccessary tests with `exec ut.run('<ID>')`
+
 ## Deployment Process (to "Production")
 
 Production is a public Oracle Cloud (OCI) hosted Autonomous Database instance running version 21c

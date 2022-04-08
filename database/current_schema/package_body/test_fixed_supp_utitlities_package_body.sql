@@ -7,12 +7,12 @@ as
     begin
         
         
-        INSERT INTO frankcerny.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
         VALUES ('Bubble Wrap 112233', '', CURRENT_DATE, 165, 23.45);
-        SELECT fqs.id INTO fixedSupplyId FROM frankcerny.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
+        SELECT fqs.id INTO fixedSupplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
         
         
-        unitsRemaining := frankcerny.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
+        unitsRemaining := dev_ws.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
         
         
         ut.expect(unitsRemaining).to_( equal(165) );
@@ -25,19 +25,19 @@ as
     begin
         
         
-        INSERT INTO frankcerny.bsa_project (description, title, datestarted, dateended)
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
         VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
-        SELECT p.id INTO projectId FROM frankcerny.bsa_project p where p.title = 'Test Project 112233';
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
         
-        INSERT INTO frankcerny.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
         VALUES ('Bubble Wrap 112233', '', CURRENT_DATE, 165, 23.45);
-        SELECT fqs.id INTO fixedSupplyId FROM frankcerny.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
+        SELECT fqs.id INTO fixedSupplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
         
-        INSERT INTO frankcerny.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
+        INSERT INTO dev_ws.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
         VALUES (projectId, fixedSupplyId, 65);
         
         
-        unitsRemaining := frankcerny.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
+        unitsRemaining := dev_ws.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
         
         ut.expect(unitsRemaining).to_( equal(100) );
     end;
@@ -50,24 +50,24 @@ as
     begin
         
         
-        INSERT INTO frankcerny.bsa_project (description, title, datestarted, dateended)
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
         VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
-        SELECT p.id INTO projectId1 FROM frankcerny.bsa_project p where p.title = 'Test Project 112233';
-        INSERT INTO frankcerny.bsa_project (description, title, datestarted, dateended)
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
         VALUES ('A very simple testing project!', 'Test Project 332211', CURRENT_DATE, NULL);
-        SELECT p.id INTO projectId2 FROM frankcerny.bsa_project p where p.title = 'Test Project 332211';
+        SELECT p.id INTO projectId2 FROM dev_ws.bsa_project p where p.title = 'Test Project 332211';
         
-        INSERT INTO frankcerny.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
         VALUES ('Bubble Wrap 112233', '', CURRENT_DATE, 165, 23.45);
-        SELECT fqs.id INTO fixedSupplyId FROM frankcerny.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
+        SELECT fqs.id INTO fixedSupplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
         
-        INSERT INTO frankcerny.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
+        INSERT INTO dev_ws.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
         VALUES (projectId1, fixedSupplyId, 65);
-        INSERT INTO frankcerny.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
+        INSERT INTO dev_ws.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
         VALUES (projectId2, fixedSupplyId, 50);
         
         
-        unitsRemaining := frankcerny.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
+        unitsRemaining := dev_ws.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
         
         ut.expect(unitsRemaining).to_( equal(50) );
     end;
@@ -80,20 +80,20 @@ as
     begin
         
         
-        INSERT INTO frankcerny.bsa_project (description, title, datestarted, dateended)
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
         VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
-        SELECT p.id INTO projectId FROM frankcerny.bsa_project p where p.title = 'Test Project 112233';
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
         
-        INSERT INTO frankcerny.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
         VALUES ('Bubble Wrap 112233', '', CURRENT_DATE, 165, 23.45);
-        SELECT fqs.id INTO fixedSupplyId FROM frankcerny.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
+        SELECT fqs.id INTO fixedSupplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
         
         
-        INSERT INTO frankcerny.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
+        INSERT INTO dev_ws.bsa_project_fixed_quantity_supply (project_id, supply_id, quantity)
         VALUES (projectId, fixedSupplyId, 166);
         
         
-        unitsRemaining := frankcerny.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
+        unitsRemaining := dev_ws.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
         
         ut.expect(unitsRemaining).to_( equal(0) );
     end;

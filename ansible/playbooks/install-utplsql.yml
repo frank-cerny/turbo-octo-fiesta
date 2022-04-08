@@ -25,10 +25,7 @@
           sqlplus -s /nolog << EOF
           connect / as sysdba
           alter session set container=XEPDB1;
-          @install_headless.sql
-          ut3
-          x123456x890!!**&&!!
-          apextbsp212
+          @install_headless.sql ut3 x123456x890!!**&&!! apextbsp212
           EOF
         chdir: /tmp/utplsql/utPLSQL/source
       become_user: oracle

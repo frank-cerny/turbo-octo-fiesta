@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="3885e26f253de496c1892390d98f14c8236835a3" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="48c17b0199db9a1f55ee4eff61a8977d5383bc51" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00005
 begin
@@ -33,7 +33,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220406070635'
+,p_last_upd_yyyymmddhh24miss=>'20220408071307'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10942261438436333)
@@ -168,21 +168,24 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(10942994509436336)
 ,p_name=>'P5_SERIALNUMBER'
-,p_source_data_type=>'NUMBER'
+,p_source_data_type=>'VARCHAR2'
 ,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_api.id(10942261438436333)
 ,p_item_source_plug_id=>wwv_flow_api.id(10942261438436333)
 ,p_prompt=>'Serial Number'
 ,p_source=>'SERIALNUMBER'
 ,p_source_type=>'REGION_SOURCE_COLUMN'
-,p_display_as=>'NATIVE_NUMBER_FIELD'
+,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>32
-,p_cMaxlength=>255
+,p_cMaxlength=>40
 ,p_field_template=>wwv_flow_api.id(10298784641271512)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
 ,p_encrypt_session_state_yn=>'N'
-,p_attribute_03=>'right'
+,p_attribute_01=>'N'
+,p_attribute_02=>'N'
+,p_attribute_04=>'TEXT'
+,p_attribute_05=>'BOTH'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(10943337285436336)

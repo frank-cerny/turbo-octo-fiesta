@@ -33,6 +33,7 @@
   <include file="package_spec/project_utilities_package_spec.xml"/> 
   <include file="package_spec/test_fixed_supp_utitlities_package_spec.xml"/> 
   <include file="package_spec/test_non_fixed_supp_utitlities_package_spec.xml"/> 
+  <include file="package_spec/test_tool_utilities_package_spec.xml"/> 
   <include file="package_spec/test_triggers_package_spec.xml"/> 
   <include file="package_spec/tool_utilities_package_spec.xml"/> 
   <include file="synonym/fsu_synonym.xml"/> 
@@ -61,4 +62,5 @@
   <include file="package_body/test_triggers_package_body.xml"/> 
   <include file="package_body/tool_utilities_package_body.xml"/> 
   <include file="package_body/package_body_bad_0.xml"/> 
+  <include file="package_body/package_body_bad_1.xml"/> 
 </databaseChangeLog> 
