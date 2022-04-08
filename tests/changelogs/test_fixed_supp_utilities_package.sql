@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset fcerny:1 runOnChange:true endDelimiter:"/"
+--changeset fcerny:1 runOnChange:true endDelimiter:"/" stripComments:false
 create or replace package test_fixed_supp_utitlities
 as
     -- %suite(Test Fixed Supply Utilities)
@@ -16,7 +16,7 @@ as
 end test_fixed_supp_utitlities;
 /
 
---changeset fcerny:2 runOnChange:true endDelimiter:"/"
+--changeset fcerny:2 runOnChange:true endDelimiter:"/" stripComments:false
 create or replace package body test_fixed_supp_utitlities
 as
     procedure test_get_f_supp_remaining_0 is

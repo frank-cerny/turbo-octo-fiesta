@@ -22,7 +22,7 @@ begin
 			else 'SELECT'
 		end;
 		dbms_output.put_line('Granting '||l_priv||' on '||r_object.object_name);
-		execute immediate 'grant '||l_priv||' on dev_ws.'||r_object.object_name||' to ut3';
+		execute immediate 'grant '||l_priv||' on DEV_WS.'||r_object.object_name||' to UT3';
 	end loop;
 end;
 /

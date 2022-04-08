@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset fcerny:1 runOnChange:true endDelimiter:"/"
+--changeset fcerny:1 runOnChange:true endDelimiter:"/" stripComments:false failOnError:true
 create or replace package test_tool_utilities
 as
     -- %suite(Test Tool Utilities)
@@ -14,7 +14,7 @@ as
 end test_tool_utilities;
 /
 
---changeset fcerny:2 runOnChange:true endDelimiter:"/"
+--changeset fcerny:2 runOnChange:true endDelimiter:"/" stripComments:false failOnError:true
 create or replace package body test_tool_utilities
 as
     procedure test_tool_usage_zero is
@@ -51,7 +51,7 @@ as
         -- Create a tool
         INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
         VALUES ('testTool', 'testTool', CURRENT_DATE, 5.67);
-        SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'TestTool' and t.datepurchased = CURRENT_DATE;
+        SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'testTool' and t.datepurchased = CURRENT_DATE;
         -- Add a mapping of project to tool (so the tool has been used)
         INSERT INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity)
         VALUES (projectId, toolId, 5);
@@ -69,19 +69,21 @@ as
     begin
         -- Setup
         -- Create a project
-        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended)
-        VALUES ('Tools test', 'Tools test', CURRENT_DATE, NULL),
-               ('Tools test 1', 'Tools test 1', CURRENT_DATE, NULL);
+        INSERT ALL
+            INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Tools test', 'Tools test', CURRENT_DATE, NULL)
+            INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES  ('Tools test 1', 'Tools test 1', CURRENT_DATE, NULL)
+        SELECT * FROM DUAL;
         SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'Tools test';
         SELECT p.id INTO projectId1 FROM BSA_PROJECT p WHERE p.title = 'Tools test 1';
         -- Create a tool
         INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
         VALUES ('testTool', 'testTool', CURRENT_DATE, 5.67);
-        SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'TestTool' and t.datepurchased = CURRENT_DATE;
+        SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'testTool' and t.datepurchased = CURRENT_DATE;
         -- Add mappings of project to tool (so the tool has been used)
-        INSERT INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity)
-        VALUES (projectId, toolId, 5),
-               (projectId1, toolId, 50);
+        INSERT ALL
+            INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity) VALUES (projectId, toolId, 5)
+            INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity) VALUES(projectId1, toolId, 50)
+        SELECT * FROM DUAL;
         -- Act
         usages := dev_ws.TU.bsa_func_get_tool_total_usage(toolId);
         -- Assert

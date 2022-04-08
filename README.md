@@ -67,8 +67,8 @@ TBA
 
 ### Database Credentials
 
-SYS/ADMIN: ?  
-APEX_PUBLIC_USER: ?  
+SYS/ADMIN: Passw0rd1    
+APEX_PUBLIC_USER: Passw0rd!    
 ut3:x123456x890!!**&&!!  
 dev_ws:dev_ws
 
