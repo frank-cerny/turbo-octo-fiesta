@@ -40,7 +40,7 @@
         state: absent
         path: /usr/local/tomcat9/webapps/ords
       when: ords_war_service_status.stat.exists
-    - name: APEX images directory from Tomcat
+    - name: Remove APEX images directory from Tomcat
       file:
         state: absent
         path: /usr/local/tomcat9/webapps/i
