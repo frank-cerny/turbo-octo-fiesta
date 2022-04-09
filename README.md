@@ -21,6 +21,8 @@ TBA
 2. Ansible installs APEX, Oracle Database XE, ORDS, and Tomcat on the development server
 3. TBA
 
+server:45001/XEPDB1
+
 ### Code
 
 1. Developer makes UI changes inside the APEX instance
@@ -75,4 +77,4 @@ dev_ws:dev_ws
 ### APEX Credentials
 
 Instance Admin: INTERNAL:ADMIN:Passw0rd!  
-Workspace User: DEV_WS:DEV:Passw0rd! (Default Schema is DEV_WS)
+Workspace User: DEV_WS:DEV:Passw0rd! (or Passw0rd!!) (Default Schema is DEV_WS)
