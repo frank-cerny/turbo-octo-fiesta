@@ -37,18 +37,17 @@
         recurse: yes
         state: directory
       when: service_status.stat.exists|bool == false
+    # These next two steps are guranteed to run beacuse of above
     - name: Remove APEX and APEX tablespace
       ansible.builtin.shell:
         cmd: |
           {{ script_directory }}/rollback_apex.sh
         chdir: /tmp/apex/apex
       become_user: oracle
-      when: service_status.stat.exists
       environment:
         ORACLE_SID: XE
         ORACLE_HOME: /opt/oracle/product/21c/dbhomeXE/
         PATH: "{{ ansible_env.PATH }}:/opt/oracle/product/21c/dbhomeXE/bin"
-    # This is guranteed to exist now because of the earlier steps in the playbook
     - name: Remove Apex download directory
       file:
         state: absent
