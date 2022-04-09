@@ -13,6 +13,11 @@
     - name: Check for existence of the Apex download folder
       stat: path=/tmp/apex
       register: service_status
+    - name: Copy Apex Utilities to Agent
+      copy:
+        src: ../apex_install_utilities/
+        dest: /tmp/apex/apex_install_utilities
+        mode: 0755
     # Re-download APEX files if they don't exist, otherwise we won't be able to delete APEX!
     - name: Create an Apex download directory
       file:
