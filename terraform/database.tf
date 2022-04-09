@@ -1,10 +1,10 @@
 # Reference: https://oracle-base.com/articles/misc/terraform-oci-autonomous-database
-resource "oci_database_autonomous_database" "tf_bsa_adb" {
+resource "oci_database_autonomous_database" "tf_bsa_adb_prod" {
   compartment_id           = var.root_compartment_id
   cpu_core_count           = 1
   data_storage_size_in_gb  = 20
   data_storage_size_in_tbs = 1
-  db_name                  = "bsaapex"
+  db_name                  = "bsaapex_prod"
   admin_password           = var.adb_admin_password
   db_version               = "21c"
   db_workload              = "OLTP"
@@ -19,11 +19,17 @@ resource "oci_database_autonomous_database" "tf_bsa_adb" {
   #   ]
 }
 
-# Outputs
-output "db_name" {
-  value = oci_database_autonomous_database.tf_bsa_adb.display_name
-}
-
-output "db_state" {
-  value = oci_database_autonomous_database.tf_bsa_adb.state
+# Create a second database to be used for unit testing during Jenkins builds
+resource "oci_database_autonomous_database" "tf_bsa_adb_dev" {
+  compartment_id           = var.root_compartment_id
+  cpu_core_count           = 1
+  data_storage_size_in_gb  = 20
+  data_storage_size_in_tbs = 1
+  db_name                  = "bsaapex_dev"
+  admin_password           = var.adb_admin_password
+  db_version               = "21c"
+  db_workload              = "OLTP"
+  display_name             = "BSA_AEPX"
+  is_free_tier             = true
+  license_model            = "LICENSE_INCLUDED"
 }
