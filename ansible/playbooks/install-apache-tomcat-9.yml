@@ -54,6 +54,7 @@
       systemd:
         name: tomcat
         state: started
+        enabled: true
         daemon_reload: true
     # Reference: https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html
     # Reference: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-8

@@ -30,7 +30,7 @@ as
         -- Create a tool
         INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
         VALUES ('testTool', 'testTool', CURRENT_DATE, 5.67);
-        SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'TestTool' and t.datepurchased = CURRENT_DATE;
+        SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'testTool' and t.datepurchased = CURRENT_DATE;
         -- Act
         usages := dev_ws.TU.bsa_func_get_tool_total_usage(toolId);
         -- Assert
@@ -69,10 +69,8 @@ as
     begin
         -- Setup
         -- Create a project
-        INSERT ALL
-            INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Tools test', 'Tools test', CURRENT_DATE, NULL)
-            INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES  ('Tools test 1', 'Tools test 1', CURRENT_DATE, NULL)
-        SELECT * FROM DUAL;
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Tools test', 'Tools test', CURRENT_DATE, NULL);
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Tools test 1', 'Tools test 1', CURRENT_DATE, NULL);
         SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'Tools test';
         SELECT p.id INTO projectId1 FROM BSA_PROJECT p WHERE p.title = 'Tools test 1';
         -- Create a tool
@@ -80,10 +78,8 @@ as
         VALUES ('testTool', 'testTool', CURRENT_DATE, 5.67);
         SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'testTool' and t.datepurchased = CURRENT_DATE;
         -- Add mappings of project to tool (so the tool has been used)
-        INSERT ALL
-            INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity) VALUES (projectId, toolId, 5)
-            INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity) VALUES(projectId1, toolId, 50)
-        SELECT * FROM DUAL;
+        INSERT INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity) VALUES (projectId, toolId, 5);
+        INSERT INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity) VALUES (projectId1, toolId, 50);
         -- Act
         usages := dev_ws.TU.bsa_func_get_tool_total_usage(toolId);
         -- Assert
