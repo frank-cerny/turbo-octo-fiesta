@@ -60,6 +60,15 @@ pipeline {
                     EOF
                     '''
                 }
+                script {
+                    sh ''' 
+                    cd "${WORKSPACE}"/database/setup/scripts
+                    /opt/sqlcl/bin/sql /nolog <<EOF
+                    connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
+                    @remove_dev_workspace_user.sql
+                    EOF
+                    '''
+                }
             }
         }
         // TODO - Add PR testing stage locally (for PRs) have to be manually triggered sadly
@@ -114,23 +123,6 @@ pipeline {
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect "$PROD_ADB_CREDS_USR"/"$PROD_ADB_CREDS_PSW"@bsaapexdev_high
                     lb update --changelog f100.xml
-                    EOF
-                    '''
-                }
-            }
-        }
-        post {
-            always {
-                environment {
-                    DEV_ADB_ADMIN_CREDS = credentials('bsa-dev-admin-creds')
-                }
-                echo "Cleaning up unit testing infrastructure"
-                script {
-                    sh ''' 
-                    cd "${WORKSPACE}"/database/setup/scripts
-                    /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
-                    @remove_dev_workspace_user.sql
                     EOF
                     '''
                 }
