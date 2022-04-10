@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="9a902296dec61c41b31f7e6820b9669b06610761" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="ee97e20c7e1cb83bf07acadb5393ccafa54a8123" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/set_environment
 set define off verify off feedback off
@@ -127,7 +127,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Bike Selling Application'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220410162428'
+,p_last_upd_yyyymmddhh24miss=>'20220410163433'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -468,7 +468,8 @@ wwv_flow_api.create_acl_role(
 ,p_static_id=>'ADMIN'
 ,p_name=>'Admin'
 ,p_description=>'Admin privileges. Can perform any action within the application.'
-,p_users=>wwv_flow_t_varchar2('DEV')
+,p_users=>wwv_flow_t_varchar2('DEV',
+  'FRANKK.CERNY@GMAIL.COM (OKTA)')
 );
 end;
 /
@@ -12767,8 +12768,8 @@ wwv_flow_api.create_authentication(
 ,p_attribute_01=>wwv_flow_api.id(22425201463512403)
 ,p_attribute_02=>'OPENID_CONNECT'
 ,p_attribute_03=>'https://dev-22961676.okta.com/oauth2/aus3shku9whaOBPle5d7/.well-known/oauth-authorization-server'
-,p_attribute_07=>'profile'
-,p_attribute_09=>'#name# (#APEX_AUTH_NAME#)'
+,p_attribute_07=>'profile, openid, email'
+,p_attribute_09=>'#email# (#APEX_AUTH_NAME#)'
 ,p_attribute_11=>'Y'
 ,p_attribute_13=>'Y'
 ,p_invalid_session_type=>'LOGIN'

@@ -100,6 +100,7 @@ pipeline {
                 TNS_ADMIN = "/opt/wallet_prod"
                 // Reference on how to use creds: https://mtijhof.wordpress.com/2019/06/03/jenkins-working-with-credentials-in-your-pipeline/
                 PROD_ADB_USER_CREDS = credentials('bsa-prod-user-creds')
+                OKTA_CC_CREDS = credentials('bsa-okta-cc')
                 // VERSION = ''
             }
             steps {
@@ -145,6 +146,18 @@ pipeline {
                     connect $PROD_ADB_USER_CREDS_USR/$PROD_ADB_USER_CREDS_PSW@bsaapexprod_high
                     @pre-deploy.sql
                     lb update -changelog f100.xml
+                    EOF
+                    '''
+                }
+                // Update Okta Web Credentials each Deploy as an import wipes them out
+                // This step is idempotent 
+                echo "Updating Okta Web Credentials"
+                script {
+                    sh ''' 
+                    cd "${WORKSPACE}"/deploy_utilities
+                    /opt/sqlcl/bin/sql /nolog <<EOF
+                    connect $PROD_ADB_USER_CREDS_USR/$PROD_ADB_USER_CREDS_PSW@bsaapexprod_high
+                    @add_web_credentials_oauth.sql 100 DEV_WS Okta $OKTA_CC_CREDS_USR $OKTA_CC_CREDS_PSW
                     EOF
                     '''
                 }
