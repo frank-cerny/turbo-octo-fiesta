@@ -14,13 +14,10 @@ pipeline {
                 DEV_ADB_TEST_CREDS = credentials('bsa-dev-test-creds')
             }
             steps {
-                sh "ls ${WORKSPACE}"
-                sh "ls ${WORKSPACE}/database"
-                sh "ls ${WORKSPACE}/database/setup/"
                 echo "Creating DEV_WS Schema to Perform Unit Testing"
                 script {
                     sh ''' 
-                    cd "${WORKSPACE}"/database/setup/scripts
+                    cd "${WORKSPACE}"/ansible/database/setup/scripts
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect "$DEV_ADB_ADMIN_CREDS_USR"/"$DEV_ADB_ADMIN_CREDS_PSW"@bsaapexdev_high
                     @create_dev_workspace_user.sql
@@ -62,7 +59,7 @@ pipeline {
                 }
                 script {
                     sh ''' 
-                    cd "${WORKSPACE}"/database/setup/scripts
+                    cd "${WORKSPACE}"/ansible/database/setup/scripts
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
                     @remove_dev_workspace_user.sql
