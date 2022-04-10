@@ -14,6 +14,7 @@ pipeline {
                 DEV_ADB_TEST_CREDS = credentials('bsa-dev-test-creds')
             }
             steps {
+                sh 'export'
                 echo "Creating DEV_WS Schema to Perform Unit Testing"
                 script {
                     sh ''' 
@@ -48,7 +49,6 @@ pipeline {
                 // TODO - What happens on test failure? Do we need to put a conditionally somewhere to fail the pipeline?
                 echo "Running tests"
                 script {
-                    sh "ls ${WORKSPACE}"
                     sh ''' 
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
