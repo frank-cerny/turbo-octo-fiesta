@@ -7,7 +7,7 @@ as
         totalUsages number;
         BEGIN
             
-            select sum(quantity) into totalUsages from bsa_project_non_fixed_quantity_supply
+            select COALESCE(sum(quantity), 0) into totalUsages from bsa_project_non_fixed_quantity_supply
             where supply_id = supplyId;
             return totalUsages;
         END;

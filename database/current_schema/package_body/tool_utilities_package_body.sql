@@ -6,10 +6,11 @@ as
     function bsa_func_get_tool_total_usage (toolId IN int)
     RETURN number
     AS
-        totalUsages number := 0;
+        totalUsages number;
         BEGIN
-            select sum(quantity) into totalUsages 
-            from bsa_project_tool bpt
+            
+            select COALESCE(sum(quantity), 0) into totalUsages 
+            from bsa_project_tool
             where toolId = tool_id;
             return totalUsages;
         END;
