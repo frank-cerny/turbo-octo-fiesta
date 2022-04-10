@@ -4,7 +4,7 @@ resource "oci_database_autonomous_database" "tf_bsa_adb_prod" {
   cpu_core_count           = 1
   data_storage_size_in_gb  = 20
   data_storage_size_in_tbs = 1
-  db_name                  = "bsaapex_prod"
+  db_name                  = "bsaapexprod"
   admin_password           = var.adb_admin_password
   db_version               = "21c"
   db_workload              = "OLTP"
@@ -25,7 +25,7 @@ resource "oci_database_autonomous_database" "tf_bsa_adb_dev" {
   cpu_core_count           = 1
   data_storage_size_in_gb  = 20
   data_storage_size_in_tbs = 1
-  db_name                  = "bsaapex_dev"
+  db_name                  = "bsaapexdev"
   admin_password           = var.adb_admin_password
   db_version               = "21c"
   db_workload              = "OLTP"
