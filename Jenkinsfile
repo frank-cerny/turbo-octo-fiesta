@@ -120,7 +120,7 @@ pipeline {
                     sh ''' 
                     cd "${WORKSPACE}"/database/schema_updates
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$PROD_ADB_USER_CREDS_USR"/"$PROD_ADB_USER_CREDS_PSW"@bsaapexprod_high
+                    connect $PROD_ADB_USER_CREDS_USR/$PROD_ADB_USER_CREDS_PSW@bsaapexprod_high
                     lb update -changelog controller.xml
                     EOF
                     '''
@@ -131,7 +131,7 @@ pipeline {
                     sh ''' 
                     cd "${WORKSPACE}"/database/logic
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$PROD_ADB_USER_CREDS_USR"/"$PROD_ADB_USER_CREDS_PSW"@bsaapexprod_high
+                    connect $PROD_ADB_USER_CREDS_USR/$PROD_ADB_USER_CREDS_PSW@bsaapexprod_high
                     lb update -changelog controller.xml
                     EOF
                     '''
@@ -142,7 +142,7 @@ pipeline {
                     sh ''' 
                     cd "${WORKSPACE}"/app/deploy
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$PROD_ADB_USER_CREDS_USR"/"$PROD_ADB_USER_CREDS_PSW"@bsaapexprod_high
+                    connect $PROD_ADB_USER_CREDS_USR/$PROD_ADB_USER_CREDS_PSW@bsaapexprod_high
                     lb update -changelog f100.xml
                     EOF
                     '''
