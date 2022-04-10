@@ -50,6 +50,16 @@ pipeline {
                     EOF
                     '''
                 }
+                echo "Importing Tests"
+                script {
+                    sh ''' 
+                    cd "${WORKSPACE}/tests"
+                    /opt/sqlcl/bin/sql /nolog <<EOF
+                    connect dev_ws/$DEV_ADB_USER_CREDS_PSW@bsaapexdev_high
+                    lb update -changelog controller.xml
+                    EOF
+                    '''
+                }
                 echo "Giving Test User Permission to Execute Tests in Temporary Schema"
                 script {
                     sh ''' 
