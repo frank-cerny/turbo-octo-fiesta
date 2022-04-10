@@ -92,36 +92,36 @@ pipeline {
                 }
             }
         }
-        // TODO - Add PR testing stage locally (for PRs) have to be manually triggered sadly
         stage('Deploy') {
-            when {
-                branch 'main'
-            }
+            // when {
+            //     branch 'main'
+            // }
             environment {
                 TNS_ADMIN = "/opt/wallet_prod"
                 // Reference on how to use creds: https://mtijhof.wordpress.com/2019/06/03/jenkins-working-with-credentials-in-your-pipeline/
-                PROD_ADB_CREDS = credentials('bsa-prod-creds')
-                VERSION = ''
+                PROD_ADB_USER_CREDS = credentials('bsa-prod-user-creds')
+                // VERSION = ''
             }
             steps {
-                script {
-                    // Only the main branch has version tags to deploy releases
-                    VERSION = sh(returnStdout: true, script: "git tag --contains").trim()
-                }
-                // Use the version to download the latest artifacts from the github actions run
-                echo "Current Deployable Version is: ${VERSION}"
-                sh "curl -L -o /tmp/app.tar https://github.com/frank-cerny/turbo-octo-fiesta/releases/download/${VERSION}/app.tar"
-                sh "mkdir ${WORKSPACE}/deployTemp"
-                sh "tar -xvf app.tar --directory ./deployTemp/"
+                // TODO - Should we use an artifact or the source code repo?
+                // script {
+                //     // Only the main branch has version tags to deploy releases
+                //     VERSION = sh(returnStdout: true, script: "git tag --contains").trim()
+                // }
+                // // Use the version to download the latest artifacts from the github actions run
+                // echo "Current Deployable Version is: ${VERSION}"
+                // sh "curl -L -o /tmp/app.tar https://github.com/frank-cerny/turbo-octo-fiesta/releases/download/${VERSION}/app.tar"
+                // sh "mkdir ${WORKSPACE}/deployTemp"
+                // sh "tar -xvf app.tar --directory ./deployTemp/"
                 // Un-tarring always results in tmp being the top level directory for the archive
                 // Import Schema
                 echo "Importing Schema Updates"
                 script {
                     sh ''' 
-                    cd ./deployTemp/tmp/staging/schema/schema_updates
+                    cd "${WORKSPACE}"/database/schema_updates
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$PROD_ADB_CREDS_USR"/"$PROD_ADB_CREDS_PSW"@bsaapexprod_high
-                    lb update --changelog controller.xml
+                    connect "$PROD_ADB_USER_CREDS_USR"/"$PROD_ADB_USER_CREDS_PSW"@bsaapexprod_high
+                    lb update -changelog controller.xml
                     EOF
                     '''
                 }
@@ -129,10 +129,10 @@ pipeline {
                 echo "Importing Logic Updates"
                 script {
                     sh ''' 
-                    cd ./deployTemp/tmp/staging/logic/logic
+                    cd "${WORKSPACE}"/database/logic
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$PROD_ADB_CREDS_USR"/"$PROD_ADB_CREDS_PSW"@bsaapexprod_high
-                    lb update --changelog controller.xml
+                    connect "$PROD_ADB_USER_CREDS_USR"/"$PROD_ADB_USER_CREDS_PSW"@bsaapexprod_high
+                    lb update -changelog controller.xml
                     EOF
                     '''
                 }
@@ -140,10 +140,10 @@ pipeline {
                 echo "Importing Application"
                 script {
                     sh ''' 
-                    cd ./deployTemp/tmp/staging/app
+                    cd "${WORKSPACE}"/app/deploy
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$PROD_ADB_CREDS_USR"/"$PROD_ADB_CREDS_PSW"@bsaapexprod_high
-                    lb update --changelog f100.xml
+                    connect "$PROD_ADB_USER_CREDS_USR"/"$PROD_ADB_USER_CREDS_PSW"@bsaapexprod_high
+                    lb update -changelog f100.xml
                     EOF
                     '''
                 }
