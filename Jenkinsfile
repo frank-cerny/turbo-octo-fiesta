@@ -51,7 +51,15 @@ pipeline {
                     '''
                 }
                 echo "Giving Test User Permission to Execute Tests in Temporary Schema"
-                // TODO
+                script {
+                    sh ''' 
+                    cd "${WORKSPACE}/etc"
+                    /opt/sqlcl/bin/sql /nolog <<EOF
+                    connect $DEV_ADB_ADMIN_CREDS_USR/$DEV_ADB_ADMIN_CREDS_PSW@bsaapexdev_high
+                    @ut3_permission_grants.sql
+                    EOF
+                    '''
+                }
                 // TODO - What happens on test failure? Do we need to put a conditionally somewhere to fail the pipeline?
                 echo "Running tests"
                 script {
