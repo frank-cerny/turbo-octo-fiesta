@@ -50,6 +50,8 @@ pipeline {
                     EOF
                     '''
                 }
+                echo "Giving Test User Permission to Execute Tests in Temporary Schema"
+                // TODO
                 // TODO - What happens on test failure? Do we need to put a conditionally somewhere to fail the pipeline?
                 echo "Running tests"
                 script {
@@ -57,7 +59,7 @@ pipeline {
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect $DEV_ADB_TEST_CREDS_USR/$DEV_ADB_TEST_CREDS_PSW@bsaapexdev_high
                     set serveroutput on;
-                    exec ut.run("prod_ws");
+                    exec ut.run('dev_ws');
                     EOF
                     '''
                 }
@@ -65,7 +67,7 @@ pipeline {
                     sh ''' 
                     cd "${WORKSPACE}"/ansible/database/setup/scripts
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect $DEV_ADB_TEST_CREDS_USR/$DEV_ADB_TEST_CREDS_PSW@bsaapexdev_high
+                    connect $DEV_ADB_ADMIN_CREDS_USR/$DEV_ADB_ADMIN_CREDS_PSW@bsaapexdev_high
                     DROP USER dev_ws CASCADE;
                     EOF
                     '''
