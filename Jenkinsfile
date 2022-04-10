@@ -12,6 +12,7 @@ pipeline {
                 TNS_ADMIN = "/opt/wallet_dev"
                 DEV_ADB_ADMIN_CREDS = credentials('bsa-dev-admin-creds')
                 DEV_ADB_TEST_CREDS = credentials('bsa-dev-test-creds')
+                DEV_ADB_USER_CREDS = credentials('bsa-dev-user-creds')
             }
             steps {
                 echo "Creating DEV_WS Schema to Perform Unit Testing"
@@ -20,7 +21,11 @@ pipeline {
                     cd "${WORKSPACE}"/ansible/database/setup/scripts
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect $DEV_ADB_ADMIN_CREDS_USR/$DEV_ADB_ADMIN_CREDS_PSW@bsaapexdev_high
-                    @create_dev_workspace_user.sql
+                    CREATE USER dev_ws IDENTIFIED BY $DEV_ADB_ADMIN_CREDS_PSW QUOTA UNLIMITED ON users;
+                    GRANT CREATE SESSION, CREATE CLUSTER, CREATE DIMENSION, CREATE INDEXTYPE,
+                        CREATE JOB, CREATE MATERIALIZED VIEW, CREATE OPERATOR, CREATE PROCEDURE,
+                        CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE,
+                        CREATE TRIGGER, CREATE TYPE, CREATE VIEW TO dev_ws;
                     EOF
                     '''
                 }
@@ -29,7 +34,7 @@ pipeline {
                     sh ''' 
                     cd "${WORKSPACE}"/database/schema_updates
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
+                    connect $DEV_ADB_TEST_CREDS_USR/$DEV_ADB_TEST_CREDS_PSW@bsaapexdev_high
                     lb update --changelog controller.xml
                     EOF
                     '''
@@ -40,7 +45,7 @@ pipeline {
                     sh ''' 
                     cd "${WORKSPACE}/database/logic"
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
+                    connect $DEV_ADB_TEST_CREDS_USR/$DEV_ADB_TEST_CREDS_PSW@bsaapexdev_high
                     lb update --changelog controller.xml
                     EOF
                     '''
@@ -50,7 +55,7 @@ pipeline {
                 script {
                     sh ''' 
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
+                    connect $DEV_ADB_TEST_CREDS_USR/$DEV_ADB_TEST_CREDS_PSW@bsaapexdev_high
                     set serveroutput on;
                     exec ut.run("prod_ws");
                     EOF
@@ -60,8 +65,8 @@ pipeline {
                     sh ''' 
                     cd "${WORKSPACE}"/ansible/database/setup/scripts
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
-                    @remove_dev_workspace_user.sql
+                    connect $DEV_ADB_TEST_CREDS_USR/$DEV_ADB_TEST_CREDS_PSW@bsaapexdev_high
+                    DROP USER dev_ws CASCADE;
                     EOF
                     '''
                 }
