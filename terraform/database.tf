@@ -8,7 +8,7 @@ resource "oci_database_autonomous_database" "tf_bsa_adb_prod" {
   admin_password           = var.adb_admin_password
   db_version               = "21c"
   db_workload              = "OLTP"
-  display_name             = "BSA_AEPX"
+  display_name             = "BSA_AEPX_PROD"
   is_free_tier             = true
   license_model            = "LICENSE_INCLUDED"
   # We cannot put the ADB in a subnet or NSG unless it is assigned a private endpoint (which is not free)
@@ -29,7 +29,7 @@ resource "oci_database_autonomous_database" "tf_bsa_adb_dev" {
   admin_password           = var.adb_admin_password
   db_version               = "21c"
   db_workload              = "OLTP"
-  display_name             = "BSA_AEPX"
+  display_name             = "BSA_AEPX_DEV"
   is_free_tier             = true
   license_model            = "LICENSE_INCLUDED"
 }

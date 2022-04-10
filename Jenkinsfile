@@ -3,13 +3,6 @@
 pipeline {
     agent any
 
-    environment {
-        VERSION = 
-        // Reference on how to use creds: https://mtijhof.wordpress.com/2019/06/03/jenkins-working-with-credentials-in-your-pipeline/
-        PROD_ADB_CREDS = credentials('bsa-prod-creds')
-        DEV_ADB_TEST_CREDS = credentials('bsa-dev-creds')
-    }
-
     stages {
         stage ('Test') {
             // when {
@@ -17,9 +10,43 @@ pipeline {
             // }
             environment {
                 TNS_ADMIN = "/opt/wallet_dev"
+                DEV_ADB_ADMIN_CREDS = credentiasls('bsa-dev-admin-creds')
+                DEV_ADB_TEST_CREDS = credentials('bsa-dev-test-creds')
             }
             steps {
+                echo "Creating DEV_WS Schema to Perform Unit Testing"
+                script {
+                    sh ''' 
+                    cd "${WORKSPACE}"/database/setup/scripts
+                    /opt/sqlcl/bin/sql /nolog <<EOF
+                    connect "$DEV_ADB_ADMIN_CREDS_USR"/"$DEV_ADB_ADMIN_CREDS_PSW"@bsaapexdev_high
+                    @create_dev_workspace_user.sql
+                    EOF
+                    '''
+                }
+                echo "Importing Schema"
+                script {
+                    sh ''' 
+                    cd "${WORKSPACE}"/database/schema_updates
+                    /opt/sqlcl/bin/sql /nolog <<EOF
+                    connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
+                    lb update --changelog controller.xml
+                    EOF
+                    '''
+                }
+                // Import Logic
+                echo "Importing Logic"
+                script {
+                    sh ''' 
+                    cd "${WORKSPACE}/database/logic"
+                    /opt/sqlcl/bin/sql /nolog <<EOF
+                    connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
+                    lb update --changelog controller.xml
+                    EOF
+                    '''
+                }
                 // TODO - What happens on test failure? Do we need to put a conditionally somewhere to fail the pipeline?
+                echo "Running tests"
                 script {
                     sh "ls ${WORKSPACE}"
                     sh ''' 
@@ -30,6 +57,15 @@ pipeline {
                     EOF
                     '''
                 }
+                echo "Removing temporary schema used for testing"
+                script {
+                    sh ''' 
+                    cd "${WORKSPACE}"/database/setup/scripts
+                    /opt/sqlcl/bin/sql /nolog <<EOF
+                    connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
+                    @remove_dev_workspace_user.sql
+                    EOF
+                    '''
             }
         }
         // TODO - Add PR testing stage locally (for PRs) have to be manually triggered sadly
@@ -39,6 +75,9 @@ pipeline {
             }
             environment {
                 TNS_ADMIN = "/opt/wallet_prod"
+                // Reference on how to use creds: https://mtijhof.wordpress.com/2019/06/03/jenkins-working-with-credentials-in-your-pipeline/
+                PROD_ADB_CREDS = credentials('bsa-prod-creds')
+                VERSION = ''
             }
             steps {
                 script {
@@ -57,7 +96,7 @@ pipeline {
                     sh ''' 
                     cd ./deployTemp/tmp/staging/schema/schema_updates
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$PROD_ADB_CREDS_USR"/"$PROD_ADB_CREDS_CREDS_PSW"@bsaapexdev_high
+                    connect "$PROD_ADB_CREDS_USR"/"$PROD_ADB_CREDS_PSW"@bsaapexdev_high
                     lb update --changelog controller.xml
                     EOF
                     '''
@@ -68,7 +107,7 @@ pipeline {
                     sh ''' 
                     cd ./deployTemp/tmp/staging/logic/logic
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$PROD_ADB_CREDS_CREDS_USR"/"$PROD_ADB_CREDS_CREDS_PSW"@bsaapexdev_high
+                    connect "$PROD_ADB_CREDS_USR"/"$PROD_ADB_CREDS_PSW"@bsaapexdev_high
                     lb update --changelog controller.xml
                     EOF
                     '''
@@ -79,7 +118,7 @@ pipeline {
                     sh ''' 
                     cd ./deployTemp/tmp/staging/app
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$PROD_ADB_CREDS_CREDS_USR"/"$PROD_ADB_CREDS_CREDS_PSW"@bsaapexdev_high
+                    connect "$PROD_ADB_CREDS_USR"/"$PROD_ADB_CREDS_PSW"@bsaapexdev_high
                     lb update --changelog f100.xml
                     EOF
                     '''
