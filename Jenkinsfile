@@ -14,6 +14,9 @@ pipeline {
                 DEV_ADB_TEST_CREDS = credentials('bsa-dev-test-creds')
             }
             steps {
+                sh "ls ${WORKSPACE}"
+                sh "ls ${WORKSPACE}/database"
+                sh "ls ${WORKSPACE}/database/setup/"
                 echo "Creating DEV_WS Schema to Perform Unit Testing"
                 script {
                     sh ''' 
@@ -54,16 +57,6 @@ pipeline {
                     connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
                     set serveroutput on;
                     exec ut.run("prod_ws");
-                    EOF
-                    '''
-                }
-                echo "Removing temporary schema used for testing"
-                script {
-                    sh ''' 
-                    cd "${WORKSPACE}"/database/setup/scripts
-                    /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
-                    @remove_dev_workspace_user.sql
                     EOF
                     '''
                 }
@@ -121,6 +114,23 @@ pipeline {
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect "$PROD_ADB_CREDS_USR"/"$PROD_ADB_CREDS_PSW"@bsaapexdev_high
                     lb update --changelog f100.xml
+                    EOF
+                    '''
+                }
+            }
+        }
+        post {
+            always {
+                environment {
+                    DEV_ADB_ADMIN_CREDS = credentials('bsa-dev-admin-creds')
+                }
+                echo "Cleaning up unit testing infrastructure"
+                script {
+                    sh ''' 
+                    cd "${WORKSPACE}"/database/setup/scripts
+                    /opt/sqlcl/bin/sql /nolog <<EOF
+                    connect "$DEV_ADB_TEST_CREDS_USR"/"$DEV_ADB_TEST_CREDS_PSW"@bsaapexdev_high
+                    @remove_dev_workspace_user.sql
                     EOF
                     '''
                 }
