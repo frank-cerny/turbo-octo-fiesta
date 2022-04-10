@@ -21,7 +21,7 @@ pipeline {
                     cd "${WORKSPACE}"/ansible/database/setup/scripts
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect $DEV_ADB_ADMIN_CREDS_USR/$DEV_ADB_ADMIN_CREDS_PSW@bsaapexdev_high
-                    CREATE USER dev_ws IDENTIFIED BY "$DEV_ADB_USER_CREDS_PSW" QUOTA UNLIMITED ON users;
+                    CREATE USER dev_ws IDENTIFIED BY "$DEV_ADB_USER_CREDS_PSW" QUOTA UNLIMITED ON DATA;
                     GRANT CREATE SESSION, CREATE CLUSTER, CREATE DIMENSION, CREATE INDEXTYPE,
                         CREATE JOB, CREATE MATERIALIZED VIEW, CREATE OPERATOR, CREATE PROCEDURE,
                         CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE,
