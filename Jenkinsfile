@@ -10,7 +10,7 @@ pipeline {
             // }
             environment {
                 TNS_ADMIN = "/opt/wallet_dev"
-                DEV_ADB_ADMIN_CREDS = credentiasls('bsa-dev-admin-creds')
+                DEV_ADB_ADMIN_CREDS = credentials('bsa-dev-admin-creds')
                 DEV_ADB_TEST_CREDS = credentials('bsa-dev-test-creds')
             }
             steps {
