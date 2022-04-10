@@ -21,7 +21,7 @@ pipeline {
                     cd "${WORKSPACE}"/ansible/database/setup/scripts
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect $DEV_ADB_ADMIN_CREDS_USR/$DEV_ADB_ADMIN_CREDS_PSW@bsaapexdev_high
-                    CREATE USER dev_ws IDENTIFIED BY $DEV_ADB_ADMIN_CREDS_PSW QUOTA UNLIMITED ON users;
+                    CREATE USER dev_ws IDENTIFIED BY "$DEV_ADB_USER_CREDS_PSW" QUOTA UNLIMITED ON users;
                     GRANT CREATE SESSION, CREATE CLUSTER, CREATE DIMENSION, CREATE INDEXTYPE,
                         CREATE JOB, CREATE MATERIALIZED VIEW, CREATE OPERATOR, CREATE PROCEDURE,
                         CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE,
@@ -34,8 +34,8 @@ pipeline {
                     sh ''' 
                     cd "${WORKSPACE}"/database/schema_updates
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect $DEV_ADB_TEST_CREDS_USR/$DEV_ADB_TEST_CREDS_PSW@bsaapexdev_high
-                    lb update --changelog controller.xml
+                    connect dev_ws/$DEV_ADB_USER_CREDS_PSW@bsaapexdev_high
+                    lb update -changelog controller.xml
                     EOF
                     '''
                 }
@@ -45,8 +45,8 @@ pipeline {
                     sh ''' 
                     cd "${WORKSPACE}/database/logic"
                     /opt/sqlcl/bin/sql /nolog <<EOF
-                    connect $DEV_ADB_TEST_CREDS_USR/$DEV_ADB_TEST_CREDS_PSW@bsaapexdev_high
-                    lb update --changelog controller.xml
+                    connect dev_ws/$DEV_ADB_USER_CREDS_PSW@bsaapexdev_high
+                    lb update -changelog controller.xml
                     EOF
                     '''
                 }
