@@ -143,6 +143,7 @@ pipeline {
                     cd "${WORKSPACE}"/app/deploy
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect $PROD_ADB_USER_CREDS_USR/$PROD_ADB_USER_CREDS_PSW@bsaapexprod_high
+                    @pre-deploy.sql
                     lb update -changelog f100.xml
                     EOF
                     '''
