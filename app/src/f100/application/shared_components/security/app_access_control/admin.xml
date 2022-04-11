@@ -26,8 +26,8 @@ wwv_flow_api.create_acl_role(
 ,p_name=>'Admin'
 ,p_description=>'Admin privileges. Can perform any action within the application.'
 ,p_users=>wwv_flow_t_varchar2('DEV',
-  'FRANKK.CERNY@GMAIL.COM'
-  )
+  'FRANKK.CERNY@GMAIL.COM',
+  'FRANKK.CERNY@GMAIL.COM (OKTA)')
 );
 wwv_flow_api.component_end;
 end;

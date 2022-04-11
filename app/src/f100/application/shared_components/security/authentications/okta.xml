@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="6f70f48f729058c676b72544711e076843251247" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="228b05d4816e5e545cb39c3a385a0f6b0d79de06" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/security/authentications/okta
 begin
@@ -28,7 +28,7 @@ wwv_flow_api.create_authentication(
 ,p_attribute_02=>'OPENID_CONNECT'
 ,p_attribute_03=>'https://dev-22961676.okta.com/oauth2/aus3shku9whaOBPle5d7/.well-known/oauth-authorization-server'
 ,p_attribute_07=>'profile, openid, email'
-,p_attribute_09=>'#email# (#APEX_AUTH_NAME#)'
+,p_attribute_09=>'#email#'
 ,p_attribute_11=>'Y'
 ,p_attribute_13=>'Y'
 ,p_invalid_session_type=>'LOGIN'
