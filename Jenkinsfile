@@ -81,6 +81,7 @@ pipeline {
                     EOF
                     '''
                 }
+                echo "Cleaning tablespace by removing testing schema"
                 script {
                     sh ''' 
                     cd "${WORKSPACE}"/ansible/database/setup/scripts
@@ -93,9 +94,9 @@ pipeline {
             }
         }
         stage('Deploy') {
-            // when {
-            //     branch 'main'
-            // }
+            when {
+                branch 'main'
+            }
             environment {
                 TNS_ADMIN = "/opt/wallet_prod"
                 // Reference on how to use creds: https://mtijhof.wordpress.com/2019/06/03/jenkins-working-with-credentials-in-your-pipeline/
