@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="38c7c2f2fc4d0bd79a22013e172a1e8c1e7dd676" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="15e6f443f1e358f755e7ffd9cb7eb9a6b6f5571f" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00006
 begin
@@ -23,15 +23,15 @@ wwv_flow_api.component_begin (
 wwv_flow_api.create_page(
  p_id=>6
 ,p_user_interface_id=>wwv_flow_api.id(10325719747271546)
-,p_name=>'Fixed Use Supplies'
+,p_name=>'Fixed-Use Supplies'
 ,p_alias=>'FIXED-USE-SUPPLIES'
-,p_step_title=>'Fixed Use Supplies'
+,p_step_title=>'Fixed-Use Supplies'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220406071716'
+,p_last_upd_yyyymmddhh24miss=>'20220412065505'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12381699667230872)

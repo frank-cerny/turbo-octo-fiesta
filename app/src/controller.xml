@@ -126,6 +126,7 @@
   <include file="./f100/application/pages/page_00019.xml"/> 
   <include file="./f100/application/pages/page_00020.xml"/> 
   <include file="./f100/application/pages/page_00021.xml"/> 
+  <include file="./f100/application/pages/page_00022.xml"/> 
   <include file="./f100/application/pages/page_09999.xml"/> 
   <include file="./f100/application/deployment/definition.xml"/> 
   <include file="./f100/application/deployment/checks.xml"/> 

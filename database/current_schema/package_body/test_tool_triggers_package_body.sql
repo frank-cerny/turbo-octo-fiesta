@@ -1,26 +1,5 @@
---liquibase formatted sql
 
---changeset fcerny:1 runOnChange:true endDelimiter:"/" stripComments:false
-create or replace package test_tool_triggers
-as
-    -- %suite(Test Tool Triggers)
-
-    --%test(Test Trigger Insert Project Tool With insert)
-    procedure test_trigger_insert_project_tool_insert_single_project;
-    --%test(Test Trigger Insert Project Tool With insert on multiple projects)
-    procedure test_trigger_insert_project_tool_insert_multi_project;
-    --%test(Test Trigger Insert Project Tool with upsert)
-    procedure test_trigger_insert_project_tool_upsert;
-    --%test(Test Trigger Delete Project Tool)
-    --%throws(-01403)
-    procedure test_trigger_delete_project_tool;
-    --%test(Test Trigger Update Project Tool)
-    procedure test_trigger_update_project_tool;
-end test_tool_triggers;
-/
-
---changeset fcerny:2 runOnChange:true endDelimiter:"/" stripComments:false
-create or replace package body test_tool_triggers
+  CREATE OR REPLACE EDITIONABLE PACKAGE BODY "DEV_WS"."TEST_TOOL_TRIGGERS" 
 as
     -- Inserting a tool into a project for the first time should create a quantity of 1 for that tool for that project
     procedure test_trigger_insert_project_tool_insert_single_project is
@@ -188,4 +167,3 @@ as
         ut.expect( quantity ).to_( equal(50) );
     end;
 end test_tool_triggers;
-/

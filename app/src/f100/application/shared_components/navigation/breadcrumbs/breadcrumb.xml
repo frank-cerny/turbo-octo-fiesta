@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="935c90c610891a3b1384e34d1ecfd0831c96dcbb" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="f261113e372acfa6e086275435eb2bf4f9102ef6" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
@@ -23,6 +23,13 @@ wwv_flow_api.component_begin (
 wwv_flow_api.create_menu(
  p_id=>wwv_flow_api.id(10178561499271422)
 ,p_name=>'Breadcrumb'
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(1815210106302289)
+,p_parent_id=>wwv_flow_api.id(10339990220286207)
+,p_short_name=>'Project - Create (m)'
+,p_link=>'f?p=&APP_ID.:22:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>22
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10178729384271423)
@@ -82,8 +89,8 @@ wwv_flow_api.create_menu_option(
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(12386988873230898)
 ,p_parent_id=>wwv_flow_api.id(10178729384271423)
-,p_short_name=>'Multi-Use Supplies'
-,p_link=>'f?p=&APP_ID.:6:&APP_SESSION.::&DEBUG.:::'
+,p_short_name=>'Fixed-Use Supplies'
+,p_link=>'f?p=&APP_ID.:6:&SESSION.::&DEBUG.:::'
 ,p_page_id=>6
 );
 wwv_flow_api.create_menu_option(
