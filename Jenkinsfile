@@ -5,9 +5,10 @@ pipeline {
 
     stages {
         stage ('Test') {
-            // when {
-            //     // Only run this stage on PR (once tested of course!)
-            // }
+            when {
+                // Only run this stage on PR (once tested of course!)
+                branch 'PR-*'
+            }
             environment {
                 TNS_ADMIN = "/opt/wallet_dev"
                 DEV_ADB_ADMIN_CREDS = credentials('bsa-dev-admin-creds')
