@@ -4,6 +4,15 @@ pipeline {
     agent any
 
     stages {
+        stage ('Debug') {
+            script {
+                sh ''' 
+                cd "${WORKSPACE}"/app/deploy
+                chmod +x ./update_auth_scheme_id.sh
+                ./update_auth_scheme_id.sh ./f100.xml
+                '''
+            }
+        }
         stage ('Test') {
             when {
                 // Only run this stage on PR (once tested of course!)
