@@ -15,7 +15,7 @@
 # ,p_name=>'Okta'
 # regex="wwv_flow_api\.create_authentication\([\r\n]+ p_id=>wwv_flow_api\.id\(([0-9]+)\)[\r\n]+,p_name=>\'Okta\'"
 okta_auth_id="1"
-regex="prompt --application/shared_components/security/authentications/okta.*wwv_flow_api\.create_authentication\(.* p_id=>wwv_flow_api\.id\(([0-9]+)\).*,p_name=>\'Okta\'"
+regex="prompt --application/shared_components/security/authentications/okta.*wwv_flow_api\.create_authentication\(.* p_id=>wwv_flow_api\.id\(([0-9]+)\).*,p_name=>'Okta'"
 if [[ $(cat "$1") =~ $regex ]]
 then
     okta_auth_id="${BASH_REMATCH[1]}"
@@ -32,4 +32,4 @@ printf "Current Authentication Scheme Id is $current_auth_id\n"
 
 # Replace so that Okta is the enabled authentication scheme on install
 printf "Replacing current scheme with Okta\n"
-sed -i '' "s/,p_authentication_id=>wwv_flow_api.id($current_auth_id)/,p_authentication_id=>wwv_flow_api.id($okta_auth_id)/" "$1"
+sed -i "s/,p_authentication_id=>wwv_flow_api.id($current_auth_id)/,p_authentication_id=>wwv_flow_api.id($okta_auth_id)/" "$1"
