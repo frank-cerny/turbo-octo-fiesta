@@ -4,18 +4,18 @@ pipeline {
     agent any
 
     stages {
-        stage ('Debug') {
-            steps {
-                script {
-                    sh ''' 
-                    cd "${WORKSPACE}"/app/deploy
-                    chmod +x ./update_auth_scheme_id.sh
-                    ./update_auth_scheme_id.sh ./f100.xml
-                    cat f100.xml | grep "p_authentication_id=>wwv_flow_api.id"
-                    '''
-                }
-            }
-        }
+        // stage ('Debug') {
+        //     steps {
+        //         script {
+        //             sh ''' 
+        //             cd "${WORKSPACE}"/app/deploy
+        //             chmod +x ./update_auth_scheme_id.sh
+        //             ./update_auth_scheme_id.sh ./f100.xml
+        //             cat f100.xml | grep "p_authentication_id=>wwv_flow_api.id"
+        //             '''
+        //         }
+        //     }
+        // }
         stage ('Test') {
             when {
                 // Only run this stage on PR (once tested of course!)
