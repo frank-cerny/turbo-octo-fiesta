@@ -34,6 +34,7 @@
   <include file="package_spec/test_fixed_supp_utitlities_package_spec.xml"/> 
   <include file="package_spec/test_fixed_use_supply_triggers_package_spec.xml"/> 
   <include file="package_spec/test_non_fixed_supp_utitlities_package_spec.xml"/> 
+  <include file="package_spec/test_non_fixed_use_supply_triggers_package_spec.xml"/> 
   <include file="package_spec/test_tool_triggers_package_spec.xml"/> 
   <include file="package_spec/test_tool_utilities_package_spec.xml"/> 
   <include file="package_spec/tool_utilities_package_spec.xml"/> 
@@ -62,6 +63,7 @@
   <include file="package_body/test_fixed_supp_utitlities_package_body.xml"/> 
   <include file="package_body/test_fixed_use_supply_triggers_package_body.xml"/> 
   <include file="package_body/test_non_fixed_supp_utitlities_package_body.xml"/> 
+  <include file="package_body/test_non_fixed_use_supply_triggers_package_body.xml"/> 
   <include file="package_body/test_tool_triggers_package_body.xml"/> 
   <include file="package_body/test_tool_utilities_package_body.xml"/> 
   <include file="package_body/tool_utilities_package_body.xml"/> 
