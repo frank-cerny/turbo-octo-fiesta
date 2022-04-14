@@ -143,6 +143,8 @@ pipeline {
                 script {
                     sh ''' 
                     cd "${WORKSPACE}"/app/deploy
+                    chmod +x ./update_auth_scheme_id.sh
+                    ./update_auth_scheme_id.sh ./f100.xml
                     /opt/sqlcl/bin/sql /nolog <<EOF
                     connect $PROD_ADB_USER_CREDS_USR/$PROD_ADB_USER_CREDS_PSW@bsaapexprod_high
                     @pre-deploy.sql

@@ -27,7 +27,7 @@ fi
 
 # Get Current Enabled Authentication Scheme Id
 # Line of the form: ,p_authentication_id=>wwv_flow_api.id(1) 
-current_auth_id=$(cat app/deploy/f100.xml | grep ",p_authentication_id=>wwv_flow_api.id" | awk -F '[()]' '{print $2}')
+current_auth_id=$(cat "$1" | grep ",p_authentication_id=>wwv_flow_api.id" | awk -F '[()]' '{print $2}')
 printf "Current Authentication Scheme Id is $current_auth_id\n"
 
 # Replace so that Okta is the enabled authentication scheme on install
