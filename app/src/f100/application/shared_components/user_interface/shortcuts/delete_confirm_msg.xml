@@ -5,16 +5,16 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="185d8e884c2c12484c89ef63331da945bfcd9833" author="(FCERNY)-Generated" failOnError="false"    >
-		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="FCERNY" sourceType="STRING"  >
+	<changeSet id="03bfdd06ec8aa93380775b34b6a94e0a575ad27b" author="(DEV_WS)-Generated" failOnError="false"    >
+		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/user_interface/shortcuts/delete_confirm_msg
 begin
 --   Manifest
 --     SHORTCUT: DELETE_CONFIRM_MSG
 --   Manifest End
 wwv_flow_api.component_begin (
- p_version_yyyy_mm_dd=>'2021.04.15'
-,p_release=>'21.1.7'
+ p_version_yyyy_mm_dd=>'2021.10.15'
+,p_release=>'21.2.0'
 ,p_default_workspace_id=>9006773697014439
 ,p_default_application_id=>100
 ,p_default_id_offset=>0

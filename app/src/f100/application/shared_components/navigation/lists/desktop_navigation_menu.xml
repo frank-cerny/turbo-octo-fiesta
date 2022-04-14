@@ -5,16 +5,16 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="2f6fd9db143d61e46c53f2f6ed930def0c6082b1" author="(FCERNY)-Generated" failOnError="false"    >
-		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="FCERNY" sourceType="STRING"  >
+	<changeSet id="7c4b5d7dd7533987c49209dc7820210770f7393c" author="(DEV_WS)-Generated" failOnError="false"    >
+		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/lists/desktop_navigation_menu
 begin
 --   Manifest
 --     LIST: Desktop Navigation Menu
 --   Manifest End
 wwv_flow_api.component_begin (
- p_version_yyyy_mm_dd=>'2021.04.15'
-,p_release=>'21.1.7'
+ p_version_yyyy_mm_dd=>'2021.10.15'
+,p_release=>'21.2.0'
 ,p_default_workspace_id=>9006773697014439
 ,p_default_application_id=>100
 ,p_default_id_offset=>0
@@ -54,7 +54,7 @@ wwv_flow_api.create_list_item(
 wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(12385324697230890)
 ,p_list_item_display_sequence=>50
-,p_list_item_link_text=>'Fixed Use Supplies'
+,p_list_item_link_text=>'Fixed-Use Supplies'
 ,p_list_item_link_target=>'f?p=&APP_ID.:6:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_api.id(10335716212271598)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
@@ -63,7 +63,7 @@ wwv_flow_api.create_list_item(
 wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(13492144993130315)
 ,p_list_item_display_sequence=>60
-,p_list_item_link_text=>'Non Fixed Use Supplies'
+,p_list_item_link_text=>'Non-Fixed Use Supplies'
 ,p_list_item_link_target=>'f?p=&APP_ID.:20:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_api.id(10335716212271598)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'

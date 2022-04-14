@@ -21,6 +21,8 @@ TBA
 2. Ansible installs APEX, Oracle Database XE, ORDS, and Tomcat on the development server
 3. TBA
 
+server:45001/XEPDB1
+
 ### Code
 
 1. Developer makes UI changes inside the APEX instance
@@ -33,6 +35,14 @@ TBA
 7. Developer creates a PR and merges
 
 This means that Developers can still do "everything" within an APEX instance, but they **must** ensure all changes are added to changesets, otherwise their changes will not be carried over to other environments.
+
+## Testing
+
+1. Write updated tests within tests/changelogs
+2. Run update-tests.sh (handles updating tests and permissions as neccessary)
+3. Login to the DB as ut3
+4. Run `set serveroutput on;`
+5. Run neccessary tests with `exec ut.run('<ID>')`
 
 ## Deployment Process (to "Production")
 
@@ -59,11 +69,12 @@ TBA
 
 ### Database Credentials
 
-SYS/ADMIN: ?  
-APEX_PUBLIC_USER: ?  
+SYS/ADMIN: Passw0rd1    
+APEX_PUBLIC_USER: Passw0rd!    
 ut3:x123456x890!!**&&!!  
+dev_ws:dev_ws
 
 ### APEX Credentials
 
 Instance Admin: INTERNAL:ADMIN:Passw0rd!  
-Workspace User: DEV_WS:DEV:Passw0rd! (Default Schema is DEV_WS)
+Workspace User: DEV_WS:DEV:Passw0rd! (or Passw0rd!!) (Default Schema is DEV_WS)

@@ -13,13 +13,42 @@
     - name: Check for existence of the Apex download folder
       stat: path=/tmp/apex
       register: service_status
+    - name: Copy Apex Utilities to Agent
+      copy:
+        src: ../apex_install_utilities/
+        dest: /tmp/apex/apex_install_utilities
+        mode: 0755
+    # Re-download APEX files if they don't exist, otherwise we won't be able to delete APEX!
+    - name: Create an Apex download directory
+      file:
+        path: /tmp/apex
+        owner: oracle
+        group: oracle
+        mode: 755
+        recurse: yes
+      when: service_status.stat.exists|bool == false
+    - name: Download & Un-Archive Apex
+      unarchive:
+        src: https://download.oracle.com/otn_software/apex/apex_21.2_en.zip
+        dest: /tmp/apex
+        remote_src: yes
+      when: service_status.stat.exists|bool == false
+    - name: Change ownership of files within Apex download directory
+      file:
+        path: /tmp/apex
+        owner: oracle
+        group: oracle
+        mode: "u+rwx,g+rx,o=rx"
+        recurse: yes
+        state: directory
+      when: service_status.stat.exists|bool == false
+    # These next two steps are guranteed to run beacuse of above
     - name: Remove APEX and APEX tablespace
       ansible.builtin.shell:
         cmd: |
           {{ script_directory }}/rollback_apex.sh
         chdir: /tmp/apex/apex
       become_user: oracle
-      when: service_status.stat.exists
       environment:
         ORACLE_SID: XE
         ORACLE_HOME: /opt/oracle/product/21c/dbhomeXE/
@@ -28,4 +57,3 @@
       file:
         state: absent
         path: /tmp/apex
-      when: service_status.stat.exists

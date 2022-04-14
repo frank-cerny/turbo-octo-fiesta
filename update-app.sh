@@ -37,22 +37,8 @@ CONNECT dev_ws/$USER_DB_PASSWORD@$DB_IP:$DB_PORT/XEPDB1
 liquibase update -changelog controller.xml
 EOF
 
-# Run the test changelog
-echo "Updating Tests"
-cd $TEST_CHANGELOG_DIRECTORY
-sql -s /nolog <<EOF
-CONNECT dev_ws/$USER_DB_PASSWORD@$DB_IP:$DB_PORT/XEPDB1
-liquibase update -changelog controller.xml
-EOF
-
-# Give permission to ut3 to dev_ws schema
-echo "Giving Schema Permission to UT3"
-cd $SECURITY_ID_SCRIPT_DIRECTORY
-sql -s /nolog <<EOF
-CONNECT sys/$SYS_DB_PASSWORD@$DB_IP:$DB_PORT/XEPDB1 as sysdba
-@ut3_permission_grants.sql
-EOF
-
+if [ -n "$1" ]
+then
 # Add Sample Data to Application
 echo "Adding Sample Data To Application"
 cd $SECURITY_ID_SCRIPT_DIRECTORY
@@ -60,14 +46,7 @@ sql -s /nolog <<EOF
 CONNECT dev_ws/$USER_DB_PASSWORD@$DB_IP:$DB_PORT/XEPDB1
 @sample_data.sql
 EOF
-
-# # Run pre-step which sets the security id of the instance based on the workspace id (not sure why this is needed)
-# echo "Updating Security Flow ID (Pre-Req)"
-# cd $SECURITY_ID_SCRIPT_DIRECTORY
-# sql -s /nolog <<EOF
-# CONNECT sys/$SYS_DB_PASSWORD@$DB_IP:$DB_PORT/XEPDB1 as sysdba
-# @pre-deploy.sql
-# EOF
+fi
 
 # Run the application install
 echo "Installing Application"
