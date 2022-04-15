@@ -43,22 +43,17 @@ as
     function bsa_func_get_fixed_supply_unit_cost(supplyId in number)
     RETURN number
     AS
-        totalUsages number := 0;
-        unitsPurchased number := 0;
+        unitsPurchased number;
+        totalCost number;
+        unitCost number(10, 2);
         BEGIN
-            select sum(quantity) into totalUsages from bsa_project_fixed_quantity_supply
-            where supply_id = supplyId;
-            -- Ensure that if totalUsages = null, to set to 0 to not break other calculations
-            totalUsages := COALESCE(totalUsages, 0);
-            select fqs.unitspurchased into unitsPurchased
-            from bsa_fixed_quantity_supply fqs
-            where id = supplyId;
-            -- If units used is greater than purchased, return 0
-            IF totalUsages > unitsPurchased THEN
-                return 0;
-            ELSE
-                return unitsPurchased - totalUsages;
+            select bfqs.unitsPurchased, bfqs.totalCost into unitsPurchased, totalCost from bsa_fixed_quantity_supply bfqs WHERE id = supplyId;
+            -- This would only occur in user error, but would allow them to edit the entry without breaking the application
+            if unitsPurchased = 0 THEN
+                return null;
             END IF;
+            unitCost := totalCost/unitsPurchased;
+            return unitCost;
         END;
 end fixed_supp_utilities;
 /

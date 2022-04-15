@@ -21,4 +21,21 @@ as
                 return unitsPurchased - totalUsages;
             END IF;
         END;
+
+    
+    function bsa_func_get_fixed_supply_unit_cost(supplyId in number)
+    RETURN number
+    AS
+        unitsPurchased number;
+        totalCost number;
+        unitCost number(10, 2);
+        BEGIN
+            select bfqs.unitsPurchased, bfqs.totalCost into unitsPurchased, totalCost from bsa_fixed_quantity_supply bfqs WHERE id = supplyId;
+            
+            if unitsPurchased = 0 THEN
+                return null;
+            END IF;
+            unitCost := totalCost/unitsPurchased;
+            return unitCost;
+        END;
 end fixed_supp_utilities;
