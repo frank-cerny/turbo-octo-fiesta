@@ -5,6 +5,8 @@ create or replace package tool_utilities
 as 
     function bsa_func_get_tool_total_usage (toolId IN int)
     return number;
+    function bsa_func_get_tool_unit_cost (toolId IN int)
+    return number;
 end tool_utilities;
 /
 
@@ -22,8 +24,27 @@ as
             -- If none, return 0 instead of null (and avoid no_data_found error)
             select COALESCE(sum(quantity), 0) into totalUsages 
             from bsa_project_tool
-            where toolId = tool_id;
+            where tool_id = toolId;
             return totalUsages;
+        END;
+
+    function bsa_func_get_tool_unit_cost (toolId IN int)
+    RETURN number
+    AS
+        totalUsages number;
+        totalCost number;
+        -- number(precision, scale) (max precision = digits, scale = digits to right of decimal)
+        unitCost number(10,2);
+        BEGIN
+            -- If none, return 0 instead of null (and avoid no_data_found error)
+            totalUsages := bsa_func_get_tool_total_usage(toolId);
+            if totalUsages = 0 THEN
+                return null;
+            END IF;
+            -- Get total cost of tool
+            select totalCost into totalCost from bsa_tool where Id = toolId;
+            unitCost := totalCost/totalUsages;
+            return unitCost;
         END;
 end tool_utilities;
 /

@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="23858831324265b6d01c61390eb268ed001c2896" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="9ac62e443e2277e3ad45f30154d9e37ff50e0918" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/set_environment
 set define off verify off feedback off
@@ -127,7 +127,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Bike Selling Application'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220412065538'
+,p_last_upd_yyyymmddhh24miss=>'20220415084331'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -527,8 +527,8 @@ wwv_flow_api.create_menu(
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(1815210106302289)
 ,p_parent_id=>wwv_flow_api.id(10339990220286207)
-,p_short_name=>'Project - Create (m)'
-,p_link=>'f?p=&APP_ID.:22:&APP_SESSION.::&DEBUG.:::'
+,p_short_name=>'Project - Create'
+,p_link=>'f?p=&APP_ID.:22:&SESSION.::&DEBUG.:::'
 ,p_page_id=>22
 );
 wwv_flow_api.create_menu_option(
@@ -14858,7 +14858,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220406071007'
+,p_last_upd_yyyymmddhh24miss=>'20220415080816'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(11357589178948037)
@@ -14874,7 +14874,7 @@ wwv_flow_api.create_page_plug(
 '       DATEPURCHASED,',
 '       TOTALCOST,',
 '       TU.bsa_func_get_tool_total_usage(ID) as Usages,',
-'       (TOTALCOST/ TU.bsa_func_get_tool_total_usage(ID)) as UnitCost',
+'       TU.bsa_func_get_tool_unit_cost(ID) as UnitCost',
 '  from BSA_TOOL'))
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
@@ -19068,7 +19068,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220406071930'
+,p_last_upd_yyyymmddhh24miss=>'20220415084331'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16851652096019574)
@@ -19078,7 +19078,7 @@ wwv_flow_api.create_page_plug(
 ,p_plug_display_sequence=>10
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT ID, NAME, DATEPURCHASED, DESCRIPTION, COST,  NFSU.bsa_func_get_non_fixed_supply_usages(ID) as Usages, COST/NFSU.bsa_func_get_non_fixed_supply_usages(ID) as UnitCost',
+'SELECT ID, NAME, DATEPURCHASED, DESCRIPTION, COST,  NFSU.bsa_func_get_non_fixed_supply_usages(ID) as Usages, NFSU.bsa_func_get_non_fixed_supply_unit_cost(ID) as UnitCost',
 'FROM bsa_non_fixed_quantity_supply'))
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
@@ -19533,12 +19533,12 @@ wwv_flow_api.create_page(
 ,p_name=>'Project - Create (m)'
 ,p_alias=>'PROJECT-CREATE-M'
 ,p_page_mode=>'MODAL'
-,p_step_title=>'Project - Create (m)'
+,p_step_title=>'Project - Create'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220412063952'
+,p_last_upd_yyyymmddhh24miss=>'20220414155651'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1814868964302288)

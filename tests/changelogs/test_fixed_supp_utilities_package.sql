@@ -13,6 +13,10 @@ as
     procedure test_get_f_supp_remaining_not_0_multi_project;
     --%test(Test Get Fixed Supplies Remaining with usages over quantity)
     procedure test_get_f_supp_remaining_handle_negative;
+    --%test(Test Get Fixed Supply Unit Cost 0)
+    procedure test_fixed_supply_unit_cost_0;
+    --%test(Test Get Fixed Supply Unit Cost Not 0)
+    procedure test_fixed_supply_unit_cost_non_zero;
 end test_fixed_supp_utitlities;
 /
 
@@ -114,6 +118,40 @@ as
         unitsRemaining := dev_ws.fsu.bsa_func_get_fixed_supply_units_remaining(fixedSupplyId);
         -- Assert
         ut.expect(unitsRemaining).to_( equal(0) );
+    end;
+
+    -- This case should not happen, but in case of user error it should be covered
+    procedure test_fixed_supply_unit_cost_0 is
+    fixedSupplyId int;
+    unitCost number;
+    begin
+        -- Setup
+        -- Insert a single fixed supply into the table
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 112233', '', CURRENT_DATE, 0, 100);
+        SELECT fqs.id INTO fixedSupplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
+        -- Act 
+        -- fsu is a public synomym for the fixed supply package
+        unitCost := dev_ws.fsu.bsa_func_get_fixed_supply_unit_cost(fixedSupplyId);
+        -- Assert
+        ut.expect(unitCost).to_( be_null() );
+    end;
+
+    -- This case should not happen, but in case of user error it should be covered
+    procedure test_fixed_supply_unit_cost_non_zero is
+    fixedSupplyId int;
+    unitCost number;
+    begin
+        -- Setup
+        -- Insert a single fixed supply into the table
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 112233', '', CURRENT_DATE, 165, 100);
+        SELECT fqs.id INTO fixedSupplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 112233';
+        -- Act 
+        -- fsu is a public synomym for the fixed supply package
+        unitCost := dev_ws.fsu.bsa_func_get_fixed_supply_unit_cost(fixedSupplyId);
+        -- Assert
+        ut.expect(unitCost).to_( equal(.61) );
     end;
 
 end test_fixed_supp_utitlities;
