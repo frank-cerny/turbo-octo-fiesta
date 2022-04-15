@@ -156,7 +156,7 @@ as
         SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'testTool' and t.datepurchased = CURRENT_DATE;
         -- Attach the tool to each of the projects
         INSERT INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity) VALUES (projectId, toolId, 5);
-        INSERT INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity) VALUES (projectId, toolId, 6);
+        INSERT INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity) VALUES (projectId1, toolId, 6);
         -- Act
         unitCost := dev_ws.TU.bsa_func_get_tool_unit_cost(toolId);
         -- Assert

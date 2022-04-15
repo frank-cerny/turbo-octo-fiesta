@@ -37,7 +37,7 @@ as
         unitCost number(10,2);
         BEGIN
             -- If none, return 0 instead of null (and avoid no_data_found error)
-            select COALESCE(sum(quantity), 0) into totalUsages from bsa_project_tool where tool_id = toolId;
+            totalUsages := bsa_func_get_tool_total_usage(toolId);
             if totalUsages = 0 THEN
                 return null;
             END IF;
