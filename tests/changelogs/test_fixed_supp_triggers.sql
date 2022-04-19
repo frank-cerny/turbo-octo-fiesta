@@ -188,5 +188,11 @@ as
         ut.expect( joinId ).not_to( be_null() );
         ut.expect( quantity ).to_( equal(50) );
     end;
+
+    -- If a client attempts to to add a supply that is "empty" the app should ?
+    -- TODO
+
+    -- If a a client attempts to update to a quantity that is invalid or empty, the app should ?
+    -- TODO
 end test_fixed_use_supply_triggers;
 /

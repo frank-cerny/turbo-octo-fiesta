@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="69848a0f33ddfa34c157b5582f4d8556f058dc87" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="7b0cbcf92d22ff9c971115b774525a03f9157ecf" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/set_environment
 set define off verify off feedback off
@@ -41,7 +41,7 @@ prompt APPLICATION 100 - Bike Selling Application
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     24
---       Items:                   69
+--       Items:                   70
 --       Processes:               35
 --       Regions:                 80
 --       Buttons:                 52
@@ -127,7 +127,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Bike Selling Application'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220419065026'
+,p_last_upd_yyyymmddhh24miss=>'20220419072742'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -14642,7 +14642,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220412065505'
+,p_last_upd_yyyymmddhh24miss=>'20220419072742'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12381699667230872)
@@ -14659,7 +14659,7 @@ wwv_flow_api.create_page_plug(
 '       UNITSPURCHASED,',
 '       FSU.bsa_func_get_fixed_supply_units_remaining(ID) as UnitsRemaining,',
 '       TOTALCOST,',
-'       (TOTALCOST/UNITSPURCHASED) as UNITCOST',
+'       FSU.bsa_func_get_fixed_supply_unit_cost(ID) as UNITCOST',
 '  from BSA_FIXED_QUANTITY_SUPPLY'))
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
@@ -15343,7 +15343,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220404070814'
+,p_last_upd_yyyymmddhh24miss=>'20220419072331'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(26104277233596281)
@@ -15809,7 +15809,9 @@ wwv_flow_api.create_page_item(
 ,p_prompt=>'Fixed Supply Ids'
 ,p_placeholder=>'Fixed Use Supplies'
 ,p_display_as=>'NATIVE_POPUP_LOV'
-,p_lov=>'SELECT name d, id r from bsa_fixed_quantity_supply'
+,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT name d, id r from bsa_fixed_quantity_supply',
+'WHERE FSU.bsa_func_get_fixed_supply_units_remaining(ID) > 0'))
 ,p_cSize=>30
 ,p_field_template=>wwv_flow_api.id(10298546746271512)
 ,p_item_template_options=>'#DEFAULT#'
@@ -17895,7 +17897,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220406073651'
+,p_last_upd_yyyymmddhh24miss=>'20220419071529'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(41069894378275582)
@@ -18326,10 +18328,10 @@ wwv_flow_api.create_page_item(
 ,p_name=>'P16_NON_FIXED_SUPPLY_IDS'
 ,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_api.id(41069894378275582)
-,p_prompt=>'Non Fixed Supply Ids'
+,p_prompt=>'Non Fixed Supplies'
 ,p_placeholder=>'Non Fixed Supplies'
 ,p_display_as=>'NATIVE_POPUP_LOV'
-,p_lov=>'SELECT name d, id r from bsa_non_fixed_quantity_supply'
+,p_lov=>'SELECT name d, id r from bsa_non_fixed_quantity_supply WHERE isusedup = ''N'''
 ,p_cSize=>30
 ,p_field_template=>wwv_flow_api.id(10298546746271512)
 ,p_item_template_options=>'#DEFAULT#'
@@ -19071,7 +19073,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220415084331'
+,p_last_upd_yyyymmddhh24miss=>'20220419070605'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16851652096019574)
@@ -19081,7 +19083,7 @@ wwv_flow_api.create_page_plug(
 ,p_plug_display_sequence=>10
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT ID, NAME, DATEPURCHASED, DESCRIPTION, COST,  NFSU.bsa_func_get_non_fixed_supply_usages(ID) as Usages, NFSU.bsa_func_get_non_fixed_supply_unit_cost(ID) as UnitCost',
+'SELECT ID, NAME, DATEPURCHASED, DESCRIPTION, COST,  NFSU.bsa_func_get_non_fixed_supply_usages(ID) as Usages, NFSU.bsa_func_get_non_fixed_supply_unit_cost(ID) as UnitCost, IsUsedUp',
 'FROM bsa_non_fixed_quantity_supply'))
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
@@ -19204,6 +19206,14 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 );
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(3416898077720622)
+,p_db_column_name=>'ISUSEDUP'
+,p_display_order=>27
+,p_column_identifier=>'I'
+,p_column_label=>'Is Used Up'
+,p_column_type=>'STRING'
+);
 wwv_flow_api.create_worksheet_rpt(
  p_id=>wwv_flow_api.id(16859281911027410)
 ,p_application_user=>'APXWS_DEFAULT'
@@ -19211,7 +19221,7 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_report_alias=>'168593'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'ID:NAME:DATEPURCHASED:DESCRIPTION:COST:UNITCOST:USAGES'
+,p_report_columns=>'ID:NAME:DATEPURCHASED:DESCRIPTION:COST:UNITCOST:USAGES:ISUSEDUP'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16856010769019578)
@@ -19274,7 +19284,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220406072507'
+,p_last_upd_yyyymmddhh24miss=>'20220419070644'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16841776842019565)
@@ -19455,6 +19465,22 @@ wwv_flow_api.create_page_item(
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
 ,p_attribute_03=>'right'
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(3416928033720623)
+,p_name=>'P21_ISUSEDUP'
+,p_source_data_type=>'VARCHAR2'
+,p_item_sequence=>70
+,p_item_plug_id=>wwv_flow_api.id(16841776842019565)
+,p_item_source_plug_id=>wwv_flow_api.id(16841776842019565)
+,p_prompt=>'Is Used Up'
+,p_source=>'ISUSEDUP'
+,p_source_type=>'REGION_SOURCE_COLUMN'
+,p_display_as=>'NATIVE_YES_NO'
+,p_field_template=>wwv_flow_api.id(10298784641271512)
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attribute_01=>'Y'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(16842176054019566)
