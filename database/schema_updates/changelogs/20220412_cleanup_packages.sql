@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset fcerny:1
+--changeset fcerny:1 endDelimiter:"/"
 -- We renamed the test_trigger package to test_tool_triggers, so we need to drop it
 -- Reference: https://stackoverflow.com/questions/34151428/drop-trigger-only-if-it-exists-oracle
 declare 
