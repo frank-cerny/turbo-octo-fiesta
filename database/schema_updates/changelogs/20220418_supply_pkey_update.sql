@@ -5,7 +5,7 @@ declare
   l_count integer;
 begin
     SELECT count(*) INTO l_count FROM USER_CONSTRAINTS 
-    WHERE CONSTRAINT_NAME='BSA_REVENUE_ITEM_UK';
+    WHERE CONSTRAINT_NAME='BSA_SINGLE_USE_SUPPLY_UK';
 
     if l_count > 0 then 
         execute immediate 'alter table bsa_single_use_supply drop constraint bsa_single_use_supply_uk';
