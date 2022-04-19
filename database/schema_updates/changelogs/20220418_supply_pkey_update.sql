@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset fcerny:1
+--changeset fcerny:1 endDelimiter:"/"
 declare 
   l_count integer;
 begin
@@ -13,12 +13,12 @@ begin
 end;
 /
 
---changest fcerny:2
+--changest fcerny:2 
 -- Add a new constraint back
 alter table bsa_single_use_supply
 ADD constraint bsa_single_use_supply_uk unique (project_id, name);
 
---changeset fcerny:3
+--changeset fcerny:3 endDelimiter:"/"
 -- Do the same for revenue items, dropping first to aid in testing
 -- Reference: https://docs.oracle.com/cd/B19306_01/server.102/b14237/statviews_1037.htm#i1576022
 declare 
