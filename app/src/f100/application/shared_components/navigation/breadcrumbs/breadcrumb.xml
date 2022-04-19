@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="91ac78e5129be678e620db1e5c11ad00e7ab51ad" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="8dcd7783ba86a827b6920d3e27e364e1ab822c3e" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
@@ -96,8 +96,8 @@ wwv_flow_api.create_menu_option(
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(12388107448230901)
 ,p_parent_id=>wwv_flow_api.id(12386988873230898)
-,p_short_name=>'Create Multi-Use Supply'
-,p_link=>'f?p=&APP_ID.:11:&APP_SESSION.::&DEBUG.:::'
+,p_short_name=>'Create Fixed-Use Supply'
+,p_link=>'f?p=&APP_ID.:11:&SESSION.::&DEBUG.:::'
 ,p_page_id=>11
 );
 wwv_flow_api.create_menu_option(

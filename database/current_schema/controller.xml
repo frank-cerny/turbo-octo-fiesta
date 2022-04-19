@@ -35,6 +35,8 @@
   <include file="package_spec/test_fixed_use_supply_triggers_package_spec.xml"/> 
   <include file="package_spec/test_non_fixed_supp_utitlities_package_spec.xml"/> 
   <include file="package_spec/test_non_fixed_use_supply_triggers_package_spec.xml"/> 
+  <include file="package_spec/test_revenue_item_validation_package_spec.xml"/> 
+  <include file="package_spec/test_single_use_supply_validation_package_spec.xml"/> 
   <include file="package_spec/test_tool_triggers_package_spec.xml"/> 
   <include file="package_spec/test_tool_utilities_package_spec.xml"/> 
   <include file="package_spec/tool_utilities_package_spec.xml"/> 
@@ -46,6 +48,7 @@
   <include file="index/bsa_fixed_quantity_supply_index.xml"/> 
   <include file="index/bsa_non_fixed_quantity_supply_index.xml"/> 
   <include file="index/bsa_project_title_unq_index.xml"/> 
+  <include file="index/bsa_revenue_item_uk_index.xml"/> 
   <include file="index/bsa_single_use_supply_uk_index.xml"/> 
   <include file="index/bsa_tool_name_unq_index.xml"/> 
   <include file="trigger/bsa_trigger_delete_project_fixed_supply_trigger.xml"/> 
@@ -64,6 +67,8 @@
   <include file="package_body/test_fixed_use_supply_triggers_package_body.xml"/> 
   <include file="package_body/test_non_fixed_supp_utitlities_package_body.xml"/> 
   <include file="package_body/test_non_fixed_use_supply_triggers_package_body.xml"/> 
+  <include file="package_body/test_revenue_item_validation_package_body.xml"/> 
+  <include file="package_body/test_single_use_supply_validation_package_body.xml"/> 
   <include file="package_body/test_tool_triggers_package_body.xml"/> 
   <include file="package_body/test_tool_utilities_package_body.xml"/> 
   <include file="package_body/tool_utilities_package_body.xml"/> 

@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="e21403c6732c506ebae3009c796dd87463394953" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="9a059500305c421c3da1b0c76cd30099b36520ae" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00013
 begin
@@ -33,7 +33,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220404070851'
+,p_last_upd_yyyymmddhh24miss=>'20220418071201'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12799238478974018)
@@ -156,6 +156,7 @@ wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(12799936978974020)
 ,p_name=>'P13_NAME'
 ,p_source_data_type=>'VARCHAR2'
+,p_is_primary_key=>true
 ,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_api.id(12799238478974018)
 ,p_item_source_plug_id=>wwv_flow_api.id(12799238478974018)
@@ -169,6 +170,7 @@ wwv_flow_api.create_page_item(
 ,p_field_template=>wwv_flow_api.id(10298784641271512)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
+,p_protection_level=>'S'
 ,p_encrypt_session_state_yn=>'N'
 ,p_attribute_01=>'Y'
 ,p_attribute_02=>'N'
