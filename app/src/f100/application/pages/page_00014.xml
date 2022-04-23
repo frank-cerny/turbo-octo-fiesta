@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="2fe65e976d9ede27cc56fe1d81886833bd4f02d0" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="1d163bb22ae22c5967ea75bc203cbfb99dc44800" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00014
 begin
@@ -32,7 +32,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220419064554'
+,p_last_upd_yyyymmddhh24miss=>'20220423093414'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12830357885090356)
@@ -86,6 +86,7 @@ wwv_flow_api.create_worksheet(
 ,p_report_list_mode=>'TABS'
 ,p_lazy_loading=>false
 ,p_show_detail_link=>'C'
+,p_download_auth_scheme=>wwv_flow_api.id(22430574793507174)
 ,p_download_formats=>'CSV:HTML:XLSX:PDF'
 ,p_enable_mail_download=>'Y'
 ,p_detail_link=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.:RP:P15_ID:\#ID#\'

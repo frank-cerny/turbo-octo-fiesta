@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="8dcd7783ba86a827b6920d3e27e364e1ab822c3e" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="3e19449173170daa410d7c1b265dcffd8efd88c6" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
@@ -101,20 +101,6 @@ wwv_flow_api.create_menu_option(
 ,p_page_id=>11
 );
 wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(12812164696974032)
-,p_parent_id=>wwv_flow_api.id(10342396762296625)
-,p_short_name=>'Project Single Use Supplies'
-,p_link=>'f?p=&APP_ID.:12:&APP_SESSION.::&DEBUG.:::'
-,p_page_id=>12
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(12813345462974036)
-,p_parent_id=>wwv_flow_api.id(12812164696974032)
-,p_short_name=>'Add Single Use Supply to Project'
-,p_link=>'f?p=&APP_ID.:13:&APP_SESSION.::&DEBUG.:::'
-,p_page_id=>13
-);
-wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(12834961779090361)
 ,p_parent_id=>wwv_flow_api.id(10342396762296625)
 ,p_short_name=>'Project Revenue Items'
@@ -124,8 +110,8 @@ wwv_flow_api.create_menu_option(
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(12836170893090362)
 ,p_parent_id=>wwv_flow_api.id(12834961779090361)
-,p_short_name=>'Create Revenue Items'
-,p_link=>'f?p=&APP_ID.:15:&APP_SESSION.::&DEBUG.:::'
+,p_short_name=>'Create/Edit Revenue Item'
+,p_link=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.:::'
 ,p_page_id=>15
 );
 wwv_flow_api.create_menu_option(
