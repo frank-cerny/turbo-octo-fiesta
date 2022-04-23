@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="63e054aea755076841758c0e025113464636ac42" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="8d17973c5a2b885bbf0a638491728b72c3859a41" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00015
 begin
@@ -23,17 +23,17 @@ wwv_flow_api.component_begin (
 wwv_flow_api.create_page(
  p_id=>15
 ,p_user_interface_id=>wwv_flow_api.id(10325719747271546)
-,p_name=>'Project - Create Revenue Items (m)'
+,p_name=>'Create/Edit Revenue Item'
 ,p_alias=>'PROJECT-CREATE-REVENUE-ITEMS'
 ,p_page_mode=>'MODAL'
-,p_step_title=>'Create Revenue Items'
+,p_step_title=>'Create/Edit Revenue Item'
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220404070909'
+,p_last_upd_yyyymmddhh24miss=>'20220423092824'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12819805017090348)
