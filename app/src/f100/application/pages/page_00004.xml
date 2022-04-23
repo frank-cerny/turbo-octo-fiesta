@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="bdc4bb00bf59dbcf8a59e97cd1fd266600827693" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="19a5993da994ad637b5daaacc8a78e7af6164f8a" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00004
 begin
@@ -32,7 +32,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220408071155'
+,p_last_upd_yyyymmddhh24miss=>'20220419064358'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10953429684436348)
@@ -51,8 +51,8 @@ wwv_flow_api.create_page_plug(
 '       PURCHASEDFROM,',
 '       DATEPURCHASED,',
 '       DESCRIPTION',
-'  from BSA_BIKE b',
-'-- inner join BSA_PROJECT_BIKE pb on pb.project = :P4_PROJECT_ID'))
+'from BSA_BIKE b',
+'where project_id = :P4_PROJECT_ID'))
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_prn_content_disposition=>'ATTACHMENT'

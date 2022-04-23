@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="1f25054c13364a89f319e8831f2d8465d6319c3e" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="a77af3c788f5e9d4043670be4ebfcd892d09105f" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00021
 begin
@@ -33,7 +33,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220406072507'
+,p_last_upd_yyyymmddhh24miss=>'20220419070644'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16841776842019565)
@@ -214,6 +214,22 @@ wwv_flow_api.create_page_item(
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
 ,p_attribute_03=>'right'
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(3416928033720623)
+,p_name=>'P21_ISUSEDUP'
+,p_source_data_type=>'VARCHAR2'
+,p_item_sequence=>70
+,p_item_plug_id=>wwv_flow_api.id(16841776842019565)
+,p_item_source_plug_id=>wwv_flow_api.id(16841776842019565)
+,p_prompt=>'Is Used Up'
+,p_source=>'ISUSEDUP'
+,p_source_type=>'REGION_SOURCE_COLUMN'
+,p_display_as=>'NATIVE_YES_NO'
+,p_field_template=>wwv_flow_api.id(10298784641271512)
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attribute_01=>'Y'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(16842176054019566)

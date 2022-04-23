@@ -167,4 +167,121 @@ as
         ut.expect( joinId ).not_to( be_null() );
         ut.expect( quantity ).to_( equal(50) );
     end;
+
+    -- If a client attempts to to add a fixed use supply that is "empty" the app should throw an exception
+    procedure test_trigger_update_project_fixed_use_supply_negative_single_project is
+    supplyId int;
+    projectId int;
+    joinId int;
+    quantity int;
+    begin
+        -- Setup
+        -- Create a project and a fixed use supply
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
+
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 12345', '', CURRENT_DATE, 165, 23.45);
+        SELECT fqs.id INTO supplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 12345';
+        -- Insert into View (which should trigger the trigger)
+        INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+        VALUES (supplyId, null, null, null, null, null, null, projectId);
+        -- Now update the quantity of the item (but update the quantity to more than is available) (should throw an exception)
+        UPDATE dev_ws.bsa_view_project_fixed_supply
+        SET quantity = 166
+        WHERE supply_id = supplyId and project_id = projectId;
+    end;
+
+    procedure test_trigger_update_project_fixed_use_supply_negative_multi_project is
+    supplyId int;
+    projectId int;
+    projectId1 int;
+    joinId int;
+    quantity int;
+    begin
+        -- Setup
+        -- Create two projects and a fixed use supply
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('Project2 12345', 'Project2 12345', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Project2 12345';
+
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 12345', '', CURRENT_DATE, 165, 23.45);
+        SELECT fqs.id INTO supplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 12345';
+        -- Act 
+        -- Insert into View for both the projects
+        INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+        VALUES (supplyId, null, null, null, null, null, null, projectId);
+        INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+        VALUES (supplyId, null, null, null, null, null, null, projectId1);
+        -- Now update the quantity of the item in both projects
+        UPDATE dev_ws.bsa_view_project_fixed_supply
+        SET quantity = 164
+        WHERE supply_id = supplyId and project_id = projectId;
+        -- At this point there should be 0 quantity left, and an exception should be thrown
+        UPDATE dev_ws.bsa_view_project_fixed_supply
+        SET quantity = 2
+        WHERE supply_id = supplyId and project_id = projectId1;
+    end;
+
+    -- If a a client attempts to update to a quantity that is invalid or empty, the app should throw an exception
+    procedure test_trigger_insert_project_fixed_use_supply_negative_single_project is
+    supplyId int;
+    projectId int;
+    joinId int;
+    quantity int;
+    begin
+        -- Setup
+        -- Create a project and a fixed use supply
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
+
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 12345', '', CURRENT_DATE, 1, 23.45);
+        SELECT fqs.id INTO supplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 12345';
+        -- Act 
+        -- Insert into View (which should trigger the trigger)
+        INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+        VALUES (supplyId, null, null, null, null, null, null, projectId);
+        -- If we insert again, an exception should be raised because the quantity of the fixed supply is 0 at this point
+        INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+        VALUES (supplyId, null, null, null, null, null, null, projectId);
+    end;
+
+    procedure test_trigger_insert_project_fixed_use_supply_negative_multi_project is
+    supplyId int;
+    projectId int;
+    projectId1 int;
+    joinId int;
+    quantity int;
+    begin
+        -- Setup
+        -- Create two projects and a fixed use supply
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('Project2 12345', 'Project2 12345', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Project2 12345';
+
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 12345', '', CURRENT_DATE, 2, 23.45);
+        SELECT fqs.id INTO supplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 12345';
+        -- Act 
+        -- Insert into View for both the projects
+        INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+        VALUES (supplyId, null, null, null, null, null, null, projectId);
+        INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+        VALUES (supplyId, null, null, null, null, null, null, projectId1);
+        -- If we insert again into either project, an exception should be raised because the quantity of the fixed supply is 0 at this point
+        INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+        VALUES (supplyId, null, null, null, null, null, null, projectId1);
+    end;
 end test_fixed_use_supply_triggers;
