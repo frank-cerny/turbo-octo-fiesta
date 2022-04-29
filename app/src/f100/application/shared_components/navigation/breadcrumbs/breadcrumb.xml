@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="3e19449173170daa410d7c1b265dcffd8efd88c6" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="03755d1e34570c53d6b250c5d33d629eef171972" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
@@ -30,6 +30,19 @@ wwv_flow_api.create_menu_option(
 ,p_short_name=>'Project - Create'
 ,p_link=>'f?p=&APP_ID.:22:&SESSION.::&DEBUG.:::'
 ,p_page_id=>22
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(3818374582281946)
+,p_short_name=>'Utilities'
+,p_long_name=>'Utilities'
+,p_page_id=>1
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(3819559283287524)
+,p_parent_id=>wwv_flow_api.id(3818374582281946)
+,p_short_name=>'Item Splitting'
+,p_link=>'f?p=&APP_ID.:24:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>24
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10178729384271423)
