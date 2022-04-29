@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="bbf96a3b153563da03066b8812fd00ed77ffefe4" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="14061e586a2facaadbac5ea405a57b5b3493a23b" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00006
 begin
@@ -31,7 +31,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220419072742'
+,p_last_upd_yyyymmddhh24miss=>'20220429092245'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12381699667230872)
@@ -187,6 +187,18 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_report_columns=>'ID:NAME:DESCRIPTION:DATEPURCHASED:UNITSPURCHASED:TOTALCOST:UNITSREMAINING:UNITCOST'
+,p_sort_column_1=>'NAME'
+,p_sort_direction_1=>'ASC NULLS FIRST'
+,p_sort_column_2=>'0'
+,p_sort_direction_2=>'ASC'
+,p_sort_column_3=>'0'
+,p_sort_direction_3=>'ASC'
+,p_sort_column_4=>'0'
+,p_sort_direction_4=>'ASC'
+,p_sort_column_5=>'0'
+,p_sort_direction_5=>'ASC'
+,p_sort_column_6=>'0'
+,p_sort_direction_6=>'ASC'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12387197890230899)
