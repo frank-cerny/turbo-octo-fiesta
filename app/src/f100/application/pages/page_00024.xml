@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="66da76dc172d9e5c99ed68ad44b1d6d52bdb25ad" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="5b21cde24bf41ac58540af49420ab08d366ec3f7" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00024
 begin
@@ -30,7 +30,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220506224336'
+,p_last_upd_yyyymmddhh24miss=>'20220507085022'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3819189559287524)
@@ -48,11 +48,12 @@ wwv_flow_api.create_page_button(
  p_id=>wwv_flow_api.id(3418552443720639)
 ,p_button_sequence=>60
 ,p_button_name=>'P24_BTN_SPLIT_TOOL'
-,p_button_action=>'SUBMIT'
+,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconRight'
 ,p_button_template_id=>wwv_flow_api.id(10301344720271515)
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Split Tool'
+,p_button_redirect_url=>'f?p=&APP_ID.:25:&SESSION.::&DEBUG.::P25_PROJECT_IDS:&P24_SHUTTLE.'
 ,p_grid_new_row=>'Y'
 ,p_grid_column_span=>1
 ,p_grid_column=>2
