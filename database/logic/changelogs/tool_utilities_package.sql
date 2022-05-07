@@ -10,6 +10,8 @@ as
 end tool_utilities;
 /
 
+-- TODO Add functionality to spread tool across more than 1 project at once (colon separated string from shuttle list)
+
 --changeset fcerny:2 runOnChange:true endDelimiter:"/"
 -- Functionality package 
 create or replace package body tool_utilities
