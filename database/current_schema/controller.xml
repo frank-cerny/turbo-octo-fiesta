@@ -35,6 +35,7 @@
   <include file="package_spec/test_fixed_use_supply_triggers_package_spec.xml"/> 
   <include file="package_spec/test_non_fixed_supp_utitlities_package_spec.xml"/> 
   <include file="package_spec/test_non_fixed_use_supply_triggers_package_spec.xml"/> 
+  <include file="package_spec/test_project_utilities_package_package_spec.xml"/> 
   <include file="package_spec/test_revenue_item_validation_package_spec.xml"/> 
   <include file="package_spec/test_single_use_supply_validation_package_spec.xml"/> 
   <include file="package_spec/test_tool_triggers_package_spec.xml"/> 
@@ -62,11 +63,12 @@
   <include file="trigger/bsa_trigger_update_project_tool_trigger.xml"/> 
   <include file="package_body/fixed_supp_utilities_package_body.xml"/> 
   <include file="package_body/non_fixed_supp_utilities_package_body.xml"/> 
-  <include file="package_body/project_utilities_package_body.xml"/> 
+  <include file="package_body/test_non_fixed_use_supply_triggers_package_body.xml"/> 
   <include file="package_body/test_fixed_supp_utitlities_package_body.xml"/> 
   <include file="package_body/test_fixed_use_supply_triggers_package_body.xml"/> 
   <include file="package_body/test_non_fixed_supp_utitlities_package_body.xml"/> 
-  <include file="package_body/test_non_fixed_use_supply_triggers_package_body.xml"/> 
+  <include file="package_body/project_utilities_package_body.xml"/> 
+  <include file="package_body/test_project_utilities_package_package_body.xml"/> 
   <include file="package_body/test_revenue_item_validation_package_body.xml"/> 
   <include file="package_body/test_single_use_supply_validation_package_body.xml"/> 
   <include file="package_body/test_tool_triggers_package_body.xml"/> 
