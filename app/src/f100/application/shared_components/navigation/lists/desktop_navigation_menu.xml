@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="245de82bc922568713fa7a3bbb84ceb07c332a38" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="0aa89a1549cd9a30ed88caec3be3d810787a6bcb" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/lists/desktop_navigation_menu
 begin
@@ -94,7 +94,7 @@ wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(3818688937287520)
 ,p_list_item_display_sequence=>90
 ,p_list_item_link_text=>'Item Splitting'
-,p_list_item_link_target=>'f?p=&APP_ID.:24:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:24:&SESSION.::&DEBUG.:24:::'
 ,p_parent_list_item_id=>wwv_flow_api.id(3816730496249555)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'24'
