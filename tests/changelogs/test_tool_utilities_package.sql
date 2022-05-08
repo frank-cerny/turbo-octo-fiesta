@@ -17,6 +17,17 @@ as
     procedure test_tool_unit_cost_non_zero_single_project;
     --%test(Test Get Tool Unit Cost Not 0 Multi-Project)
     procedure test_tool_unit_cost_non_zero_multi_project;
+    --%test(Test Split Single Tool No Op)
+    --%throws(-01403)
+    procedure test_tool_split_none;
+    --%test(Test Split Single Tool Among Single Project First Insert)
+    procedure test_tool_split_among_single_project_first_insert;
+    --%test(Test Split Single Tool Among Single Project Upsert)
+    procedure test_tool_split_among_single_project_upsert;
+    --%test(Test Split Single Tool Among Multiple Projects First Insert)
+    procedure test_tool_split_among_multiple_projects_first_insert;
+    --%test(Test Split Multiple Tools Among Multiple Projects First Insert)
+    procedure test_multi_tool_split_among_multiple_projects_first_insert;
 end test_tool_utilities;
 /
 
@@ -163,6 +174,144 @@ as
         -- Since the tool was not used, the function should return null (but not throw an exception)
         -- 10 / 11 = .91 (rounded to 2 decimal places)
         ut.expect(unitCost).to_( equal(.91) );
+    end;
+
+    procedure test_tool_split_none is
+    projectId NUMBER;
+    toolId NUMBER;
+    id number;
+    quantity number;
+    begin
+        -- Setup
+        -- Create a project
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Tools test', 'Tools test', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'Tools test';
+        -- Create a tool
+        INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
+        VALUES ('testTool', 'testTool', CURRENT_DATE, 10);
+        SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'testTool' and t.datepurchased = CURRENT_DATE;
+        -- Act
+        -- Pass empty strings to show they are handled correctly
+        tu.bsa_func_split_tools_over_projects('', '');
+        -- Assert
+        -- The tool should not have been added to the project, so this should throw a no_data_found exception
+        SELECT bpt.id, bpt.quantity INTO id, quantity from BSA_PROJECT_TOOL bpt WHERE project_id = projectId AND tool_id = toolId;
+    end;
+
+    procedure test_tool_split_among_single_project_first_insert is
+    projectId NUMBER;
+    toolId NUMBER;
+    id number;
+    quantity number;
+    begin
+        -- Setup
+        -- Create a project
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Tools test', 'Tools test', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'Tools test';
+        -- Create a tool
+        INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
+        VALUES ('testTool', 'testTool', CURRENT_DATE, 10);
+        SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'testTool' and t.datepurchased = CURRENT_DATE;
+        -- Act
+        tu.bsa_func_split_tools_over_projects('' || toolId, '' || projectId);
+        -- Assert
+        -- Look for the tool to be added to the join table
+        SELECT bpt.id, bpt.quantity INTO id, quantity from BSA_PROJECT_TOOL bpt WHERE project_id = projectId AND tool_id = toolId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+    end;
+
+    procedure test_tool_split_among_single_project_upsert is
+    projectId NUMBER;
+    toolId NUMBER;
+    id number;
+    quantity number;
+    begin
+        -- Setup
+        -- Create a project
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Tools test', 'Tools test', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'Tools test';
+        -- Create a tool
+        INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
+        VALUES ('testTool', 'testTool', CURRENT_DATE, 10);
+        SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'testTool' and t.datepurchased = CURRENT_DATE;
+        -- Add mappings of project to tool (so the tool has been used)
+        INSERT INTO BSA_PROJECT_TOOL(project_id, tool_id, quantity) VALUES (projectId, toolId, 5);
+        -- Act
+        tu.bsa_func_split_tools_over_projects('' || toolId, '' || projectId);
+        -- Assert
+        -- Look for the tool to be added to the join table
+        SELECT bpt.id, bpt.quantity INTO id, quantity from BSA_PROJECT_TOOL bpt WHERE project_id = projectId AND tool_id = toolId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(6) );
+    end;
+
+    procedure test_tool_split_among_multiple_projects_first_insert is
+    projectId NUMBER;
+    projectId1 NUMBER;
+    toolId NUMBER;
+    id number;
+    quantity number;
+    begin
+        -- Setup
+        -- Create two projects
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Tools test', 'Tools test', CURRENT_DATE, NULL);
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Tools test 1', 'Tools test 1', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'Tools test';
+        SELECT p.id INTO projectId1 FROM BSA_PROJECT p WHERE p.title = 'Tools test 1';
+        -- Create a tool
+        INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
+        VALUES ('testTool', 'testTool', CURRENT_DATE, 10);
+        SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = 'testTool' and t.datepurchased = CURRENT_DATE;
+        -- Act
+        tu.bsa_func_split_tools_over_projects('' || toolId, '' || projectId || ':' || projectId1);
+        -- Assert
+        -- Look for the tool to be added to the join table for both projects
+        SELECT bpt.id, bpt.quantity INTO id, quantity from BSA_PROJECT_TOOL bpt WHERE project_id = projectId AND tool_id = toolId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+        SELECT bpt.id, bpt.quantity INTO id, quantity from BSA_PROJECT_TOOL bpt WHERE project_id = projectId1 AND tool_id = toolId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+    end;
+
+    procedure test_multi_tool_split_among_multiple_projects_first_insert is
+    projectId NUMBER;
+    projectId1 NUMBER;
+    toolId NUMBER;
+    toolId1 NUMBER;
+    id number;
+    quantity number;
+    begin
+        -- Setup
+        -- Create two projects
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Tools test', 'Tools test', CURRENT_DATE, NULL);
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Tools test 1', 'Tools test 1', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'Tools test';
+        SELECT p.id INTO projectId1 FROM BSA_PROJECT p WHERE p.title = 'Tools test 1';
+        -- Create two tools
+        INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
+        VALUES ('11111', 'testTool', CURRENT_DATE, 10);
+        SELECT t.id INTO toolId FROM BSA_TOOL t WHERE t.name = '11111' and t.datepurchased = CURRENT_DATE;
+        INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
+        VALUES ('22222', 'testTool', CURRENT_DATE, 10);
+        SELECT t.id INTO toolId1 FROM BSA_TOOL t WHERE t.name = '22222' and t.datepurchased = CURRENT_DATE;
+        -- Act (create a colon separated string to mirror a shuttle list output)
+        tu.bsa_func_split_tools_over_projects('' || toolId || ':' || toolId1 , '' || projectId || ':' || projectId1);
+        -- Assert
+        -- Look for both tools to be added to the join table for both projects
+        SELECT bpt.id, bpt.quantity INTO id, quantity from BSA_PROJECT_TOOL bpt WHERE project_id = projectId AND tool_id = toolId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+        SELECT bpt.id, bpt.quantity INTO id, quantity from BSA_PROJECT_TOOL bpt WHERE project_id = projectId AND tool_id = toolId1;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+        SELECT bpt.id, bpt.quantity INTO id, quantity from BSA_PROJECT_TOOL bpt WHERE project_id = projectId1 AND tool_id = toolId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+        SELECT bpt.id, bpt.quantity INTO id, quantity from BSA_PROJECT_TOOL bpt WHERE project_id = projectId1 AND tool_id = toolId1;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
     end;
 end test_tool_utilities;
 /

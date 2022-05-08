@@ -65,7 +65,6 @@ as
     AS
         projectNameString varchar2(500);
         projectIdList apex_t_varchar2;
-        elementCount number;
         projectId number;
         projectTitle varchar2(200);
         BEGIN
