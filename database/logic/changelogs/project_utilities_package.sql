@@ -83,7 +83,6 @@ as
                 if i < projectIdList.count then
                     projectNameString := (projectNameString || ', ');
                 end if;
-                -- sys.dbms_output.put_line('SIR');
             end loop;
             return projectNameString;
         END;
