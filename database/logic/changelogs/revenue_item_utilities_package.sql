@@ -15,7 +15,7 @@ as
     IS
         projectIdList apex_t_varchar2;
         projectDescription varchar2(100);
-        unitSalePrice number;
+        unitSalePrice number(10,2);
     BEGIN
         -- Break the strings into arrays (can be empty)
         projectIdList := apex_string.split(projectIdString, ':');
