@@ -28,7 +28,7 @@ as
         for i in 1 .. projectIdList.count loop
             -- Use given parameters from client
             INSERT INTO BSA_SINGLE_USE_SUPPLY(name, description, datePurchased, project_id, isPending, unitCost, unitsPurchased, revenueItem_id)
-            VALUES (name, '' || description || ' (Split Among Projects: ' || pu.bsa_func_return_project_name_string_from_ids(projectIdString) || ')', datePurchased, TO_NUMBER(projectIdList(i)), isPending, unitCost, unitsPurchased, revenueItemId);
+            VALUES (name, '' || description || ' (Split Among Projects: ' || pu.bsa_func_return_project_name_string_from_ids(projectIdString) || ')', datePurchased, TO_NUMBER(projectIdList(i)), isPending, splitUnitCost, unitsPurchased, revenueItemId);
         end loop;
     END;
 end single_use_supply_utilities;

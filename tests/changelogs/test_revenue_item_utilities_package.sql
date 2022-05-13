@@ -65,7 +65,7 @@ as
         ut.expect(isPending).to_( equal('N') );
         ut.expect(dateSold).to_( equal(CURRENT_DATE) );
         -- Also assert that this item doesn't exist anywhere else
-        SELECT count(id) INTO rowCount from BSA_REVENUE_ITEM where name = 'item name 22222' and project_id = projectId;
+        SELECT count(id) INTO rowCount from BSA_REVENUE_ITEM where name = 'item name 22222';
         ut.expect(rowCount).to_( equal(1) );
     end;
 
