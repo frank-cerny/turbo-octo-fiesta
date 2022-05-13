@@ -3,7 +3,8 @@
 as 
     function bsa_func_get_fixed_supply_units_remaining(supplyId IN number)
     return number;
-    -- This is a wrapper on simple division, but with rounding 
+    
     function bsa_func_get_fixed_supply_unit_cost(supplyId IN number)
     return number;
+    procedure bsa_func_split_fixed_supplies_over_projects (supplyIdString IN varchar2, projectIdString IN varchar2);
 end fixed_supp_utilities;
