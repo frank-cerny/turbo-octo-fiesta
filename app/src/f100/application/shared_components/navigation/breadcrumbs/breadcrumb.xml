@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="c3361b990cb1a8e8778994f7f344daff1b044375" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="85260b90ac0e5a18a4cb496828043847b849e2e9" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
@@ -50,6 +50,13 @@ wwv_flow_api.create_menu_option(
 ,p_short_name=>'Amortization - Tool'
 ,p_link=>'f?p=&APP_ID.:25:&APP_SESSION.::&DEBUG.:::'
 ,p_page_id=>25
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6203870556508723)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Split Utility - Fixed Use Supplies'
+,p_link=>'f?p=&APP_ID.:23:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>23
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10178729384271423)
