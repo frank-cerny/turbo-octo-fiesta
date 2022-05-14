@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="f9bd57b9d275d3c0c851a211afe1fe2d5d6805cf" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="31a8b8b2df300e92e22134fcfd02c379b45f6fa6" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
@@ -64,6 +64,13 @@ wwv_flow_api.create_menu_option(
 ,p_short_name=>'Split Utility - NF Use Supplies'
 ,p_link=>'f?p=&APP_ID.:26:&APP_SESSION.::&DEBUG.:::'
 ,p_page_id=>26
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6400964264849621)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Split Utility - Single Use Supply'
+,p_link=>'f?p=&APP_ID.:27:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>27
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10178729384271423)
