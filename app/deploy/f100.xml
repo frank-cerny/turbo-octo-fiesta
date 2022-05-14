@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="a83b192de836b6ae689a05a1f993ea120b45c0f5" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="0e4bd7095c103c38791f1687655ca4645cb1694d" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/set_environment
 set define off verify off feedback off
@@ -40,18 +40,18 @@ prompt APPLICATION 100 - Bike Selling Application
 --   Exported By:     DEV_WS
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                     27
---       Items:                   76
+--     Pages:                     28
+--       Items:                   78
 --       Processes:               35
---       Regions:                 83
---       Buttons:                 61
---       Dynamic Actions:         40
+--       Regions:                 85
+--       Buttons:                 63
+--       Dynamic Actions:         41
 --     Shared Components:
 --       Logic:
 --       Navigation:
 --         Lists:                  3
 --         Breadcrumbs:            1
---           Entries:             24
+--           Entries:             25
 --       Security:
 --         Authentication:         2
 --         Authorization:          2
@@ -127,7 +127,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Bike Selling Application'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220514120244'
+,p_last_upd_yyyymmddhh24miss=>'20220514121828'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -579,6 +579,13 @@ wwv_flow_api.create_menu_option(
 ,p_short_name=>'Split Utility - Fixed Use Supplies'
 ,p_link=>'f?p=&APP_ID.:23:&APP_SESSION.::&DEBUG.:::'
 ,p_page_id=>23
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6303158836766860)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Split Utility - NF Use Supplies'
+,p_link=>'f?p=&APP_ID.:26:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>26
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10178729384271423)
@@ -17904,16 +17911,15 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220419071529'
+,p_last_upd_yyyymmddhh24miss=>'20220514121828'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(41069894378275582)
 ,p_plug_name=>'Add Fixed Use Supply Mapping'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_api.id(10236192890271473)
-,p_plug_display_sequence=>20
+,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_03'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'HTML'
@@ -18307,8 +18313,8 @@ wwv_flow_api.create_ig_report_column(
 );
 wwv_flow_api.create_page_button(
  p_id=>wwv_flow_api.id(14967663712679312)
-,p_button_sequence=>20
-,p_button_plug_id=>wwv_flow_api.id(44365119964851378)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_api.id(41069894378275582)
 ,p_button_name=>'P16_CANCEL_DIALOG'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
@@ -18320,7 +18326,7 @@ wwv_flow_api.create_page_button(
 wwv_flow_api.create_page_button(
  p_id=>wwv_flow_api.id(14968058780679313)
 ,p_button_sequence=>10
-,p_button_plug_id=>wwv_flow_api.id(44365119964851378)
+,p_button_plug_id=>wwv_flow_api.id(41069894378275582)
 ,p_button_name=>'P16_SUBMIT_FIXED_SUPPLY'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
@@ -18331,32 +18337,25 @@ wwv_flow_api.create_page_button(
 ,p_database_action=>'INSERT'
 );
 wwv_flow_api.create_page_item(
- p_id=>wwv_flow_api.id(14966589331679310)
+ p_id=>wwv_flow_api.id(6207400484520411)
 ,p_name=>'P16_NON_FIXED_SUPPLY_IDS'
-,p_item_sequence=>20
+,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_api.id(41069894378275582)
-,p_prompt=>'Non Fixed Supplies'
-,p_placeholder=>'Non Fixed Supplies'
-,p_display_as=>'NATIVE_POPUP_LOV'
+,p_prompt=>'Non-Fixed Supplies'
+,p_display_as=>'NATIVE_SHUTTLE'
 ,p_lov=>'SELECT name d, id r from bsa_non_fixed_quantity_supply WHERE isusedup = ''N'''
-,p_cSize=>30
-,p_field_template=>wwv_flow_api.id(10298546746271512)
+,p_cHeight=>5
+,p_begin_on_new_line=>'N'
+,p_begin_on_new_field=>'N'
+,p_field_template=>wwv_flow_api.id(10298784641271512)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
-,p_encrypt_session_state_yn=>'N'
-,p_attribute_01=>'POPUP'
-,p_attribute_02=>'FIRST_ROWSET'
-,p_attribute_03=>'Y'
-,p_attribute_04=>'N'
-,p_attribute_05=>'Y'
-,p_attribute_06=>'0'
-,p_attribute_07=>'Title'
-,p_attribute_11=>','
+,p_attribute_01=>'ALL'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(14966915843679311)
 ,p_name=>'P16_PROJECT_ID'
-,p_item_sequence=>30
+,p_item_sequence=>40
 ,p_item_plug_id=>wwv_flow_api.id(41069894378275582)
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_encrypt_session_state_yn=>'N'
@@ -18380,18 +18379,11 @@ wwv_flow_api.create_page_da_action(
 ,p_action=>'NATIVE_EXECUTE_PLSQL_CODE'
 ,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'DECLARE ',
-'    supplyIds apex_t_varchar2;',
 'BEGIN',
-'    supplyIds := apex_string.split(:P16_NON_FIXED_SUPPLY_IDS, '','');',
-'    FOR i in 1 .. supplyIds.count LOOP',
-'        INSERT INTO bsa_view_project_non_fixed_supply (supply_id, name, description, datepurchased, cost, quantity, project_id, costbasis)',
-'        VALUES (TO_NUMBER(supplyIds(i)), NULL, NULL, NULL, NULL, NULL, :P16_PROJECT_ID, NULL);',
-'    END LOOP;',
+'    NFSU.bsa_func_split_non_fixed_supplies_over_projects(:P16_NON_FIXED_SUPPLY_IDS, '''' || :P16_PROJECT_ID);',
 'END;',
 ''))
-,p_attribute_02=>'P16_NON_FIXED_SUPPLY_IDS,P16_PROJECT_ID'
-,p_attribute_03=>'P16_NON_FIXED_SUPPLY_IDS'
-,p_attribute_04=>'N'
+,p_attribute_02=>'P16_PROJECT_ID,P16_NON_FIXED_SUPPLY_IDS'
 ,p_attribute_05=>'PLSQL'
 ,p_wait_for_result=>'Y'
 );
@@ -20014,7 +20006,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220514114350'
+,p_last_upd_yyyymmddhh24miss=>'20220514121253'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3819189559287524)
@@ -20115,6 +20107,15 @@ wwv_flow_api.create_page_branch(
 ,p_branch_type=>'REDIRECT_URL'
 ,p_branch_when_button_id=>wwv_flow_api.id(3418740011720641)
 ,p_branch_sequence=>20
+);
+wwv_flow_api.create_page_branch(
+ p_id=>wwv_flow_api.id(6207382051520410)
+,p_branch_name=>'NF Supply Button to NF Supply Split Menu'
+,p_branch_action=>'f?p=&APP_ID.:26:&SESSION.::&DEBUG.:26:P26_PROJECT_IDS:\&P24_SHUTTLE.\&success_msg=#SUCCESS_MSG#'
+,p_branch_point=>'AFTER_PROCESSING'
+,p_branch_type=>'REDIRECT_URL'
+,p_branch_when_button_id=>wwv_flow_api.id(3418678175720640)
+,p_branch_sequence=>30
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(3417149397720625)
@@ -20377,7 +20378,7 @@ wwv_flow_api.create_page_da_event(
 ,p_triggering_element_type=>'BUTTON'
 ,p_triggering_button_id=>wwv_flow_api.id(3418678175720640)
 ,p_condition_element=>'P24_SHUTTLE'
-,p_triggering_condition_type=>'NULL'
+,p_triggering_condition_type=>'NOT_NULL'
 ,p_bind_type=>'bind'
 ,p_bind_event_type=>'click'
 );
@@ -20565,6 +20566,146 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_action(
  p_id=>wwv_flow_api.id(4707833949391444)
 ,p_event_id=>wwv_flow_api.id(4706597889391431)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_SUBMIT_PAGE'
+,p_attribute_02=>'Y'
+);
+end;
+/
+prompt --application/pages/page_00026
+begin
+wwv_flow_api.create_page(
+ p_id=>26
+,p_user_interface_id=>wwv_flow_api.id(10325719747271546)
+,p_name=>'Split Utility - NF Use Supplies'
+,p_alias=>'SPLIT-UTILITY-NF-USE-SUPPLIES'
+,p_step_title=>'Split Utility - NF Use Supplies'
+,p_autocomplete_on_off=>'OFF'
+,p_page_template_options=>'#DEFAULT#'
+,p_protection_level=>'C'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220514121352'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(17207613362666951)
+,p_plug_name=>'Add Non-Fixed Use Supplies To Projects'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>10
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'BELOW'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'DECLARE',
+'    projectTitles varchar2(500);',
+'BEGIN',
+'    APEX_DEBUG.ENABLE(apex_debug.c_log_level_engine_trace);',
+'    apex_debug.info(''Project Id List: '' || :P26_PROJECT_IDS);',
+'    -- Now format and print to the screen using the htp package',
+'    projectTitles := pu.bsa_func_return_project_name_string_from_ids(:P26_PROJECT_IDS);',
+'    htp.header(2, ''Projects to Add'');',
+'    sys.htp.paragraph(NULL, NULL, NULL, NULL);',
+'    htp.p('''' || projectTitles);',
+'END;'))
+,p_plug_source_type=>'NATIVE_PLSQL'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(17402704358339005)
+,p_plug_name=>'Breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10245532811271478)
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_menu_id=>wwv_flow_api.id(10178561499271422)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>wwv_flow_api.id(10302683604271516)
+);
+wwv_flow_api.create_page_button(
+ p_id=>wwv_flow_api.id(6301116694766851)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_api.id(17207613362666951)
+,p_button_name=>'Cancel'
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#:t-Button--iconRight'
+,p_button_template_id=>wwv_flow_api.id(10301344720271515)
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Cancel'
+,p_button_position=>'CLOSE'
+,p_button_redirect_url=>'f?p=&APP_ID.:24:&SESSION.::&DEBUG.:::'
+);
+wwv_flow_api.create_page_button(
+ p_id=>wwv_flow_api.id(6301522445766852)
+,p_button_sequence=>30
+,p_button_plug_id=>wwv_flow_api.id(17207613362666951)
+,p_button_name=>'Submit'
+,p_button_action=>'DEFINED_BY_DA'
+,p_button_template_options=>'#DEFAULT#:t-Button--iconRight'
+,p_button_template_id=>wwv_flow_api.id(10301344720271515)
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Submit'
+,p_button_position=>'CREATE'
+,p_warn_on_unsaved_changes=>null
+);
+wwv_flow_api.create_page_branch(
+ p_id=>wwv_flow_api.id(6304808055766864)
+,p_branch_name=>'Submit To Caller'
+,p_branch_action=>'f?p=&APP_ID.:24:&SESSION.::&DEBUG.:::&success_msg=#SUCCESS_MSG#'
+,p_branch_point=>'AFTER_PROCESSING'
+,p_branch_type=>'REDIRECT_URL'
+,p_branch_sequence=>10
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(6301914884766855)
+,p_name=>'P26_PROJECT_IDS'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_api.id(17207613362666951)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attribute_01=>'Y'
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(6302364459766857)
+,p_name=>'P26_SHUTTLE_NON_FIXED_USE_SUPPLIES'
+,p_item_sequence=>15
+,p_item_plug_id=>wwv_flow_api.id(17207613362666951)
+,p_prompt=>'Non-Fixed Use Supplies'
+,p_display_as=>'NATIVE_SHUTTLE'
+,p_lov=>'SELECT name d, id r from bsa_non_fixed_quantity_supply WHERE isusedup = ''N'''
+,p_cHeight=>5
+,p_field_template=>wwv_flow_api.id(10298784641271512)
+,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'YES'
+,p_attribute_01=>'ALL'
+);
+wwv_flow_api.create_page_da_event(
+ p_id=>wwv_flow_api.id(6303380915766862)
+,p_name=>'Submit Values'
+,p_event_sequence=>10
+,p_triggering_element_type=>'BUTTON'
+,p_triggering_button_id=>wwv_flow_api.id(6301522445766852)
+,p_bind_type=>'bind'
+,p_bind_event_type=>'click'
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(6303859478766863)
+,p_event_id=>wwv_flow_api.id(6303380915766862)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_EXECUTE_PLSQL_CODE'
+,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'-- Split any number of tools over multiple projects',
+'nfsu.bsa_func_split_non_fixed_supplies_over_projects(:P26_SHUTTLE_NON_FIXED_USE_SUPPLIES, :P26_PROJECT_IDS);'))
+,p_attribute_02=>'P26_PROJECT_IDS,P26_SHUTTLE_NON_FIXED_USE_SUPPLIES'
+,p_attribute_05=>'PLSQL'
+,p_wait_for_result=>'Y'
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(6304316373766864)
+,p_event_id=>wwv_flow_api.id(6303380915766862)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>20
 ,p_execute_on_page_init=>'N'
