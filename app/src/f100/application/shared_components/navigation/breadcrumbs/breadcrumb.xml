@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="91ac78e5129be678e620db1e5c11ad00e7ab51ad" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="62add144600aee34824a477bba9967f10fb2d00d" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
@@ -30,6 +30,54 @@ wwv_flow_api.create_menu_option(
 ,p_short_name=>'Project - Create'
 ,p_link=>'f?p=&APP_ID.:22:&SESSION.::&DEBUG.:::'
 ,p_page_id=>22
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(3818374582281946)
+,p_short_name=>'Utilities'
+,p_long_name=>'Utilities'
+,p_page_id=>1
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(3819559283287524)
+,p_parent_id=>wwv_flow_api.id(3818374582281946)
+,p_short_name=>'Item Splitting'
+,p_link=>'f?p=&APP_ID.:24:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>24
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(4901216918063478)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Amortization - Tool'
+,p_link=>'f?p=&APP_ID.:25:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>25
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6203870556508723)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Split Utility - Fixed Use Supplies'
+,p_link=>'f?p=&APP_ID.:23:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>23
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6303158836766860)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Split Utility - NF Use Supplies'
+,p_link=>'f?p=&APP_ID.:26:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>26
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6400964264849621)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Split Utility - Single Use Supply'
+,p_link=>'f?p=&APP_ID.:27:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>27
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6709035395668513)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Split Utility - Single Use Supply'
+,p_link=>'f?p=&APP_ID.:28:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>28
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10178729384271423)
@@ -96,23 +144,9 @@ wwv_flow_api.create_menu_option(
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(12388107448230901)
 ,p_parent_id=>wwv_flow_api.id(12386988873230898)
-,p_short_name=>'Create Multi-Use Supply'
-,p_link=>'f?p=&APP_ID.:11:&APP_SESSION.::&DEBUG.:::'
+,p_short_name=>'Create Fixed-Use Supply'
+,p_link=>'f?p=&APP_ID.:11:&SESSION.::&DEBUG.:::'
 ,p_page_id=>11
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(12812164696974032)
-,p_parent_id=>wwv_flow_api.id(10342396762296625)
-,p_short_name=>'Project Single Use Supplies'
-,p_link=>'f?p=&APP_ID.:12:&APP_SESSION.::&DEBUG.:::'
-,p_page_id=>12
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(12813345462974036)
-,p_parent_id=>wwv_flow_api.id(12812164696974032)
-,p_short_name=>'Add Single Use Supply to Project'
-,p_link=>'f?p=&APP_ID.:13:&APP_SESSION.::&DEBUG.:::'
-,p_page_id=>13
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(12834961779090361)
@@ -124,8 +158,8 @@ wwv_flow_api.create_menu_option(
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(12836170893090362)
 ,p_parent_id=>wwv_flow_api.id(12834961779090361)
-,p_short_name=>'Create Revenue Items'
-,p_link=>'f?p=&APP_ID.:15:&APP_SESSION.::&DEBUG.:::'
+,p_short_name=>'Create/Edit Revenue Item'
+,p_link=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.:::'
 ,p_page_id=>15
 );
 wwv_flow_api.create_menu_option(

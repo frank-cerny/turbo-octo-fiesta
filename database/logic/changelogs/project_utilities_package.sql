@@ -5,6 +5,8 @@ create or replace package project_utilities
 as 
     function bsa_func_calculate_net_project_value(projectId IN int)
     return number;
+    function bsa_func_return_project_name_string_from_ids (projectIdString IN varchar2)
+    return varchar2;
 end project_utilities;
 /
 
@@ -56,6 +58,33 @@ as
             -- apex_debug.info('Revenue: ' || revenue);
             -- Setting the out value is the same as "returning a value"
             return  (revenue - bikeCost - toolCost - singleUseSupplyCost - fixedSupplyCost - nonFixedSupplyCost);
+        END;
+    -- projectIdString is a colon separated project id string
+    function bsa_func_return_project_name_string_from_ids (projectIdString IN varchar2)
+    RETURN varchar2
+    AS
+        projectNameString varchar2(500);
+        projectIdList apex_t_varchar2;
+        projectId number;
+        projectTitle varchar2(200);
+        BEGIN
+            projectIdList := apex_string.split(projectIdString, ':');
+            -- Count the number of non-null items in the 1xN table 
+            if projectIdList.count = 0 then
+                return 'No Projects Selected';
+            end if;
+            -- Iterate through the list of ids to get the name of the project (works on 1 - N ids)
+            projectNameString := '';
+            for i in 1 .. projectIdList.count loop
+                projectId := TO_NUMBER(projectidList(i));
+                SELECT p.title into projectTitle from bsa_project p where id = projectId;
+                projectNameString := (projectNameString || projectTitle);
+                -- If there are more items in the list, append a comma (when i = count, we have found the last item)
+                if i < projectIdList.count then
+                    projectNameString := (projectNameString || ', ');
+                end if;
+            end loop;
+            return projectNameString;
         END;
 end project_utilities;
 /

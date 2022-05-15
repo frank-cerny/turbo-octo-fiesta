@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="46f6e23638307c94c72fb7713d5c750cddad9a9c" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="c7fb7b982ed11fbbcddabc18ba1504a841c5e698" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00020
 begin
@@ -31,7 +31,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220415084331'
+,p_last_upd_yyyymmddhh24miss=>'20220429092301'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16851652096019574)
@@ -41,7 +41,7 @@ wwv_flow_api.create_page_plug(
 ,p_plug_display_sequence=>10
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT ID, NAME, DATEPURCHASED, DESCRIPTION, COST,  NFSU.bsa_func_get_non_fixed_supply_usages(ID) as Usages, NFSU.bsa_func_get_non_fixed_supply_unit_cost(ID) as UnitCost',
+'SELECT ID, NAME, DATEPURCHASED, DESCRIPTION, COST,  NFSU.bsa_func_get_non_fixed_supply_usages(ID) as Usages, NFSU.bsa_func_get_non_fixed_supply_unit_cost(ID) as UnitCost, IsUsedUp',
 'FROM bsa_non_fixed_quantity_supply'))
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
@@ -164,6 +164,14 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 );
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(3416898077720622)
+,p_db_column_name=>'ISUSEDUP'
+,p_display_order=>27
+,p_column_identifier=>'I'
+,p_column_label=>'Is Used Up'
+,p_column_type=>'STRING'
+);
 wwv_flow_api.create_worksheet_rpt(
  p_id=>wwv_flow_api.id(16859281911027410)
 ,p_application_user=>'APXWS_DEFAULT'
@@ -171,7 +179,19 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_report_alias=>'168593'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'ID:NAME:DATEPURCHASED:DESCRIPTION:COST:UNITCOST:USAGES'
+,p_report_columns=>'ID:NAME:DATEPURCHASED:DESCRIPTION:COST:UNITCOST:USAGES:ISUSEDUP'
+,p_sort_column_1=>'NAME'
+,p_sort_direction_1=>'ASC NULLS FIRST'
+,p_sort_column_2=>'0'
+,p_sort_direction_2=>'ASC'
+,p_sort_column_3=>'0'
+,p_sort_direction_3=>'ASC'
+,p_sort_column_4=>'0'
+,p_sort_direction_4=>'ASC'
+,p_sort_column_5=>'0'
+,p_sort_direction_5=>'ASC'
+,p_sort_column_6=>'0'
+,p_sort_direction_6=>'ASC'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16856010769019578)

@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="7c4b5d7dd7533987c49209dc7820210770f7393c" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="0aa89a1549cd9a30ed88caec3be3d810787a6bcb" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/lists/desktop_navigation_menu
 begin
@@ -29,16 +29,18 @@ wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(10335716212271598)
 ,p_list_item_display_sequence=>10
 ,p_list_item_link_text=>'Home'
-,p_list_item_link_target=>'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.:'
+,p_list_item_link_target=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-home'
+,p_security_scheme=>wwv_flow_api.id(22430574793507174)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(10339134510286205)
 ,p_list_item_display_sequence=>20
 ,p_list_item_link_text=>'Projects'
-,p_list_item_link_target=>'f?p=&APP_ID.:2:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_api.id(10335716212271598)
+,p_security_scheme=>wwv_flow_api.id(22430574793507174)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'2'
 );
@@ -46,8 +48,9 @@ wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(11360892549948049)
 ,p_list_item_display_sequence=>40
 ,p_list_item_link_text=>'Tools'
-,p_list_item_link_target=>'f?p=&APP_ID.:7:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:7:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_api.id(10335716212271598)
+,p_security_scheme=>wwv_flow_api.id(22430574793507174)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'7,8'
 );
@@ -57,6 +60,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_text=>'Fixed-Use Supplies'
 ,p_list_item_link_target=>'f?p=&APP_ID.:6:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_api.id(10335716212271598)
+,p_security_scheme=>wwv_flow_api.id(22430574793507174)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'6,11'
 );
@@ -66,6 +70,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_text=>'Non-Fixed Use Supplies'
 ,p_list_item_link_target=>'f?p=&APP_ID.:20:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_api.id(10335716212271598)
+,p_security_scheme=>wwv_flow_api.id(22430574793507174)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'20,21'
 );
@@ -75,7 +80,24 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_text=>'Locations'
 ,p_list_item_link_target=>'f?p=&APP_ID.:18:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_api.id(10335716212271598)
+,p_security_scheme=>wwv_flow_api.id(22430574793507174)
 ,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(3816730496249555)
+,p_list_item_display_sequence=>80
+,p_list_item_link_text=>'Utilities'
+,p_security_scheme=>wwv_flow_api.id(22430574793507174)
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(3818688937287520)
+,p_list_item_display_sequence=>90
+,p_list_item_link_text=>'Item Splitting'
+,p_list_item_link_target=>'f?p=&APP_ID.:24:&SESSION.::&DEBUG.:24:::'
+,p_parent_list_item_id=>wwv_flow_api.id(3816730496249555)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'24'
 );
 wwv_flow_api.component_end;
 end;

@@ -8,6 +8,7 @@ as
     -- This is a wrapper on simple division, but with rounding 
     function bsa_func_get_fixed_supply_unit_cost(supplyId IN number)
     return number;
+    procedure bsa_func_split_fixed_supplies_over_projects (supplyIdString IN varchar2, projectIdString IN varchar2);
 end fixed_supp_utilities;
 /
 
@@ -55,5 +56,29 @@ as
             unitCost := totalCost/unitsPurchased;
             return unitCost;
         END;
+
+    -- Requires:
+    --  1. supplyIdString and projectIdString are well formatted colon separated strings of integers
+    procedure bsa_func_split_fixed_supplies_over_projects (supplyIdString IN varchar2, projectIdString IN varchar2)
+    IS
+        projectIdList apex_t_varchar2;
+        supplyIdList apex_t_varchar2;
+    BEGIN
+        -- Break the strings into arrays (can be empty)
+        projectIdList := apex_string.split(projectIdString, ':');
+        supplyIdList := apex_string.split(supplyIdString, ':');
+        -- Both arrays must be non empty for this to work
+        if projectIdList.count = 0 or supplyIdList.count = 0 then
+            return;
+        end if;
+        -- Iterate through both arrays
+        for i in 1 .. projectIdList.count loop
+            for j in 1 .. supplyIdList.count loop
+                -- We use the view here because otherwise our trigger wouldn't work (it would be a recursive, never ending trigger)
+                INSERT INTO bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+                        VALUES (TO_NUMBER(supplyIdList(j)), null, null, null, null, null, null, TO_NUMBER(projectIdList(i)));
+            end loop;
+        end loop;
+    END;
 end fixed_supp_utilities;
 /

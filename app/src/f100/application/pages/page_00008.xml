@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="e5f01e0c34e24249dd0be26571eccee98da1c1fe" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="fbed1c69740d68a714946a0c3983a42b6d42f0f6" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00008
 begin
@@ -33,7 +33,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220404070805'
+,p_last_upd_yyyymmddhh24miss=>'20220515073356'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(11347756890948029)
@@ -157,10 +157,9 @@ wwv_flow_api.create_page_item(
 ,p_name=>'P8_NAME'
 ,p_source_data_type=>'VARCHAR2'
 ,p_is_required=>true
-,p_item_sequence=>20
+,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_api.id(11347756890948029)
 ,p_item_source_plug_id=>wwv_flow_api.id(11347756890948029)
-,p_use_cache_before_default=>'NO'
 ,p_prompt=>'Name'
 ,p_source=>'NAME'
 ,p_source_type=>'REGION_SOURCE_COLUMN'
@@ -168,7 +167,6 @@ wwv_flow_api.create_page_item(
 ,p_cSize=>60
 ,p_cMaxlength=>255
 ,p_cHeight=>4
-,p_label_alignment=>'RIGHT'
 ,p_field_template=>wwv_flow_api.id(10300025768271513)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -182,10 +180,9 @@ wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(11348813218948031)
 ,p_name=>'P8_DESCRIPTION'
 ,p_source_data_type=>'VARCHAR2'
-,p_item_sequence=>30
+,p_item_sequence=>40
 ,p_item_plug_id=>wwv_flow_api.id(11347756890948029)
 ,p_item_source_plug_id=>wwv_flow_api.id(11347756890948029)
-,p_use_cache_before_default=>'NO'
 ,p_prompt=>'Description'
 ,p_source=>'DESCRIPTION'
 ,p_source_type=>'REGION_SOURCE_COLUMN'
@@ -193,7 +190,6 @@ wwv_flow_api.create_page_item(
 ,p_cSize=>60
 ,p_cMaxlength=>4000
 ,p_cHeight=>4
-,p_label_alignment=>'RIGHT'
 ,p_field_template=>wwv_flow_api.id(10298784641271512)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -207,7 +203,7 @@ wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(11349288585948031)
 ,p_name=>'P8_DATEPURCHASED'
 ,p_source_data_type=>'DATE'
-,p_item_sequence=>40
+,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_api.id(11347756890948029)
 ,p_item_source_plug_id=>wwv_flow_api.id(11347756890948029)
 ,p_prompt=>'Date Purchased'
@@ -232,7 +228,7 @@ wwv_flow_api.create_page_item(
 ,p_name=>'P8_TOTALCOST'
 ,p_source_data_type=>'NUMBER'
 ,p_is_required=>true
-,p_item_sequence=>50
+,p_item_sequence=>60
 ,p_item_plug_id=>wwv_flow_api.id(11347756890948029)
 ,p_item_source_plug_id=>wwv_flow_api.id(11347756890948029)
 ,p_prompt=>'Total Cost'

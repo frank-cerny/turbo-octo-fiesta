@@ -38,4 +38,28 @@ as
             unitCost := totalCost/unitsPurchased;
             return unitCost;
         END;
+
+    
+    
+    procedure bsa_func_split_fixed_supplies_over_projects (supplyIdString IN varchar2, projectIdString IN varchar2)
+    IS
+        projectIdList apex_t_varchar2;
+        supplyIdList apex_t_varchar2;
+    BEGIN
+        
+        projectIdList := apex_string.split(projectIdString, ':');
+        supplyIdList := apex_string.split(supplyIdString, ':');
+        
+        if projectIdList.count = 0 or supplyIdList.count = 0 then
+            return;
+        end if;
+        
+        for i in 1 .. projectIdList.count loop
+            for j in 1 .. supplyIdList.count loop
+                
+                INSERT INTO bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+                        VALUES (TO_NUMBER(supplyIdList(j)), null, null, null, null, null, null, TO_NUMBER(projectIdList(i)));
+            end loop;
+        end loop;
+    END;
 end fixed_supp_utilities;

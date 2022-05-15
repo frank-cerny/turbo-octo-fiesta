@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="fc718b57d84f0fd582ab8cd044dd4840dec7d10a" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="5e1b6428c43e864168d8c5b1ff73279c50e7d320" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/pages/page_00009
 begin
@@ -31,16 +31,15 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220404070814'
+,p_last_upd_yyyymmddhh24miss=>'20220514120244'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(26104277233596281)
 ,p_plug_name=>'Add Fixed Use Supply Mapping'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_api.id(10236192890271473)
-,p_plug_display_sequence=>20
+,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_03'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'HTML'
@@ -466,8 +465,8 @@ wwv_flow_api.create_ig_report_column(
 );
 wwv_flow_api.create_page_button(
  p_id=>wwv_flow_api.id(14739844443607418)
-,p_button_sequence=>20
-,p_button_plug_id=>wwv_flow_api.id(29399502820172077)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_api.id(26104277233596281)
 ,p_button_name=>'P9_CANCEL_DIALOG'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
@@ -479,7 +478,7 @@ wwv_flow_api.create_page_button(
 wwv_flow_api.create_page_button(
  p_id=>wwv_flow_api.id(14740266558607419)
 ,p_button_sequence=>10
-,p_button_plug_id=>wwv_flow_api.id(29399502820172077)
+,p_button_plug_id=>wwv_flow_api.id(26104277233596281)
 ,p_button_name=>'P9_SUBMIT_FIXED_SUPPLY'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
@@ -490,32 +489,25 @@ wwv_flow_api.create_page_button(
 ,p_database_action=>'INSERT'
 );
 wwv_flow_api.create_page_item(
- p_id=>wwv_flow_api.id(14738768514607410)
+ p_id=>wwv_flow_api.id(6207213356520409)
 ,p_name=>'P9_FIXED_SUPPLY_IDS'
-,p_item_sequence=>20
+,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_api.id(26104277233596281)
-,p_prompt=>'Fixed Supply Ids'
-,p_placeholder=>'Fixed Use Supplies'
-,p_display_as=>'NATIVE_POPUP_LOV'
-,p_lov=>'SELECT name d, id r from bsa_fixed_quantity_supply'
-,p_cSize=>30
-,p_field_template=>wwv_flow_api.id(10298546746271512)
+,p_prompt=>'Fixed Use Supplies'
+,p_display_as=>'NATIVE_SHUTTLE'
+,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT name d, id r from bsa_fixed_quantity_supply',
+'WHERE FSU.bsa_func_get_fixed_supply_units_remaining(ID) > 0'))
+,p_cHeight=>5
+,p_field_template=>wwv_flow_api.id(10298784641271512)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
-,p_encrypt_session_state_yn=>'N'
-,p_attribute_01=>'POPUP'
-,p_attribute_02=>'FIRST_ROWSET'
-,p_attribute_03=>'Y'
-,p_attribute_04=>'N'
-,p_attribute_05=>'Y'
-,p_attribute_06=>'0'
-,p_attribute_07=>'Title'
-,p_attribute_11=>','
+,p_attribute_01=>'ALL'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(14739121950607417)
 ,p_name=>'P9_PROJECT_ID'
-,p_item_sequence=>30
+,p_item_sequence=>40
 ,p_item_plug_id=>wwv_flow_api.id(26104277233596281)
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_encrypt_session_state_yn=>'N'
@@ -539,18 +531,11 @@ wwv_flow_api.create_page_da_action(
 ,p_action=>'NATIVE_EXECUTE_PLSQL_CODE'
 ,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'DECLARE ',
-'    supplyIds apex_t_varchar2;',
 'BEGIN',
-'    supplyIds := apex_string.split(:P9_FIXED_SUPPLY_IDS, '','');',
-'    FOR i in 1 .. supplyIds.count LOOP',
-'        INSERT INTO bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id, unitcost, costbasis)',
-'        VALUES (TO_NUMBER(supplyIds(i)), NULL, NULL, NULL, NULL, NULL, NULL, :P9_PROJECT_ID, NULL, NULL);',
-'    END LOOP;',
+'    FSU.bsa_func_split_fixed_supplies_over_projects(:P9_FIXED_SUPPLY_IDS, '''' || :P9_PROJECT_ID);',
 'END;',
 ''))
-,p_attribute_02=>'P9_FIXED_SUPPLY_IDS,P9_PROJECT_ID'
-,p_attribute_03=>'P9_FIXED_SUPPLY_IDS'
-,p_attribute_04=>'N'
+,p_attribute_02=>'P9_PROJECT_ID,P9_FIXED_SUPPLY_IDS'
 ,p_attribute_05=>'PLSQL'
 ,p_wait_for_result=>'Y'
 );
