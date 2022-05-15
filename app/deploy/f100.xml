@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="a9d6f1f78d0a3f8d482e3f320e2fcda7e120417d" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="a6ff4d68b62a88fa00d58e1d406e8077cae11023" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/set_environment
 set define off verify off feedback off
@@ -51,7 +51,7 @@ prompt APPLICATION 100 - Bike Selling Application
 --       Navigation:
 --         Lists:                  3
 --         Breadcrumbs:            1
---           Entries:             28
+--           Entries:             29
 --       Security:
 --         Authentication:         2
 --         Authorization:          2
@@ -127,7 +127,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Bike Selling Application'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220515125154'
+,p_last_upd_yyyymmddhh24miss=>'20220515125925'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -213,15 +213,6 @@ wwv_flow_api.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(6802797248617970)
-,p_list_item_display_sequence=>100
-,p_list_item_link_text=>'Bikes'
-,p_list_item_link_target=>'f?p=&APP_ID.:29:&APP_SESSION.::&DEBUG.:::'
-,p_parent_list_item_id=>wwv_flow_api.id(10335716212271598)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'29'
-);
-wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(3816730496249555)
 ,p_list_item_display_sequence=>80
 ,p_list_item_link_text=>'Utilities'
@@ -236,6 +227,21 @@ wwv_flow_api.create_list_item(
 ,p_parent_list_item_id=>wwv_flow_api.id(3816730496249555)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'24'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(6817404959697570)
+,p_list_item_display_sequence=>110
+,p_list_item_link_text=>'Reports'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(6802797248617970)
+,p_list_item_display_sequence=>100
+,p_list_item_link_text=>'Bikes'
+,p_list_item_link_target=>'f?p=&APP_ID.:29:&SESSION.::&DEBUG.::::'
+,p_parent_list_item_id=>wwv_flow_api.id(6817404959697570)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'29'
 );
 end;
 /
@@ -612,10 +618,15 @@ wwv_flow_api.create_menu_option(
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(6803634947617975)
-,p_parent_id=>wwv_flow_api.id(10178729384271423)
+,p_parent_id=>wwv_flow_api.id(6818034017703480)
 ,p_short_name=>'Bikes'
-,p_link=>'f?p=&APP_ID.:29:&APP_SESSION.::&DEBUG.:::'
+,p_link=>'f?p=&APP_ID.:29:&SESSION.::&DEBUG.:::'
 ,p_page_id=>29
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6818034017703480)
+,p_short_name=>'Reports'
+,p_page_id=>1
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10178729384271423)

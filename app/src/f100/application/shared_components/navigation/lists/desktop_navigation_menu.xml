@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="0d74d52cc7d086839d42653b0547cc10640fd403" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="e34660d1dc9396b74f51d3448355a6e0252b4622" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/lists/desktop_navigation_menu
 begin
@@ -84,15 +84,6 @@ wwv_flow_api.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(6802797248617970)
-,p_list_item_display_sequence=>100
-,p_list_item_link_text=>'Bikes'
-,p_list_item_link_target=>'f?p=&APP_ID.:29:&APP_SESSION.::&DEBUG.:::'
-,p_parent_list_item_id=>wwv_flow_api.id(10335716212271598)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'29'
-);
-wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(3816730496249555)
 ,p_list_item_display_sequence=>80
 ,p_list_item_link_text=>'Utilities'
@@ -107,6 +98,21 @@ wwv_flow_api.create_list_item(
 ,p_parent_list_item_id=>wwv_flow_api.id(3816730496249555)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'24'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(6817404959697570)
+,p_list_item_display_sequence=>110
+,p_list_item_link_text=>'Reports'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(6802797248617970)
+,p_list_item_display_sequence=>100
+,p_list_item_link_text=>'Bikes'
+,p_list_item_link_target=>'f?p=&APP_ID.:29:&SESSION.::&DEBUG.::::'
+,p_parent_list_item_id=>wwv_flow_api.id(6817404959697570)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'29'
 );
 wwv_flow_api.component_end;
 end;
