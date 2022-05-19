@@ -40,6 +40,11 @@ as
     projectId int;
     joinId int;
     quantity int;
+    logId number;
+    logDate date;
+    logTable varchar2 (20);
+    logOperation varchar2 (20);
+    logDescription varchar2 (100);
     begin
         -- Setup
         -- Create a project and a fixed use supply
@@ -60,6 +65,13 @@ as
         -- Quantity should be 1 since we added a single tool to a single project (this also proves there is an entry in the join table)
         ut.expect( joinId ).not_to( be_null() );
         ut.expect( quantity ).to_( equal(1) );
+        -- Now validate that audit logs were created 
+        SELECT id, date, table, operation, description INTO logId, logDate, logTable, logOperation, logDescription FROM bsa_audit_log where project_id = projectId
+        ut.expect( logId ).not_to( be_null() );
+        ut.expect( logDate ).to_( equal(CURRENT_DATE) );
+        ut.expect( logTable ).to_( equal('Fixed Use Supply Mapping') );
+        ut.expect( logOperation ).to_( equal('Create') );
+        ut.expect( logDescription ).to_( equal('Name=Bubble Wrap 12345, Quantity=1') );
     end;
 
     procedure test_trigger_insert_fixed_use_supply_multi_project is
@@ -145,6 +157,11 @@ as
     projectId int;
     joinId int;
     quantity int;
+    logId number;
+    logDate date;
+    logTable varchar2 (20);
+    logOperation varchar2 (20);
+    logDescription varchar2 (100);
     begin
         -- Setup
         -- Create a project and a fixed use supply
@@ -167,6 +184,12 @@ as
         DELETE FROM dev_ws.bsa_view_project_fixed_supply where supply_id = supplyId and project_id = projectId;
         -- This should throw a no_data_found exception
         SELECT pfqs.id, pfqs.quantity INTO joinId, quantity FROM dev_ws.bsa_project_fixed_quantity_supply pfqs WHERE supply_id = supplyId and project_id = projectId;
+        -- Now validate that audit logs were created 
+        SELECT id, date, table, operation, description INTO logId, logDate, logTable, logOperation, logDescription FROM bsa_audit_log where project_id = projectId and operation = 'Delete'
+        ut.expect( logId ).not_to( be_null() );
+        ut.expect( logDate ).to_( equal(CURRENT_DATE) );
+        ut.expect( logTable ).to_( equal('Fixed Use Supply Mapping') );
+        ut.expect( logDescription ).to_( equal('Name=Bubble Wrap 12345') );
     end;
 
     procedure test_trigger_update_project_fixed_use_supply is
@@ -174,6 +197,11 @@ as
     projectId int;
     joinId int;
     quantity int;
+    logId number;
+    logDate date;
+    logTable varchar2 (20);
+    logOperation varchar2 (20);
+    logDescription varchar2 (100);
     begin
         -- Setup
         -- Create a project and a fixed use supply
@@ -199,6 +227,12 @@ as
         SELECT pfqs.id, pfqs.quantity INTO joinId, quantity FROM dev_ws.bsa_project_fixed_quantity_supply pfqs WHERE supply_id = supplyId and project_id = projectId;
         ut.expect( joinId ).not_to( be_null() );
         ut.expect( quantity ).to_( equal(50) );
+        -- Then validate logs were created
+        SELECT id, date, table, operation, description INTO logId, logDate, logTable, logOperation, logDescription FROM bsa_audit_log where project_id = projectId and operation = 'Update'
+        ut.expect( logId ).not_to( be_null() );
+        ut.expect( logDate ).to_( equal(CURRENT_DATE) );
+        ut.expect( logTable ).to_( equal('Fixed Supply Mapping') );
+        ut.expect( logDescription ).to_( equal('Name=Bubble Wrap 12345, Quantity=50') );
     end;
 
     -- If a client attempts to to add a fixed use supply that is "empty" the app should throw an exception
