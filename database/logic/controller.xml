@@ -17,4 +17,5 @@
   <include file="./changelogs/fixed_use_supply_triggers.sql" relativeToChangelogFile="true"/>
   <include file="./changelogs/non_fixed_use_supply_triggers.sql" relativeToChangelogFile="true"/>
   <include file="./changelogs/tool_triggers.sql" relativeToChangelogFile="true"/>
+  <include file="./changelogs/revenue_item_triggers.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog> 
