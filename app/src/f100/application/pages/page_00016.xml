@@ -461,6 +461,7 @@ wwv_flow_api.create_page_item(
 ,p_name=>'P16_NON_FIXED_SUPPLY_IDS'
 ,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_api.id(41069894378275582)
+<<<<<<< HEAD
 ,p_prompt=>'Non-Fixed Supplies'
 ,p_display_as=>'NATIVE_SHUTTLE'
 ,p_lov=>'SELECT name d, id r from bsa_non_fixed_quantity_supply WHERE isusedup = ''N'''
@@ -468,6 +469,14 @@ wwv_flow_api.create_page_item(
 ,p_begin_on_new_line=>'N'
 ,p_begin_on_new_field=>'N'
 ,p_field_template=>wwv_flow_api.id(10298784641271512)
+=======
+,p_prompt=>'Non Fixed Supplies'
+,p_placeholder=>'Non Fixed Supplies'
+,p_display_as=>'NATIVE_POPUP_LOV'
+,p_lov=>'SELECT name d, id r from bsa_non_fixed_quantity_supply WHERE isusedup = ''N'''
+,p_cSize=>30
+,p_field_template=>wwv_flow_api.id(10298546746271512)
+>>>>>>> origin
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_attribute_01=>'ALL'

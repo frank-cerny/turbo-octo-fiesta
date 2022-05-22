@@ -40,18 +40,31 @@ prompt APPLICATION 100 - Bike Selling Application
 --   Exported By:     DEV_WS
 --   Flashback:       0
 --   Export Type:     Application Export
+<<<<<<< HEAD
 --     Pages:                     34
 --       Items:                   97
 --       Processes:               39
 --       Regions:                100
 --       Buttons:                 67
 --       Dynamic Actions:         43
+=======
+--     Pages:                     24
+--       Items:                   70
+--       Processes:               35
+--       Regions:                 78
+--       Buttons:                 52
+--       Dynamic Actions:         27
+>>>>>>> origin
 --     Shared Components:
 --       Logic:
 --       Navigation:
 --         Lists:                  3
 --         Breadcrumbs:            1
+<<<<<<< HEAD
 --           Entries:             32
+=======
+--           Entries:             20
+>>>>>>> origin
 --       Security:
 --         Authentication:         2
 --         Authorization:          2
@@ -19465,6 +19478,7 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_report_columns=>'ID:NAME:DATEPURCHASED:DESCRIPTION:COST:UNITCOST:USAGES:ISUSEDUP'
+<<<<<<< HEAD
 ,p_sort_column_1=>'NAME'
 ,p_sort_direction_1=>'ASC NULLS FIRST'
 ,p_sort_column_2=>'0'
@@ -19477,6 +19491,8 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_sort_direction_5=>'ASC'
 ,p_sort_column_6=>'0'
 ,p_sort_direction_6=>'ASC'
+=======
+>>>>>>> origin
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16856010769019578)
