@@ -7,5 +7,4 @@
         SET quantity = :new.quantity
         WHERE project_id = :new.project_id AND supply_id = :new.supply_id;
     END;
-
 ALTER TRIGGER "DEV_WS"."BSA_TRIGGER_UPDATE_PROJECT_NON_FIXED_SUPPLY" ENABLE
