@@ -14,8 +14,6 @@ as
 end test_revenue_item_triggers;
 /
 
--- All revenue items are pass through, but the important part is that everything is logged in the audit table
-
 --changeset fcerny:2 runOnChange:true endDelimiter:"/" stripComments:false
 create or replace package body test_revenue_item_triggers
 as

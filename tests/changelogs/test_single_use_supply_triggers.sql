@@ -14,8 +14,6 @@ as
 end test_single_use_supply_triggers;
 /
 
--- All revenue items are pass through, but the important part is that everything is logged in the audit table
-
 --changeset fcerny:2 runOnChange:true endDelimiter:"/" stripComments:false
 create or replace package body test_single_use_supply_triggers
 as
