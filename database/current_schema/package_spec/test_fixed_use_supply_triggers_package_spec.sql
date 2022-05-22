@@ -26,4 +26,10 @@ as
     --%test(Test Trigger Insert Project Fixed Use Supply Negative Single Project)
     --%throws(-20001)
     procedure test_trigger_insert_project_fixed_use_supply_negative_multi_project;
+    --%test(Test Fixed Use Supply Insert Trigger With Logs)
+    procedure test_trigger_insert_fixed_use_supplies_with_logs;
+    --%test(Test Fixed Use Supply Update Trigger With Logs)
+    procedure test_trigger_update_fixed_use_supplies_with_logs;
+    --%test(Test Fixed Use Supply Delete Trigger With Logs)
+    procedure test_trigger_delete_fixed_use_supplies_with_logs;
 end test_fixed_use_supply_triggers;

@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="e66f7919994fa26ab3c5e9dd91fa15f26c815ad0" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="2464068fe7a09fccea2cc9933aa6e041cb47e03e" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
@@ -97,6 +97,13 @@ wwv_flow_api.create_menu_option(
 ,p_short_name=>'Audit Log'
 ,p_link=>'f?p=&APP_ID.:30:&APP_SESSION.::&DEBUG.:::'
 ,p_page_id=>30
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(8001959461047246)
+,p_parent_id=>wwv_flow_api.id(6818034017703480)
+,p_short_name=>'Revenue Items'
+,p_link=>'f?p=&APP_ID.:31:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>31
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10178729384271423)

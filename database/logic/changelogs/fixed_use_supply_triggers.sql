@@ -100,10 +100,10 @@ create or replace trigger bsa_trigger_after_delete_fixed_use_supply
         SELECT fus.name 
         INTO supplyName 
         FROM bsa_fixed_quantity_supply fus
-        WHERE id = :new.supply_id;
+        WHERE id = :old.supply_id;
         -- Now insert in the logs
         INSERT INTO bsa_audit_log (logDate, logTable, project_id, operation, description)
-        VALUES (CURRENT_DATE, 'Fixed Use Supply Mapping', :new.project_id, 'Delete', 'Name=' || supplyName);
+        VALUES (CURRENT_DATE, 'Fixed Use Supply Mapping', :old.project_id, 'Delete', 'Name=' || supplyName);
     END;
 /
 
@@ -121,6 +121,6 @@ create or replace trigger bsa_trigger_after_update_fixed_use_supply
         WHERE id = :new.supply_id;
         -- Now insert in the logs
         INSERT INTO bsa_audit_log (logDate, logTable, project_id, operation, description)
-        VALUES (CURRENT_DATE, 'Fixed Use Supply Mapping', :new.project_id, 'Create', 'Name=' || supplyName || ', Quantity=' || :new.quantity);
+        VALUES (CURRENT_DATE, 'Fixed Use Supply Mapping', :new.project_id, 'Update', 'Name=' || supplyName || ', Quantity=' || :new.quantity);
     END;
 /

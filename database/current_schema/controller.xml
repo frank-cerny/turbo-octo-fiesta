@@ -60,6 +60,9 @@
   <include file="index/bsa_revenue_item_uk_index.xml"/> 
   <include file="index/bsa_single_use_supply_uk_index.xml"/> 
   <include file="index/bsa_tool_name_unq_index.xml"/> 
+  <include file="trigger/bsa_trigger_after_delete_fixed_use_supply_trigger.xml"/> 
+  <include file="trigger/bsa_trigger_after_insert_fixed_use_supply_trigger.xml"/> 
+  <include file="trigger/bsa_trigger_after_update_fixed_use_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_delete_project_fixed_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_delete_project_non_fixed_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_delete_project_tool_trigger.xml"/> 
@@ -72,22 +75,22 @@
   <include file="trigger/bsa_trigger_update_project_non_fixed_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_update_project_tool_trigger.xml"/> 
   <include file="trigger/bsa_trigger_update_revenue_item_trigger.xml"/> 
-  <include file="package_body/non_fixed_supp_utilities_package_body.xml"/> 
+  <include file="package_body/test_non_fixed_use_supply_triggers_package_body.xml"/> 
+  <include file="package_body/fixed_supp_utilities_package_body.xml"/> 
   <include file="package_body/test_tool_triggers_package_body.xml"/> 
   <include file="package_body/test_single_use_supply_validation_package_body.xml"/> 
   <include file="package_body/test_single_use_supply_utilities_package_body.xml"/> 
   <include file="package_body/test_revenue_item_validation_package_body.xml"/> 
+  <include file="package_body/test_fixed_supp_utitlities_package_body.xml"/> 
+  <include file="package_body/test_fixed_use_supply_triggers_package_body.xml"/> 
   <include file="package_body/test_non_fixed_supp_utitlities_package_body.xml"/> 
-  <include file="package_body/test_non_fixed_use_supply_triggers_package_body.xml"/> 
   <include file="package_body/test_project_utilities_package_package_body.xml"/> 
   <include file="package_body/test_revenue_item_triggers_package_body.xml"/> 
   <include file="package_body/test_revenue_item_utilities_package_body.xml"/> 
-  <include file="package_body/test_fixed_supp_utitlities_package_body.xml"/> 
   <include file="package_body/tool_utilities_package_body.xml"/> 
   <include file="package_body/single_use_supply_utilities_package_body.xml"/> 
   <include file="package_body/revenue_item_utilities_package_body.xml"/> 
   <include file="package_body/project_utilities_package_body.xml"/> 
-  <include file="package_body/fixed_supp_utilities_package_body.xml"/> 
+  <include file="package_body/non_fixed_supp_utilities_package_body.xml"/> 
   <include file="package_body/test_tool_utilities_package_body.xml"/> 
-  <include file="package_body/package_body_bad_0.xml"/> 
 </databaseChangeLog> 

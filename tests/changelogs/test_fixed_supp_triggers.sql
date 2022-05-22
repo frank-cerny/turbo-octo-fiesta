@@ -331,7 +331,7 @@ as
     quantity int;
     logId number;
     logDate date;
-    logTable varchar2 (20);
+    logTable varchar2 (50);
     logOperation varchar2 (20);
     logDescription varchar2 (100);
     numLogs number;
@@ -368,7 +368,7 @@ as
     quantity int;
     logId number;
     logDate date;
-    logTable varchar2 (20);
+    logTable varchar2 (50);
     logOperation varchar2 (20);
     logDescription varchar2 (100);
     numLogs number;
@@ -408,7 +408,7 @@ as
     quantity int;
     logId number;
     logDate date;
-    logTable varchar2 (20);
+    logTable varchar2 (50);
     logOperation varchar2 (20);
     logDescription varchar2 (100);
     numLogs number;
