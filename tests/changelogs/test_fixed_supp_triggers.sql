@@ -28,6 +28,12 @@ as
     --%test(Test Trigger Insert Project Fixed Use Supply Negative Single Project)
     --%throws(-20001)
     procedure test_trigger_insert_project_fixed_use_supply_negative_multi_project;
+    --%test(Test Fixed Use Supply Insert Trigger With Logs)
+    procedure test_trigger_insert_fixed_use_supplies_with_logs;
+    --%test(Test Fixed Use Supply Update Trigger With Logs)
+    procedure test_trigger_update_fixed_use_supplies_with_logs;
+    --%test(Test Fixed Use Supply Delete Trigger With Logs)
+    procedure test_trigger_delete_fixed_use_supplies_with_logs;
 end test_fixed_use_supply_triggers;
 /
 
@@ -316,6 +322,123 @@ as
         -- If we insert again into either project, an exception should be raised because the quantity of the fixed supply is 0 at this point
         INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
         VALUES (supplyId, null, null, null, null, null, null, projectId1);
+    end;
+
+    procedure test_trigger_insert_fixed_use_supplies_with_logs is
+    supplyId int;
+    projectId int;
+    joinId int;
+    quantity int;
+    logId number;
+    logDate date;
+    logTable varchar2 (50);
+    logOperation varchar2 (20);
+    logDescription varchar2 (100);
+    numLogs number;
+    begin
+        -- Setup
+        -- Create a project and a fixed use supply
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
+
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 12345', '', CURRENT_DATE, 165, 23.45);
+        SELECT fqs.id INTO supplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 12345';
+        -- Act 
+        -- Insert into View (which should trigger the trigger)
+        INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+        VALUES (supplyId, null, null, null, null, null, null, projectId);
+        -- Assert
+        SELECT count(id) INTO numLogs FROM bsa_audit_log where project_id = projectId;
+        ut.expect( numLogs ).to_( equal(1) );
+        -- Validate logs were created
+        SELECT l.id, l.logDate, l.logTable, l.operation, l.description INTO logId, logDate, logTable, logOperation, logDescription FROM bsa_audit_log l where project_id = projectId;
+        ut.expect( logId ).not_to( be_null() );
+        ut.expect( logDate ).to_( equal(CURRENT_DATE) );
+        ut.expect( logTable ).to_( equal('Fixed Use Supply Mapping') );
+        ut.expect( logOperation ).to_( equal('Create') );
+        ut.expect( logDescription ).to_( equal('Name=Bubble Wrap 12345, Quantity=1') );
+    end;
+
+    procedure test_trigger_update_fixed_use_supplies_with_logs is
+    supplyId int;
+    projectId int;
+    joinId int;
+    quantity int;
+    logId number;
+    logDate date;
+    logTable varchar2 (50);
+    logOperation varchar2 (20);
+    logDescription varchar2 (100);
+    numLogs number;
+    begin
+        -- Setup
+        -- Create a project and a fixed use supply
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
+
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 12345', '', CURRENT_DATE, 165, 23.45);
+        SELECT fqs.id INTO supplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 12345';
+        -- Act 
+        -- Insert into View 
+        INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+        VALUES (supplyId, null, null, null, null, null, null, projectId);
+        -- Then update the value
+        UPDATE dev_ws.bsa_view_project_fixed_supply
+        SET quantity = 164
+        WHERE supply_id = supplyId and project_id = projectId;
+        -- Assert
+        SELECT count(id) INTO numLogs FROM bsa_audit_log where project_id = projectId;
+        ut.expect( numLogs ).to_( equal(2) );
+        -- Validate logs were created
+        SELECT l.id, l.logDate, l.logTable, l.operation, l.description INTO logId, logDate, logTable, logOperation, logDescription FROM bsa_audit_log l where project_id = projectId and operation = 'Update';
+        ut.expect( logId ).not_to( be_null() );
+        ut.expect( logDate ).to_( equal(CURRENT_DATE) );
+        ut.expect( logTable ).to_( equal('Fixed Use Supply Mapping') );
+        ut.expect( logDescription ).to_( equal('Name=Bubble Wrap 12345, Quantity=164') );
+    end;
+
+    procedure test_trigger_delete_fixed_use_supplies_with_logs is
+    supplyId int;
+    projectId int;
+    joinId int;
+    quantity int;
+    logId number;
+    logDate date;
+    logTable varchar2 (50);
+    logOperation varchar2 (20);
+    logDescription varchar2 (100);
+    numLogs number;
+    begin
+        -- Setup
+        -- Create a project and a fixed use supply
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
+
+        INSERT INTO dev_ws.bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 12345', '', CURRENT_DATE, 165, 23.45);
+        SELECT fqs.id INTO supplyId FROM dev_ws.bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 12345';
+        -- Act 
+        -- Insert into View (which should trigger the trigger)
+        INSERT INTO dev_ws.bsa_view_project_fixed_supply (supply_id, name, description, datepurchased, unitspurchased, totalcost, quantity, project_id)
+        VALUES (supplyId, null, null, null, null, null, null, projectId);
+        -- Now Delete the mapping
+        DELETE 
+        FROM dev_ws.bsa_view_project_fixed_supply 
+        WHERE supply_id = supplyId and project_id = projectId;
+        -- Assert
+        SELECT count(id) INTO numLogs FROM bsa_audit_log where project_id = projectId;
+        ut.expect( numLogs ).to_( equal(2) );
+        -- Validate logs were created
+        SELECT l.id, l.logDate, l.logTable, l.operation, l.description INTO logId, logDate, logTable, logOperation, logDescription FROM bsa_audit_log l where project_id = projectId and operation = 'Delete';
+        ut.expect( logId ).not_to( be_null() );
+        ut.expect( logDate ).to_( equal(CURRENT_DATE) );
+        ut.expect( logTable ).to_( equal('Fixed Use Supply Mapping') );
+        ut.expect( logDescription ).to_( equal('Name=Bubble Wrap 12345') );
     end;
 end test_fixed_use_supply_triggers;
 /

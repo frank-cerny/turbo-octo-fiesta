@@ -92,3 +92,7 @@ Workspace User: DEV_WS:DEV:Passw0rd! (or Passw0rd!!) (Default Schema is DEV_WS)
 4. Test importing any files neccessary to triage the issue (use @ syntax to import directly)
 5. Cleanup by running: DROP USER dev_ws CASCADE; (as an Admin)
 6. Note that the Jenkins automated tests will drop this user after running if you forget
+
+OR
+
+Drop dev_ws locally. Re-create the schema then re-import the application locally.

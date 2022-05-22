@@ -14,4 +14,10 @@ as
     procedure test_trigger_delete_non_fixed_supply;
     --%test(Test Trigger Update Non-Fixed Supply)
     procedure test_trigger_update_non_fixed_supply;
+    --%test(Test Non-Fixed Use Supply Insert Trigger With Logs)
+    procedure test_trigger_insert_non_fixed_use_supplies_with_logs;
+    --%test(Test Non-Fixed Use Supply Update Trigger With Logs)
+    procedure test_trigger_update_non_fixed_use_supplies_with_logs;
+    --%test(Test Non-Fixed Use Supply Delete Trigger With Logs)
+    procedure test_trigger_delete_non_fixed_use_supplies_with_logs;
 end test_non_fixed_use_supply_triggers;

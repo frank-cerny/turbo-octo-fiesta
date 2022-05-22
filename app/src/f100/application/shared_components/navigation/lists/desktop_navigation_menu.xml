@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="0aa89a1549cd9a30ed88caec3be3d810787a6bcb" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="9d11ef1860f8702e090f4e94dffdc132836ca418" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/lists/desktop_navigation_menu
 begin
@@ -98,6 +98,47 @@ wwv_flow_api.create_list_item(
 ,p_parent_list_item_id=>wwv_flow_api.id(3816730496249555)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'24'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(6817404959697570)
+,p_list_item_display_sequence=>110
+,p_list_item_link_text=>'Reports'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(6802797248617970)
+,p_list_item_display_sequence=>100
+,p_list_item_link_text=>'Bikes'
+,p_list_item_link_target=>'f?p=&APP_ID.:29:&SESSION.::&DEBUG.::::'
+,p_parent_list_item_id=>wwv_flow_api.id(6817404959697570)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'29'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(7606498402196068)
+,p_list_item_display_sequence=>120
+,p_list_item_link_text=>'Audit Log'
+,p_list_item_link_target=>'f?p=&APP_ID.:30:&SESSION.::&DEBUG.::::'
+,p_parent_list_item_id=>wwv_flow_api.id(6817404959697570)
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(8001058810047241)
+,p_list_item_display_sequence=>130
+,p_list_item_link_text=>'Revenue Items'
+,p_list_item_link_target=>'f?p=&APP_ID.:31:&APP_SESSION.::&DEBUG.:::'
+,p_parent_list_item_id=>wwv_flow_api.id(6817404959697570)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'31'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(8204119510779182)
+,p_list_item_display_sequence=>140
+,p_list_item_link_text=>'Single Use Supplies'
+,p_list_item_link_target=>'f?p=&APP_ID.:32:&APP_SESSION.::&DEBUG.:::'
+,p_parent_list_item_id=>wwv_flow_api.id(6817404959697570)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'32'
 );
 wwv_flow_api.component_end;
 end;

@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="fef7d89a8b98adae8f669a5fceb519a382628da6" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="067a29b3e16c2b157f6e8ec561c72bec305bca57" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --install
 @@application/set_environment.sql
@@ -137,6 +137,10 @@
 @@application/pages/page_00026.sql
 @@application/pages/page_00027.sql
 @@application/pages/page_00028.sql
+@@application/pages/page_00029.sql
+@@application/pages/page_00030.sql
+@@application/pages/page_00031.sql
+@@application/pages/page_00032.sql
 @@application/pages/page_09999.sql
 @@application/deployment/definition.sql
 @@application/deployment/checks.sql
