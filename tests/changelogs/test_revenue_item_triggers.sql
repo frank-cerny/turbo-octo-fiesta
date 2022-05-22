@@ -42,7 +42,7 @@ as
         ut.expect( logDate ).to_( equal(CURRENT_DATE) );
         ut.expect( logTable ).to_( equal('Revenue Item') );
         ut.expect( logOperation ).to_( equal('Create') );
-        ut.expect( logDescription ).to_( equal('Name=temp 12345, Description=description, SalePrice=5.50, Platform=Ebay, IsPending=N') );
+        ut.expect( logDescription ).to_( equal('Name=temp 12345, Description=description, SalePrice=5.5, Platform=Ebay, IsPending=N') );
     end;
 
     procedure test_revenue_item_update_trigger_with_logs is
@@ -78,6 +78,7 @@ as
     end;
 
     procedure test_revenue_item_delete_trigger_with_logs is
+    revenueItemId int;
     projectId int;
     logId number;
     logDate date;
@@ -94,6 +95,11 @@ as
         -- Act 
         INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
         VALUES (projectId, 'temp 12345', 'description', 5.50, 'Ebay', 'N', CURRENT_DATE);
+        SELECT r.id INTO revenueItemId FROM bsa_revenue_item r WHERE name = 'temp 12345';
+        -- Now delete the revenue item
+        DELETE
+        FROM bsa_revenue_item
+        WHERE id = revenueItemId;
         -- Assert
         SELECT count(id) INTO numLogs FROM bsa_audit_log where project_id = projectId;
         ut.expect( numLogs ).to_( equal(2) );
