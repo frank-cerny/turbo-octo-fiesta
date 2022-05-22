@@ -16,6 +16,12 @@ as
     procedure test_trigger_delete_project_tool;
     --%test(Test Trigger Update Project Tool)
     procedure test_trigger_update_project_tool;
+    --%test(Test Tool Insert Trigger With Logs)
+    procedure test_trigger_insert_tool_with_logs;
+    --%test(Test Tool Update Trigger With Logs)
+    procedure test_trigger_update_tool_with_logs;
+    --%test(Test Tool Delete Trigger With Logs)
+    procedure test_trigger_delete_tool_with_logs;
 end test_tool_triggers;
 /
 
@@ -186,6 +192,123 @@ as
         SELECT pt.id, pt.quantity INTO joinId, quantity FROM dev_ws.bsa_project_tool pt WHERE tool_id = toolId and project_id = projectId;
         ut.expect( joinId ).not_to( be_null() );
         ut.expect( quantity ).to_( equal(50) );
+    end;
+
+    procedure test_trigger_insert_tool_with_logs is
+    toolId int;
+    projectId int;
+    joinId int;
+    quantity int;
+    logId number;
+    logDate date;
+    logTable varchar2 (50);
+    logOperation varchar2 (20);
+    logDescription varchar2 (100);
+    numLogs number;
+    begin
+        -- Setup
+        -- Create a project and a fixed use supply
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
+
+        INSERT INTO dev_ws.bsa_tool (name, description, datepurchased, totalcost)
+        VALUES ('New Tool 112233', 'A new tool!', CURRENT_DATE, 5.67);
+        SELECT t.id INTO toolId FROM dev_ws.bsa_tool t WHERE t.name = 'New Tool 112233' and t.datepurchased = CURRENT_DATE;
+        -- Act 
+        -- Insert into View (which should trigger the trigger)
+        INSERT INTO bsa_view_project_tool (tool_id, name, ToolDescription, datepurchased, totalcost, project_id, quantity, unitcost, costbasis)
+        VALUES (toolId, NULL, NULL, NULL, NULL, projectId, NULL, NULL, NULL);
+        -- Assert
+        SELECT count(id) INTO numLogs FROM bsa_audit_log where project_id = projectId;
+        ut.expect( numLogs ).to_( equal(1) );
+        -- Validate logs were created
+        SELECT l.id, l.logDate, l.logTable, l.operation, l.description INTO logId, logDate, logTable, logOperation, logDescription FROM bsa_audit_log l where project_id = projectId;
+        ut.expect( logId ).not_to( be_null() );
+        ut.expect( logDate ).to_( equal(CURRENT_DATE) );
+        ut.expect( logTable ).to_( equal('Tool Mapping') );
+        ut.expect( logOperation ).to_( equal('Create') );
+        ut.expect( logDescription ).to_( equal('Name=New Tool 112233, Quantity=1') );
+    end;
+
+    procedure test_trigger_update_tool_with_logs is
+    toolId int;
+    projectId int;
+    joinId int;
+    quantity int;
+    logId number;
+    logDate date;
+    logTable varchar2 (50);
+    logOperation varchar2 (20);
+    logDescription varchar2 (100);
+    numLogs number;
+    begin
+        -- Setup
+        -- Create a project and a fixed use supply
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
+
+        INSERT INTO dev_ws.bsa_tool (name, description, datepurchased, totalcost)
+        VALUES ('New Tool 112233', 'A new tool!', CURRENT_DATE, 5.67);
+        SELECT t.id INTO toolId FROM dev_ws.bsa_tool t WHERE t.name = 'New Tool 112233' and t.datepurchased = CURRENT_DATE;
+        -- Act 
+        -- Insert into View 
+        INSERT INTO bsa_view_project_tool (tool_id, name, ToolDescription, datepurchased, totalcost, project_id, quantity, unitcost, costbasis)
+        VALUES (toolId, NULL, NULL, NULL, NULL, projectId, NULL, NULL, NULL);
+        -- Then update the value
+        UPDATE dev_ws.bsa_view_project_tool
+        SET quantity = 12
+        WHERE tool_id = toolId and project_id = projectId;
+        -- Assert
+        SELECT count(id) INTO numLogs FROM bsa_audit_log where project_id = projectId;
+        ut.expect( numLogs ).to_( equal(2) );
+        -- Validate logs were created
+        SELECT l.id, l.logDate, l.logTable, l.operation, l.description INTO logId, logDate, logTable, logOperation, logDescription FROM bsa_audit_log l where project_id = projectId and operation = 'Update';
+        ut.expect( logId ).not_to( be_null() );
+        ut.expect( logDate ).to_( equal(CURRENT_DATE) );
+        ut.expect( logTable ).to_( equal('Tool Mapping') );
+        ut.expect( logDescription ).to_( equal('Name=New Tool 112233, Quantity=12') );
+    end;
+
+    procedure test_trigger_delete_tool_with_logs is
+    toolId int;
+    projectId int;
+    joinId int;
+    quantity int;
+    logId number;
+    logDate date;
+    logTable varchar2 (50);
+    logOperation varchar2 (20);
+    logDescription varchar2 (100);
+    numLogs number;
+    begin
+        -- Setup
+        -- Create a project and a fixed use supply
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Test Project 112233', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Test Project 112233';
+
+        INSERT INTO dev_ws.bsa_tool (name, description, datepurchased, totalcost)
+        VALUES ('New Tool 112233', 'A new tool!', CURRENT_DATE, 5.67);
+        SELECT t.id INTO toolId FROM dev_ws.bsa_tool t WHERE t.name = 'New Tool 112233' and t.datepurchased = CURRENT_DATE;
+        -- Act 
+        -- Insert into View (which should trigger the trigger)
+        INSERT INTO bsa_view_project_tool (tool_id, name, ToolDescription, datepurchased, totalcost, project_id, quantity, unitcost, costbasis)
+        VALUES (toolId, NULL, NULL, NULL, NULL, projectId, NULL, NULL, NULL);
+        -- Now Delete the mapping
+        DELETE 
+        FROM dev_ws.bsa_view_project_tool
+        WHERE tool_id = toolId and project_id = projectId;
+        -- Assert
+        SELECT count(id) INTO numLogs FROM bsa_audit_log where project_id = projectId;
+        ut.expect( numLogs ).to_( equal(2) );
+        -- Validate logs were created
+        SELECT l.id, l.logDate, l.logTable, l.operation, l.description INTO logId, logDate, logTable, logOperation, logDescription FROM bsa_audit_log l where project_id = projectId and operation = 'Delete';
+        ut.expect( logId ).not_to( be_null() );
+        ut.expect( logDate ).to_( equal(CURRENT_DATE) );
+        ut.expect( logTable ).to_( equal('Tool Mapping') );
+        ut.expect( logDescription ).to_( equal('Name=New Tool 112233') );
     end;
 end test_tool_triggers;
 /

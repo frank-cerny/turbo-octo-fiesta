@@ -10,9 +10,13 @@
   <include file="./changelogs/fixed_supp_utilities_package.sql" relativeToChangelogFile="true"/>
   <include file="./changelogs/tool_utilities_package.sql" relativeToChangelogFile="true"/>
   <include file="./changelogs/project_utilities_package.sql" relativeToChangelogFile="true"/>
+  <include file="./changelogs/revenue_item_utilities_package.sql" relativeToChangelogFile="true"/>
+  <include file="./changelogs/single_use_supply_utilities_package.sql" relativeToChangelogFile="true"/>
   <include file="./changelogs/synonyms.sql" relativeToChangelogFile="true"/> 
   <include file="./changelogs/views.sql" relativeToChangelogFile="true"/>
   <include file="./changelogs/fixed_use_supply_triggers.sql" relativeToChangelogFile="true"/>
   <include file="./changelogs/non_fixed_use_supply_triggers.sql" relativeToChangelogFile="true"/>
   <include file="./changelogs/tool_triggers.sql" relativeToChangelogFile="true"/>
+  <include file="./changelogs/revenue_item_triggers.sql" relativeToChangelogFile="true"/>
+  <include file="./changelogs/single_use_supply_triggers.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog> 

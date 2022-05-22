@@ -78,3 +78,21 @@ dev_ws:dev_ws
 
 Instance Admin: INTERNAL:ADMIN:Passw0rd!  
 Workspace User: DEV_WS:DEV:Passw0rd! (or Passw0rd!!) (Default Schema is DEV_WS)
+
+
+### Troubleshooting
+
+1. Connect as an admin to the test database (set TNS_ADMIN to dev wallet)
+2. Run CREATE USER dev_ws IDENTIFIED BY "Passw0rd!00000" QUOTA UNLIMITED ON DATA;
+3. Run GRANT CREATE SESSION, CREATE CLUSTER, CREATE DIMENSION, CREATE INDEXTYPE,
+        CREATE JOB, CREATE MATERIALIZED VIEW, CREATE OPERATOR, CREATE PROCEDURE,
+        CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE,
+        CREATE TRIGGER, CREATE TYPE, CREATE VIEW TO dev_ws;
+4. In another terminal prompt, open to the neccessary location as dev_ws
+4. Test importing any files neccessary to triage the issue (use @ syntax to import directly)
+5. Cleanup by running: DROP USER dev_ws CASCADE; (as an Admin)
+6. Note that the Jenkins automated tests will drop this user after running if you forget
+
+OR
+
+Drop dev_ws locally. Re-create the schema then re-import the application locally.

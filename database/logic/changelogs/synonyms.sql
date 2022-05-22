@@ -15,3 +15,10 @@ for dev_ws.tool_utilities;
 --changeset fcerny:4 runOnChange:true
 create or replace synonym pu
 for dev_ws.project_utilities;
+
+--changeset fcerny:5 runOnChange:true
+create or replace synonym ru
+for dev_ws.revenue_item_utilities;
+
+create or replace synonym sus
+for dev_ws.single_use_supply_utilities;

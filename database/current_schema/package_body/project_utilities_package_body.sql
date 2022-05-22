@@ -46,4 +46,31 @@ as
             
             return  (revenue - bikeCost - toolCost - singleUseSupplyCost - fixedSupplyCost - nonFixedSupplyCost);
         END;
+    
+    function bsa_func_return_project_name_string_from_ids (projectIdString IN varchar2)
+    RETURN varchar2
+    AS
+        projectNameString varchar2(500);
+        projectIdList apex_t_varchar2;
+        projectId number;
+        projectTitle varchar2(200);
+        BEGIN
+            projectIdList := apex_string.split(projectIdString, ':');
+            
+            if projectIdList.count = 0 then
+                return 'No Projects Selected';
+            end if;
+            
+            projectNameString := '';
+            for i in 1 .. projectIdList.count loop
+                projectId := TO_NUMBER(projectidList(i));
+                SELECT p.title into projectTitle from bsa_project p where id = projectId;
+                projectNameString := (projectNameString || projectTitle);
+                
+                if i < projectIdList.count then
+                    projectNameString := (projectNameString || ', ');
+                end if;
+            end loop;
+            return projectNameString;
+        END;
 end project_utilities;

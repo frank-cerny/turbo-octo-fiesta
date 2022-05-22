@@ -50,3 +50,58 @@ create or replace trigger bsa_trigger_update_project_non_fixed_supply
         WHERE project_id = :new.project_id AND supply_id = :new.supply_id;
     END;
 /
+
+-- Note: We put these triggers on the underlying tables, NOT the view (the view doesn't support after triggers)
+--changeset fcerny:4 runOnChange:true endDelimiter:"/"
+create or replace trigger bsa_trigger_after_insert_non_fixed_use_supply
+    after INSERT on bsa_project_non_fixed_quantity_supply
+    FOR EACH ROW
+    DECLARE
+        supplyName varchar2(100);
+    BEGIN 
+        -- We are only given the supply id, project id, and quantity on insert/update/delete, so we need to get the supply name
+        SELECT nfus.name 
+        INTO supplyName 
+        FROM bsa_non_fixed_quantity_supply nfus
+        WHERE id = :new.supply_id;
+        -- Now insert in the logs
+        INSERT INTO bsa_audit_log (logDate, logTable, project_id, operation, description)
+        VALUES (CURRENT_DATE, 'Non-Fixed Use Supply Mapping', :new.project_id, 'Create', 'Name=' || supplyName || ', Quantity=' || :new.quantity);
+    END;
+/
+
+--changeset fcerny:5 runOnChange:true endDelimiter:"/"
+create or replace trigger bsa_trigger_after_delete_non_fixed_use_supply
+    after DELETE on bsa_project_non_fixed_quantity_supply
+    FOR EACH ROW
+    DECLARE
+        supplyName varchar2(100);
+    BEGIN 
+        -- We are only given the supply id, project id, and quantity on insert/update/delete, so we need to get the supply name
+        SELECT nfus.name 
+        INTO supplyName 
+        FROM bsa_non_fixed_quantity_supply nfus
+        WHERE id = :old.supply_id;
+        -- Now insert in the logs
+        INSERT INTO bsa_audit_log (logDate, logTable, project_id, operation, description)
+        VALUES (CURRENT_DATE, 'Non-Fixed Use Supply Mapping', :old.project_id, 'Delete', 'Name=' || supplyName);
+    END;
+/
+
+--changeset fcerny:6 runOnChange:true endDelimiter:"/"
+create or replace trigger bsa_trigger_after_update_non_fixed_use_supply
+    after UPDATE on bsa_project_non_fixed_quantity_supply
+    FOR EACH ROW
+    DECLARE
+        supplyName varchar2(100);
+    BEGIN 
+        -- We are only given the supply id, project id, and quantity on insert/update/delete, so we need to get the supply name
+        SELECT nfus.name 
+        INTO supplyName 
+        FROM bsa_non_fixed_quantity_supply nfus
+        WHERE id = :new.supply_id;
+        -- Now insert in the logs
+        INSERT INTO bsa_audit_log (logDate, logTable, project_id, operation, description)
+        VALUES (CURRENT_DATE, 'Non-Fixed Use Supply Mapping', :new.project_id, 'Update', 'Name=' || supplyName || ', Quantity=' || :new.quantity);
+    END;
+/

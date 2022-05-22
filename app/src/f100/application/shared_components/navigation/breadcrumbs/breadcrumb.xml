@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="3e19449173170daa410d7c1b265dcffd8efd88c6" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="1e4213a96a90b9e9e102f6a1089b96e9af4e6a2c" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
@@ -30,6 +30,87 @@ wwv_flow_api.create_menu_option(
 ,p_short_name=>'Project - Create'
 ,p_link=>'f?p=&APP_ID.:22:&SESSION.::&DEBUG.:::'
 ,p_page_id=>22
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(3818374582281946)
+,p_short_name=>'Utilities'
+,p_long_name=>'Utilities'
+,p_page_id=>1
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(3819559283287524)
+,p_parent_id=>wwv_flow_api.id(3818374582281946)
+,p_short_name=>'Item Splitting'
+,p_link=>'f?p=&APP_ID.:24:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>24
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(4901216918063478)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Amortization - Tool'
+,p_link=>'f?p=&APP_ID.:25:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>25
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6203870556508723)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Split Utility - Fixed Use Supplies'
+,p_link=>'f?p=&APP_ID.:23:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>23
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6303158836766860)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Split Utility - NF Use Supplies'
+,p_link=>'f?p=&APP_ID.:26:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>26
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6400964264849621)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Split Utility - Single Use Supply'
+,p_link=>'f?p=&APP_ID.:27:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>27
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6709035395668513)
+,p_parent_id=>wwv_flow_api.id(3819559283287524)
+,p_short_name=>'Split Utility - Single Use Supply'
+,p_link=>'f?p=&APP_ID.:28:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>28
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6803634947617975)
+,p_parent_id=>wwv_flow_api.id(6818034017703480)
+,p_short_name=>'Bikes'
+,p_link=>'f?p=&APP_ID.:29:&SESSION.::&DEBUG.:::'
+,p_page_id=>29
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(6818034017703480)
+,p_short_name=>'Reports'
+,p_page_id=>1
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(7602090692189678)
+,p_parent_id=>wwv_flow_api.id(6818034017703480)
+,p_short_name=>'Audit Log'
+,p_link=>'f?p=&APP_ID.:30:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>30
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(8001959461047246)
+,p_parent_id=>wwv_flow_api.id(6818034017703480)
+,p_short_name=>'Revenue Items'
+,p_link=>'f?p=&APP_ID.:31:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>31
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(8205014850779187)
+,p_parent_id=>wwv_flow_api.id(6818034017703480)
+,p_short_name=>'Single Use Supplies'
+,p_link=>'f?p=&APP_ID.:32:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>32
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10178729384271423)

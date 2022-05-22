@@ -17,6 +17,17 @@ as
     procedure test_fixed_supply_unit_cost_0;
     --%test(Test Get Fixed Supply Unit Cost Not 0)
     procedure test_fixed_supply_unit_cost_non_zero;
+    --%test(Test Split Single Tool No Op)
+    --%throws(-01403)
+    procedure test_fixed_supply_split_none;
+    --%test(Test Split Single Fixed Supply Among Single Project First Insert)
+    procedure test_fixed_supply_split_among_single_project_first_insert;
+    --%test(Test Split Single Fixed Supply Among Single Project Upsert)
+    procedure test_fixed_supply_split_among_single_project_upsert;
+    --%test(Test Split Single Fixed Supply Among Multiple Projects First Insert)
+    procedure test_fixed_supply_split_among_multiple_projects_first_insert;
+    --%test(Test Split Multiple Fixed Supplies Among Multiple Projects First Insert)
+    procedure test_multi_fixed_supply_split_among_multiple_projects_first_insert;
 end test_fixed_supp_utitlities;
 /
 
@@ -154,5 +165,142 @@ as
         ut.expect(unitCost).to_( equal(.61) );
     end;
 
+    procedure test_fixed_supply_split_none is
+    projectId NUMBER;
+    supplyId NUMBER;
+    id number;
+    quantity number;
+    begin
+        -- Setup
+        -- Create a project
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Fixed Supply Test', 'FS Test 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'FS Test 22222';
+        -- Create a fixed use supply
+        INSERT INTO bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 11111', '', CURRENT_DATE, 165, 23.45);
+        SELECT fqs.id INTO supplyId FROM bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 11111';
+        -- Act
+        -- Pass empty strings to show they are handled correctly
+        fsu.bsa_func_split_fixed_supplies_over_projects('', '');
+        -- Assert
+        -- The tool should not have been added to the project, so this should throw a no_data_found exception
+        SELECT fqs.id, fqs.quantity INTO id, quantity from bsa_project_fixed_quantity_supply fqs WHERE project_id = projectId AND supply_id = supplyId;
+    end;
+
+    procedure test_fixed_supply_split_among_single_project_first_insert is
+    projectId NUMBER;
+    supplyId NUMBER;
+    id number;
+    quantity number;
+    begin
+        -- Setup
+        -- Create a project
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Fixed Supply Test', 'FS Test 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'FS Test 22222';
+        -- Create a fixed use supply
+        INSERT INTO bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 11111', '', CURRENT_DATE, 165, 23.45);
+        SELECT fqs.id INTO supplyId FROM bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 11111';
+        -- Act
+        fsu.bsa_func_split_fixed_supplies_over_projects('' || supplyId, '' || projectId);
+        -- Assert
+        -- Look for the tool to be added to the join table
+        SELECT fqs.id, fqs.quantity INTO id, quantity from bsa_project_fixed_quantity_supply fqs WHERE project_id = projectId AND supply_id = supplyId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+    end;
+
+    procedure test_fixed_supply_split_among_single_project_upsert is
+    projectId NUMBER;
+    supplyId NUMBER;
+    id number;
+    quantity number;
+    begin
+        -- Setup
+        -- Create a project
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Fixed Supply Test', 'FS Test 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'FS Test 22222';
+        -- Create a fixed use supply
+        INSERT INTO bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 11111', '', CURRENT_DATE, 165, 23.45);
+        SELECT fqs.id INTO supplyId FROM bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 11111';
+        -- Add mappings of fixed use supply to project
+        INSERT INTO BSA_PROJECT_FIXED_QUANTITY_SUPPLY(project_id, supply_id, quantity) VALUES (projectId, supplyId, 50);
+        -- Act
+        fsu.bsa_func_split_fixed_supplies_over_projects('' || supplyId, '' || projectId);
+        -- Assert
+        -- Look for the tool to be added to the join table
+        SELECT fqs.id, fqs.quantity INTO id, quantity from bsa_project_fixed_quantity_supply fqs WHERE project_id = projectId AND supply_id = supplyId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(51) );
+    end;
+
+    procedure test_fixed_supply_split_among_multiple_projects_first_insert is
+    projectId NUMBER;
+    projectId1 NUMBER;
+    supplyId NUMBER;
+    id number;
+    quantity number;
+    begin
+        -- Setup
+        -- Create two projects
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Fixed Use Supply Test 1', 'FSU Test 11111', CURRENT_DATE, NULL);
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Fixed Use Supply Test 2', 'FSU Test 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'FSU Test 11111';
+        SELECT p.id INTO projectId1 FROM BSA_PROJECT p WHERE p.title = 'FSU Test 22222';
+        -- Create a fixed use supply
+        INSERT INTO bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 11111', '', CURRENT_DATE, 165, 23.45);
+        SELECT fqs.id INTO supplyId FROM bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 11111';
+        -- Act
+        fsu.bsa_func_split_fixed_supplies_over_projects('' || supplyId, '' || projectId || ':' || projectId1);
+        -- Assert
+        -- Look for the tool to be added to the join table for both projects
+        SELECT fqs.id, fqs.quantity INTO id, quantity from bsa_project_fixed_quantity_supply fqs WHERE project_id = projectId AND supply_id = supplyId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+        SELECT fqs.id, fqs.quantity INTO id, quantity from bsa_project_fixed_quantity_supply fqs WHERE project_id = projectId1 AND supply_id = supplyId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+    end;
+
+    procedure test_multi_fixed_supply_split_among_multiple_projects_first_insert is
+    projectId NUMBER;
+    projectId1 NUMBER;
+    supplyId NUMBER;
+    supplyId1 NUMBER;
+    id number;
+    quantity number;
+    begin
+        -- Setup
+        -- Create two projects
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Fixed Use Supply Test 1', 'FSU Test 11111', CURRENT_DATE, NULL);
+        INSERT INTO BSA_PROJECT (description, title, datestarted, dateended) VALUES ('Fixed Use Supply Test 2', 'FSU Test 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM BSA_PROJECT p WHERE p.title = 'FSU Test 11111';
+        SELECT p.id INTO projectId1 FROM BSA_PROJECT p WHERE p.title = 'FSU Test 22222';
+        -- Create a fixed use supply
+        INSERT INTO bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 11111', '', CURRENT_DATE, 165, 23.45);
+        SELECT fqs.id INTO supplyId FROM bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 11111';
+        INSERT INTO bsa_fixed_quantity_supply(name, description, datepurchased, unitspurchased, totalcost)
+        VALUES ('Bubble Wrap 22222', '', CURRENT_DATE, 50, 100);
+        SELECT fqs.id INTO supplyId1 FROM bsa_fixed_quantity_supply fqs WHERE name = 'Bubble Wrap 22222';
+        -- Act (create a colon separated string to mirror a shuttle list output)
+        fsu.bsa_func_split_fixed_supplies_over_projects('' || supplyId || ':' || supplyId1 , '' || projectId || ':' || projectId1);
+        -- Assert
+        -- Look for both tools to be added to the join table for both projects
+        SELECT fqs.id, fqs.quantity INTO id, quantity from bsa_project_fixed_quantity_supply fqs WHERE project_id = projectId AND supply_id = supplyId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+        SELECT fqs.id, fqs.quantity INTO id, quantity from bsa_project_fixed_quantity_supply fqs WHERE project_id = projectId AND supply_id = supplyId1;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+        SELECT fqs.id, fqs.quantity INTO id, quantity from bsa_project_fixed_quantity_supply fqs WHERE project_id = projectId1 AND supply_id = supplyId;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+        SELECT fqs.id, fqs.quantity INTO id, quantity from bsa_project_fixed_quantity_supply fqs WHERE project_id = projectId1 AND supply_id = supplyId1;
+        ut.expect(id).not_to( be_null() );
+        ut.expect(quantity).to_( equal(1) );
+    end;
 end test_fixed_supp_utitlities;
 /

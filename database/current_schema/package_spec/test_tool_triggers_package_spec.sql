@@ -14,4 +14,10 @@ as
     procedure test_trigger_delete_project_tool;
     --%test(Test Trigger Update Project Tool)
     procedure test_trigger_update_project_tool;
+    --%test(Test Tool Insert Trigger With Logs)
+    procedure test_trigger_insert_tool_with_logs;
+    --%test(Test Tool Update Trigger With Logs)
+    procedure test_trigger_update_tool_with_logs;
+    --%test(Test Tool Delete Trigger With Logs)
+    procedure test_trigger_delete_tool_with_logs;
 end test_tool_triggers;
