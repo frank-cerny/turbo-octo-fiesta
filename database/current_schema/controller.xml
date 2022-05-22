@@ -4,6 +4,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+  <include file="table/bsa_audit_log_table.xml"/> 
   <include file="table/bsa_bike_table.xml"/> 
   <include file="table/bsa_fixed_quantity_supply_table.xml"/> 
   <include file="table/bsa_location_table.xml"/> 
@@ -38,6 +39,7 @@
   <include file="package_spec/test_non_fixed_supp_utitlities_package_spec.xml"/> 
   <include file="package_spec/test_non_fixed_use_supply_triggers_package_spec.xml"/> 
   <include file="package_spec/test_project_utilities_package_package_spec.xml"/> 
+  <include file="package_spec/test_revenue_item_triggers_package_spec.xml"/> 
   <include file="package_spec/test_revenue_item_utilities_package_spec.xml"/> 
   <include file="package_spec/test_revenue_item_validation_package_spec.xml"/> 
   <include file="package_spec/test_single_use_supply_utilities_package_spec.xml"/> 
@@ -61,27 +63,31 @@
   <include file="trigger/bsa_trigger_delete_project_fixed_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_delete_project_non_fixed_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_delete_project_tool_trigger.xml"/> 
+  <include file="trigger/bsa_trigger_delete_revenue_item_trigger.xml"/> 
   <include file="trigger/bsa_trigger_insert_project_fixed_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_insert_project_non_fixed_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_insert_project_tool_trigger.xml"/> 
+  <include file="trigger/bsa_trigger_insert_revenue_item_trigger.xml"/> 
   <include file="trigger/bsa_trigger_update_project_fixed_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_update_project_non_fixed_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_update_project_tool_trigger.xml"/> 
-  <include file="package_body/test_non_fixed_use_supply_triggers_package_body.xml"/> 
-  <include file="package_body/fixed_supp_utilities_package_body.xml"/> 
+  <include file="trigger/bsa_trigger_update_revenue_item_trigger.xml"/> 
+  <include file="package_body/non_fixed_supp_utilities_package_body.xml"/> 
   <include file="package_body/test_tool_triggers_package_body.xml"/> 
   <include file="package_body/test_single_use_supply_validation_package_body.xml"/> 
   <include file="package_body/test_single_use_supply_utilities_package_body.xml"/> 
   <include file="package_body/test_revenue_item_validation_package_body.xml"/> 
-  <include file="package_body/test_fixed_supp_utitlities_package_body.xml"/> 
-  <include file="package_body/test_fixed_use_supply_triggers_package_body.xml"/> 
   <include file="package_body/test_non_fixed_supp_utitlities_package_body.xml"/> 
+  <include file="package_body/test_non_fixed_use_supply_triggers_package_body.xml"/> 
   <include file="package_body/test_project_utilities_package_package_body.xml"/> 
+  <include file="package_body/test_revenue_item_triggers_package_body.xml"/> 
   <include file="package_body/test_revenue_item_utilities_package_body.xml"/> 
+  <include file="package_body/test_fixed_supp_utitlities_package_body.xml"/> 
   <include file="package_body/tool_utilities_package_body.xml"/> 
   <include file="package_body/single_use_supply_utilities_package_body.xml"/> 
   <include file="package_body/revenue_item_utilities_package_body.xml"/> 
   <include file="package_body/project_utilities_package_body.xml"/> 
-  <include file="package_body/non_fixed_supp_utilities_package_body.xml"/> 
+  <include file="package_body/fixed_supp_utilities_package_body.xml"/> 
   <include file="package_body/test_tool_utilities_package_body.xml"/> 
+  <include file="package_body/package_body_bad_0.xml"/> 
 </databaseChangeLog> 
