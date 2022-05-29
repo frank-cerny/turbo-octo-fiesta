@@ -42,6 +42,7 @@ as
 
     -- Each year will get a function based on the year's tax bracket
     -- Note that income is expected to be "after any and all deductions"
+    -- Note: 2021 was filed as a single filer
     function bsa_func_calculate_federal_income_tax_2021 (income IN number)
     RETURN number
     AS
@@ -49,6 +50,7 @@ as
         return 1;
     END;
 
+    -- Note: 2022 was filed as married; jointly
     function bsa_func_calculate_federal_income_tax_2022 (income IN number)
     RETURN number
     AS
