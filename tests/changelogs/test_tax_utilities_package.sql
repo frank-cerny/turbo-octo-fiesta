@@ -35,7 +35,7 @@ as
         -- 24% bracket 
         taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(90500);
         ut.expect(taxDue).to_( equal(15741) );
-        -- 32% bracket (WRONG)
+        -- 32% bracket
         taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(175900);
         ut.expect(taxDue).to_( equal(37115) );
         -- 35% bracket
@@ -56,22 +56,22 @@ as
         ut.expect(taxDue).to_( equal(50) );
         -- 12% bracket
         taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(32405);
-        ut.expect(taxDue).to_( equal(3689.60) );
+        ut.expect(taxDue).to_( equal(3477.60) );
         -- 22% bracket
-        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(67800);
-        ut.expect(taxDue).to_( equal(10664.50) );
+        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(99600);
+        ut.expect(taxDue).to_( equal(13146) );
         -- 24% bracket 
-        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(90500);
-        ut.expect(taxDue).to_( equal(15741) );
-        -- 32% bracket (WRONG)
-        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(175900);
-        ut.expect(taxDue).to_( equal(37115) );
+        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(250000);
+        ut.expect(taxDue).to_( equal(47671) );
+        -- 32% bracket
+        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(400000);
+        ut.expect(taxDue).to_( equal(88463) );
         -- 35% bracket
-        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(350600);
-        ut.expect(taxDue).to_( equal(97254.25) );
+        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(567000);
+        ut.expect(taxDue).to_( equal(145956) );
         -- 37% bracket
         taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(750000);
-        ut.expect(taxDue).to_( equal(241572.25) );
+        ut.expect(taxDue).to_( equal(212049) );
     end;
 end test_tax_utilities_package;
 /
