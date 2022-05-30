@@ -9,6 +9,17 @@ as
     procedure test_tax_calculation_2021;
     -- %test(Test 2022 Tax Calculations)
     procedure test_tax_calculation_2022;
+    -- %test(Test Tax Calculations Empty Project)
+    procedure test_aggregate_tax_caclulation_empty_project;
+    -- %test(Test Tax Calculations Single Year Single Project)
+    procedure test_aggregate_tax_calculation_single_year_single_project;
+    -- %test(Test Tax Calculations Multi Year Single Project)
+    procedure test_aggregate_tax_calculation_multi_year_single_project;
+    -- %test(Test Tax Calculations Single Year Multi Projects)
+    procedure test_aggregate_tax_calculation_single_year_multi_project;
+    -- %test(Test Tax Calculations Multi Year Multi Projects)
+    procedure test_aggregate_tax_calculation_multi_year_multi_project;
+    -- TODO (Add string calculation tests as well!)
 end test_tax_utilities_package;
 /
 
@@ -72,6 +83,49 @@ as
         -- 37% bracket
         taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(750000);
         ut.expect(taxDue).to_( equal(212049) );
+    end;
+
+    procedure test_aggregate_tax_caclulation_empty_project is
+        taxDue number(10, 2);
+        projectId int;
+    begin
+        -- Create a project
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 11111', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId FROM dev_ws.bsa_project p where p.title = 'Project 11111';
+        -- Act
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId);
+        -- Assert
+        ut.expect(taxDue).to_( equal(0) );
+    end;
+
+    -- TODO SINGLE PROJECT SINGLE YEAR
+
+    procedure test_aggregate_tax_calculation_single_year_multi_project is
+        taxDue number(10, 2);
+        projectId1 int;
+        projectId2 int;
+        projectId3 int;
+    begin
+        -- Create 3 projects
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 11111', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Project 11111';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId2 FROM dev_ws.bsa_project p where p.title = 'Project 22222';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId3 FROM dev_ws.bsa_project p where p.title = 'Project 22222';
+
+        -- Then add two revenue items to each project 
+        -- TODO
+        -- Act
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId);
+        -- Assert
+        ut.expect(taxDue).to_( equal(0) );
     end;
 end test_tax_utilities_package;
 /

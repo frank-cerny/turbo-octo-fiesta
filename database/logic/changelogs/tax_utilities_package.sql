@@ -50,7 +50,7 @@ as
         return 1;
     END;
 
-    -- Note: 2022 was filed as married; jointly
+    -- Note: 2022 will be filed as married; jointly
     function bsa_func_calculate_federal_income_tax_2022 (income IN number)
     RETURN number
     AS
