@@ -65,24 +65,31 @@ as
         taxFromIncome number(10,2);
         taxFromIncomeWithRevenue number(10,2);
         taxDueOnProject number(10,2);
+        revenueRatio number(10,8);
+        yearToCompute varchar2(4);
     BEGIN
+        yearToCompute := '2021';
         taxDueOnProject := 0;
         -- For each year, get all income from project
         -- Get all income from all projects
-        SELECT sum(salePrice) INTO totalProjectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = '2021';
+        SELECT sum(salePrice) INTO totalProjectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute;
+        -- Get income from single project
+        SELECT sum(salePrice) INTO projectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute and project_id = projectId;
         -- Get income from income table (outside base income)
-        SELECT actualIncome, estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income WHERE year = '2021';
+        SELECT ti.actualIncome, ti.estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income ti WHERE year = yearToCompute;
         -- Get tax for base income (use isEstimated to determine if we should use estimate or actual income)
         if isEstimated = 1 then
             -- Estimated
             taxFromIncome := bsa_func_calculate_federal_income_tax_2021(estimatedIncome);
+            -- Get tax from income with revenue added on
+            taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2021(estimatedIncome + totalProjectRevenue);
         else
             taxFromIncome := bsa_func_calculate_federal_income_tax_2021(actualIncome);
+            taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2021(actualIncome + totalProjectRevenue);
         end if;
-        -- Get tax for added income
-        taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2021(taxFromIncome + totalProjectRevenue);
         -- Divide tax by ratio of project income vs all projects
-        taxDueOnProject := taxDueOnProject + ((projectRevenue / totalProjectRevenue) * (taxFromIncomeWithRevenue - taxFromIncome));
+        revenueRatio := projectRevenue / totalProjectRevenue;
+        taxDueOnProject := taxDueOnProject + (revenueRatio * (taxFromIncomeWithRevenue - taxFromIncome));
         -- Add to sum then iterate (return aggregate sum)
         return taxDueOnProject;
     END;
@@ -98,24 +105,31 @@ as
         taxFromIncome number(10,2);
         taxFromIncomeWithRevenue number(10,2);
         taxDueOnProject number(10,2);
+        revenueRatio number(10,8);
+        yearToCompute varchar2(4);
     BEGIN
+        yearToCompute := '2022';
         taxDueOnProject := 0;
         -- For each year, get all income from project
         -- Get all income from all projects
-        SELECT sum(salePrice) INTO totalProjectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = '2022';
+        SELECT sum(salePrice) INTO totalProjectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute;
+        -- Get income from single project
+        SELECT sum(salePrice) INTO projectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute and project_id = projectId;
         -- Get income from income table (outside base income)
-        SELECT actualIncome, estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income WHERE year = '2022';
+        SELECT ti.actualIncome, ti.estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income ti WHERE year = yearToCompute;
         -- Get tax for base income (use isEstimated to determine if we should use estimate or actual income)
         if isEstimated = 1 then
             -- Estimated
-            taxFromIncome := bsa_func_calculate_federal_income_tax_2021(estimatedIncome);
+            taxFromIncome := bsa_func_calculate_federal_income_tax_2022(estimatedIncome);
+            -- Get tax from income with revenue added on
+            taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2022(estimatedIncome + totalProjectRevenue);
         else
-            taxFromIncome := bsa_func_calculate_federal_income_tax_2021(actualIncome);
+            taxFromIncome := bsa_func_calculate_federal_income_tax_2022(actualIncome);
+            taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2022(actualIncome + totalProjectRevenue);
         end if;
-        -- Get tax for added income
-        taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2021(taxFromIncome + totalProjectRevenue);
         -- Divide tax by ratio of project income vs all projects
-        taxDueOnProject := taxDueOnProject + ((projectRevenue / totalProjectRevenue) * (taxFromIncomeWithRevenue - taxFromIncome));
+        revenueRatio := projectRevenue / totalProjectRevenue;
+        taxDueOnProject := taxDueOnProject + (revenueRatio * (taxFromIncomeWithRevenue - taxFromIncome));
         -- Add to sum then iterate (return aggregate sum)
         return taxDueOnProject;
     END;
