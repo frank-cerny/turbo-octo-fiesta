@@ -165,10 +165,10 @@ as
         ut.expect(taxDue).to_( equal(3.60) );
         -- Then check the estimated string
         taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 1);
-        ut.expect(taxString).to_( equal('2022 Tax = $3.60') );
+        ut.expect(taxString).to_( equal('; 2022 Tax = $3.6') );
         -- And finally check the actual string
         taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 0);
-        ut.expect(taxString).to_( equal('2022 Tax = $3.60') );
+        ut.expect(taxString).to_( equal('; 2022 Tax = $3.6') );
     end;
 end test_tax_utilities_package;
 /

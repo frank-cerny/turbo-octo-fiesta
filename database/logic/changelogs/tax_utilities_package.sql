@@ -23,12 +23,30 @@ end tax_utilities;
 create or replace package body tax_utilities
 as
     -- If isEstimated = 1, then use estimated income value from db, instead of actual
+    -- See below, except we should return a string for each year that can be added to a project page
     function bsa_func_calculate_yearly_federal_tax_string (projectId IN int, isEstimated IN int)
     RETURN varchar2
     AS
+        numberOfRevenueItems int;
+        taxDueOnProject number(10,2);
+        taxString varchar2(150);
     BEGIN
-        -- See below, except we should return a string for each year that can be added to a project page
-        return '1';
+        numberOfRevenueItems := 0;
+        taxDueOnProject := 0;
+        -- For each year, call a helper function to make updating this easier in the future :)
+        -- 2021
+        SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2021';
+        if numberOfRevenueItems > 0 THEN
+            taxDueOnProject := taxDueOnProject + bsa_func_calculate_federal_tax_helper_2021(projectId, isEstimated);
+            taxString := ('2021 Tax = $' || taxDueOnProject);
+        end if;
+        -- 2022
+        SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2022';
+        if numberOfRevenueItems > 0 THEN
+            taxDueOnProject := taxDueOnProject + bsa_func_calculate_federal_tax_helper_2022(projectId, isEstimated);
+            taxString := (taxString || '; 2022 Tax = $' || taxDueOnProject);
+        end if;
+        return taxString;
     END;
 
     -- If isEstimated = 1, then use estimated income value from db, instead of actual
