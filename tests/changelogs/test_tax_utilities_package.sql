@@ -63,26 +63,26 @@ as
         -- Test each part of the tax bracket to ensure math holds, computations are straight forward inside the function
         -- hence we can use a single test instead of breaking it out
         -- 10% bracket
-        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(500);
+        taxDue := taxu.bsa_func_calculate_federal_income_tax_2022(500);
         ut.expect(taxDue).to_( equal(50) );
         -- 12% bracket
-        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(32405);
+        taxDue := taxu.bsa_func_calculate_federal_income_tax_2022(32405);
         ut.expect(taxDue).to_( equal(3477.60) );
         -- 22% bracket
-        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(99600);
+        taxDue := taxu.bsa_func_calculate_federal_income_tax_2022(99600);
         ut.expect(taxDue).to_( equal(13146) );
         -- 24% bracket 
-        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(250000);
+        taxDue := taxu.bsa_func_calculate_federal_income_tax_2022(250000);
         ut.expect(taxDue).to_( equal(47671) );
         -- 32% bracket
-        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(400000);
+        taxDue := taxu.bsa_func_calculate_federal_income_tax_2022(400000);
         ut.expect(taxDue).to_( equal(88463) );
         -- 35% bracket
-        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(567000);
+        taxDue := taxu.bsa_func_calculate_federal_income_tax_2022(567000);
         ut.expect(taxDue).to_( equal(145956) );
         -- 37% bracket
-        taxDue := taxu.bsa_func_calculate_federal_income_tax_2021(750000);
-        ut.expect(taxDue).to_( equal(212049) );
+        taxDue := taxu.bsa_func_calculate_federal_income_tax_2022(750000);
+        ut.expect(taxDue).to_( equal(212048.63) );
     end;
 
     procedure test_aggregate_tax_caclulation_empty_project is
@@ -142,9 +142,9 @@ as
         VALUES (projectId2, 'temp 44444', 'description', 40.50, 'Ebay', 'N', Date '2022-02-20');
         -- Project 3
         INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
-        VALUES (projectId3, 'temp 44444', 'description', 35, 'Ebay', 'N', Date '2022-01-20');
+        VALUES (projectId3, 'temp 55555', 'description', 35, 'Ebay', 'N', Date '2022-01-20');
         INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
-        VALUES (projectId3, 'temp 44444', 'description', 160, 'Ebay', 'N', Date '2022-01-15');
+        VALUES (projectId3, 'temp 66666', 'description', 160, 'Ebay', 'N', Date '2022-01-15');
 
         -- Act & Assert (All for project 1)
 
