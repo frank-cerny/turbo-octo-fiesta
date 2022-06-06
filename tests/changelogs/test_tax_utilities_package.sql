@@ -18,7 +18,7 @@ as
     -- %test(Test Tax Calculations Multi Year Single Project)
     procedure test_aggregate_tax_calculation_multi_year_single_project;
     -- %test(Test Tax Calculations Multi Year Multi Projects)
-    -- procedure test_aggregate_tax_calculation_multi_year_multi_project;
+    procedure test_aggregate_tax_calculation_multi_year_multi_project;
     -- %test(Test Tax Calculations with No Income Set)
     procedure test_aggregate_tax_calculation_with_no_income_set
 end test_tax_utilities_package;
@@ -300,10 +300,100 @@ as
 
         -- First check the estimated value (the values are the same here because the tax brackets are the same)
         taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 1);
-        ut.expect(taxDue).to_( equal(168.08) );
+        ut.expect(taxDue).to_( equal(174.68) );
         -- Then check the actual
         taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 0);
-        ut.expect(taxDue).to_( equal(6.60) );
+        ut.expect(taxDue).to_( equal(182.76) );
+        -- Then check the estimated string
+        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 1);
+        ut.expect(taxString).to_( equal('; 2021 Tax = $6.6; 2022 Tax = $168.08') );
+        -- And finally check the actual string
+        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 0);
+        ut.expect(taxString).to_( equal('; 2021 Tax = $6.6; 2022 Tax = $176.16') );
+    end;
+
+    procedure test_aggregate_tax_calculation_multi_year_multi_project is
+        taxDue number(10, 2);
+        taxString varchar2(150);
+        projectId1 int;
+        projectId2 int;
+        projectId3 int;
+    begin
+        -- Create 3 projects
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 11111', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Project 11111';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId2 FROM dev_ws.bsa_project p where p.title = 'Project 22222';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 33333', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId3 FROM dev_ws.bsa_project p where p.title = 'Project 33333';
+
+        -- Add estimated/actual tax values for 2021 (all revenue items will be in 2021)
+        INSERT INTO dev_ws.bsa_tax_income (year, estimatedIncome, actualIncome)
+        VALUES ('2021', 50000, 67500);
+        INSERT INTO dev_ws.bsa_tax_income (year, estimatedIncome, actualIncome)
+        VALUES ('2022', 150000, 250000);
+
+        -- Then add two revenue items to each project (2 for each year; 4 total for each project)
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId1, 'temp 11111', 'description', 10, 'Ebay', 'N', Date '2021-05-20');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId1, 'temp 22222', 'description', 20, 'Ebay', 'N', Date '2021-04-20');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId1, 'temp 33333', 'description', 678.90, 'Ebay', 'N', Date '2022-05-20');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId1, 'temp 44444', 'description', 55.10, 'Ebay', 'N', Date '2022-04-20');
+
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId2, 'temp 11111A', 'description', 10, 'Ebay', 'N', Date '2021-05-20');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId2, 'temp 22222A', 'description', 20, 'Ebay', 'N', Date '2021-04-20');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId2, 'temp 33333A', 'description', 678.90, 'Ebay', 'N', Date '2022-05-20');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId2, 'temp 44444A', 'description', 55.10, 'Ebay', 'N', Date '2022-04-20');
+
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId3, 'temp 11111B', 'description', 10, 'Ebay', 'N', Date '2021-05-20');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId3, 'temp 22222B', 'description', 20, 'Ebay', 'N', Date '2021-04-20');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId3, 'temp 33333B', 'description', 678.90, 'Ebay', 'N', Date '2022-05-20');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId3, 'temp 44444B', 'description', 55.10, 'Ebay', 'N', Date '2022-04-20');
+
+        -- Act & Assert (All for project 1)
+
+        -- 2021 = 6.60 for both (see test above)
+
+        -- 2022 Example Calculations (Estimated):
+        -- Total Project Revenue = 2202
+        -- Total Project 1 Revenue = 734
+        -- Total Outside Income = 150000
+        -- Total Outside Income Tax = 24234
+        -- Total Combined Tax = 24718.44
+        -- Tax for all projects = 484.44
+        -- Project 1 tax = (734/2202) * 1 = 161.48
+
+        -- 2022 Example Calculations (Actual):
+        -- Total Project Revenue = 2202
+        -- Total Project 1 Revenue = 734
+        -- Total Outside Income = 250000
+        -- Total Outside Income Tax = 47671
+        -- Total Combined Tax = 48199.48
+        -- Tax for all projects = 528.48
+        -- Project 1 tax = (734/2202) * 1 = 176.16 
+
+        -- First check the estimated value (the values are the same here because the tax brackets are the same)
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 1);
+        ut.expect(taxDue).to_( equal(174.68) );
+        -- Then check the actual
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 0);
+        ut.expect(taxDue).to_( equal(182.76) );
         -- Then check the estimated string
         taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 1);
         ut.expect(taxString).to_( equal('; 2021 Tax = $6.6; 2022 Tax = $168.08') );
