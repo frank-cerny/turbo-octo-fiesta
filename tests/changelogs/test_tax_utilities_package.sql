@@ -420,13 +420,13 @@ as
 
         -- First check the estimated value (the values are the same here because the tax brackets are the same)
         taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 1);
-        ut.expect(taxDue).to_( equal(174.68) );
+        ut.expect(taxDue).to_( equal(168.08) );
         -- Then check the actual
         taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 0);
         ut.expect(taxDue).to_( equal(182.76) );
         -- Then check the estimated string
         taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 1);
-        ut.expect(taxString).to_( equal('2021 Tax = $6.6; 2022 Tax = $168.08') );
+        ut.expect(taxString).to_( equal('2021 Tax = $6.6; 2022 Tax = $161.48') );
         -- And finally check the actual string
         taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 0);
         ut.expect(taxString).to_( equal('2021 Tax = $6.6; 2022 Tax = $176.16') );
