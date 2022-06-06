@@ -10,12 +10,15 @@ as
     -- %test(Test Tax Calculations Empty Project)
     procedure test_aggregate_tax_caclulation_empty_project;
     -- %test(Test Tax Calculations Single Year Single Project)
-    -- procedure test_aggregate_tax_calculation_single_year_single_project;
-    -- %test(Test Tax Calculations Multi Year Single Project)
-    -- procedure test_aggregate_tax_calculation_multi_year_single_project;
+    procedure test_aggregate_tax_calculation_single_year_single_project;
     -- %test(Test Tax Calculations Single Year Multi Projects)
     procedure test_aggregate_tax_calculation_single_year_multi_project;
+    -- %test(Test Tax Calculations Multi Year Single Project)
+    procedure test_aggregate_tax_calculation_multi_year_single_project;
     -- %test(Test Tax Calculations Multi Year Multi Projects)
-    -- procedure test_aggregate_tax_calculation_multi_year_multi_project;
-    -- TODO (Add string calculation tests as well!)
+    procedure test_aggregate_tax_calculation_multi_year_multi_project;
+    -- %test(Test Tax Calculations with No Income Set)
+    procedure test_aggregate_tax_calculation_with_no_income_set;
+    -- %test(Test Tax Income Validation)
+    procedure test_tax_income_validation;
 end test_tax_utilities_package;

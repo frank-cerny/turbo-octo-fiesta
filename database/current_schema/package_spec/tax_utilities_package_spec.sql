@@ -5,6 +5,8 @@ as
     return varchar2;
     function bsa_func_calculate_total_federal_tax(projectId IN int, isEstimated IN int)
     return number;
+    function bsa_func_validate_income_params(isEstimated IN int, yearToCheck IN varchar2)
+    return number;
     function bsa_func_calculate_federal_tax_helper_2021(projectId IN int, isEstimated IN int)
     return number;
     function bsa_func_calculate_federal_tax_helper_2022(projectId IN int, isEstimated IN int)

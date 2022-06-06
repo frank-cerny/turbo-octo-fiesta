@@ -21,6 +21,8 @@ as
     procedure test_aggregate_tax_calculation_multi_year_multi_project;
     -- %test(Test Tax Calculations with No Income Set)
     procedure test_aggregate_tax_calculation_with_no_income_set;
+    -- %test(Test Tax Income Validation)
+    procedure test_tax_income_validation;
 end test_tax_utilities_package;
 /
 
@@ -110,6 +112,29 @@ as
         ut.expect(taxDue).to_( equal(0) );
     end;
 
+    procedure test_tax_income_validation is
+        ret int;
+    begin
+        -- Remove current year values if they exist in the DB
+        DELETE 
+        FROM dev_ws.bsa_tax_income
+        WHERE year in ('2021', '2022');
+        -- Act
+        -- As there are no values in the database for 2021 or 2022, we should recieve a 0 return value
+        ret := taxu.bsa_func_validate_income_params(1, '2021');
+        -- Assert
+        ut.expect(ret).to_( equal(0) );
+        ret := taxu.bsa_func_validate_income_params(2, '2022');
+        ut.expect(ret).to_( equal(0) );
+        -- Now insert certain values for certain years and validate (estimated income cannot be null by table design)
+        INSERT INTO bsa_tax_income (year, estimatedIncome, actualIncome) VALUES ('2015', 50, NULL);
+        INSERT INTO bsa_tax_income (year, estimatedIncome, actualIncome) VALUES ('2016', 100, 100);
+        ret := taxu.bsa_func_validate_income_params(1, '2015');
+        ut.expect(ret).to_( equal(1) );
+        ret := taxu.bsa_func_validate_income_params(2, '2016');
+        ut.expect(ret).to_( equal(1) );
+    end;
+
     procedure test_aggregate_tax_calculation_with_no_income_set is
         taxDue number(10, 2);
         taxString varchar2(150);
@@ -144,10 +169,10 @@ as
         ut.expect(taxDue).to_( equal(0) );
         -- Then check the estimated string
         taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 1);
-        ut.expect(taxString).to_( equal('; 2021 Tax = N/A') );
+        ut.expect(taxString).to_( equal('2021 Tax = N/A') );
         -- And finally check the actual string
         taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 0);
-        ut.expect(taxString).to_( equal('; 2021 Tax = N/A') );
+        ut.expect(taxString).to_( equal('2021 Tax = N/A') );
     end;
 
     procedure test_aggregate_tax_calculation_single_year_single_project is

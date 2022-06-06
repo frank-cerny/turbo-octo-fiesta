@@ -59,6 +59,7 @@ as
             -- Setting the out value is the same as "returning a value"
             return  (revenue - bikeCost - toolCost - singleUseSupplyCost - fixedSupplyCost - nonFixedSupplyCost);
         END;
+
     -- projectIdString is a colon separated project id string
     function bsa_func_return_project_name_string_from_ids (projectIdString IN varchar2)
     RETURN varchar2

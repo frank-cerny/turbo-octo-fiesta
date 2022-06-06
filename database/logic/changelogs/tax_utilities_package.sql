@@ -7,6 +7,8 @@ as
     return varchar2;
     function bsa_func_calculate_total_federal_tax(projectId IN int, isEstimated IN int)
     return number;
+    function bsa_func_validate_income_params(isEstimated IN int, yearToCheck IN varchar2)
+    return number;
     function bsa_func_calculate_federal_tax_helper_2021(projectId IN int, isEstimated IN int)
     return number;
     function bsa_func_calculate_federal_tax_helper_2022(projectId IN int, isEstimated IN int)
@@ -22,6 +24,35 @@ end tax_utilities;
 -- Functionality package 
 create or replace package body tax_utilities
 as
+    -- Validates that the proper prerequsitite data exists in the database to perform the calculation
+    -- Returns:
+    --  0 = false
+    --  1 = true
+    function bsa_func_validate_income_params (isEstimated IN int, yearToCheck IN varchar2)
+    RETURN number
+    AS
+        ret int;
+        actualIncome number(10,2);
+        estimatedIncome number(10,2);
+    BEGIN
+        if (isEstimated = 1) THEN
+            SELECT ti.estimatedIncome INTO estimatedIncome from bsa_tax_income ti WHERE year = yearToCheck;
+            -- If there is a null value in the database, also return 0, since null = no value here
+            if (estimatedIncome is NULL) THEN
+                return 0;
+            end if;
+        else
+            SELECT ti.actualIncome INTO actualIncome from bsa_tax_income ti WHERE year = yearToCheck;
+            if (actualIncome is NULL) THEN
+                return 0;
+            end if;
+        end if;
+        return 1;
+        EXCEPTION
+        WHEN no_data_found THEN
+            return 0;
+    END;
+
     -- If isEstimated = 1, then use estimated income value from db, instead of actual
     -- See below, except we should return a string for each year that can be added to a project page
     function bsa_func_calculate_yearly_federal_tax_string (projectId IN int, isEstimated IN int)
@@ -30,8 +61,6 @@ as
         numberOfRevenueItems int;
         taxDueOnProject number(10,2);
         taxString varchar2(150);
-        actualIncome number(10,2);
-        estimatedIncome number(10,2);
     BEGIN
         numberOfRevenueItems := 0;
         taxDueOnProject := 0;
@@ -39,8 +68,7 @@ as
         -- 2021
         SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2021';
         if numberOfRevenueItems > 0 THEN
-            SELECT ti.actualIncome, ti.estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income ti WHERE year = '2021';
-            if (isEstimated = 1 and estimatedIncome is not NULL and estimatedIncome > 0) or (isEstimated = 0 and actualIncome is not NULL and actualIncome > 0) THEN
+            if (bsa_func_validate_income_params(isEstimated, '2021') = 1) THEN
                 taxDueOnProject := bsa_func_calculate_federal_tax_helper_2021(projectId, isEstimated);
                 taxString := ('2021 Tax = $' || taxDueOnProject);
             else
@@ -50,8 +78,7 @@ as
         -- 2022
         SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2022';
         if numberOfRevenueItems > 0 THEN
-            SELECT ti.actualIncome, ti.estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income ti WHERE year = '2022';
-            if (isEstimated = 1 and estimatedIncome is not NULL and estimatedIncome > 0) or (isEstimated = 0 and actualIncome is not NULL and actualIncome > 0) THEN
+            if (bsa_func_validate_income_params(isEstimated, '2022') = 1) THEN
                 taxDueOnProject := bsa_func_calculate_federal_tax_helper_2022(projectId, isEstimated);
                 taxString := (taxString || '; 2022 Tax = $' || taxDueOnProject);
             else
@@ -77,16 +104,14 @@ as
         SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2021';
         if numberOfRevenueItems > 0 THEN
             -- Ensure the income table has the correct values for the computation
-            SELECT ti.actualIncome, ti.estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income ti WHERE year = '2021';
-            if (isEstimated = 1 and estimatedIncome is not NULL and estimatedIncome > 0) or (isEstimated = 0 and actualIncome is not NULL and actualIncome > 0) THEN
+            if (bsa_func_validate_income_params(isEstimated, '2021') = 1) THEN
                 taxDueOnProject := taxDueOnProject + bsa_func_calculate_federal_tax_helper_2021(projectId, isEstimated);
             end if;
         end if;
         -- 2022
         SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2022';
         if numberOfRevenueItems > 0 THEN
-            SELECT ti.actualIncome, ti.estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income ti WHERE year = '2022';
-            if (isEstimated = 1 and estimatedIncome is not NULL and estimatedIncome > 0) or (isEstimated = 0 and actualIncome is not NULL and actualIncome > 0) THEN
+            if (bsa_func_validate_income_params(isEstimated, '2022') = 1) THEN
                 taxDueOnProject := taxDueOnProject + bsa_func_calculate_federal_tax_helper_2022(projectId, isEstimated);
             end if;
         end if;
