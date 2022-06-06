@@ -66,7 +66,7 @@ as
         if numberOfRevenueItems > 0 THEN
             -- Ensure the income table has the correct values for the computation
             SELECT ti.actualIncome, ti.estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income ti WHERE year = '2021';
-            if (isEstimated = 1 and estimatedIncome != NULL and estimatedIncome > 0) or (isEstimated = 0 and actualIncome != NULL and actualIncome > 0) THEN
+            if (isEstimated = 1 and estimatedIncome is not NULL and estimatedIncome > 0) or (isEstimated = 0 and actualIncome is not NULL and actualIncome > 0) THEN
                 taxDueOnProject := taxDueOnProject + bsa_func_calculate_federal_tax_helper_2021(projectId, isEstimated);
             end if;
         end if;
@@ -74,7 +74,7 @@ as
         SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2022';
         if numberOfRevenueItems > 0 THEN
             SELECT ti.actualIncome, ti.estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income ti WHERE year = '2022';
-            if (isEstimated = 1 and estimatedIncome != NULL and estimatedIncome > 0) or (isEstimated = 0 and actualIncome != NULL and actualIncome > 0) THEN
+            if (isEstimated = 1 and estimatedIncome is not NULL and estimatedIncome > 0) or (isEstimated = 0 and actualIncome is not NULL and actualIncome > 0) THEN
                 taxDueOnProject := taxDueOnProject + bsa_func_calculate_federal_tax_helper_2022(projectId, isEstimated);
             end if;
         end if;
