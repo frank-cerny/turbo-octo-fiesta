@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="68f9ff02565a9bfe775b6edc0c0a8a0f58426d27" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="c17101fc9746591edbace52b3b64e7b43661c173" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/set_environment
 set define off verify off feedback off
@@ -40,31 +40,18 @@ prompt APPLICATION 100 - Bike Selling Application
 --   Exported By:     DEV_WS
 --   Flashback:       0
 --   Export Type:     Application Export
-<<<<<<< HEAD
---     Pages:                     34
---       Items:                   97
---       Processes:               39
---       Regions:                100
---       Buttons:                 67
+--     Pages:                     36
+--       Items:                  101
+--       Processes:               41
+--       Regions:                104
+--       Buttons:                 72
 --       Dynamic Actions:         43
-=======
---     Pages:                     24
---       Items:                   70
---       Processes:               35
---       Regions:                 78
---       Buttons:                 52
---       Dynamic Actions:         27
->>>>>>> origin
 --     Shared Components:
 --       Logic:
 --       Navigation:
 --         Lists:                  3
 --         Breadcrumbs:            1
-<<<<<<< HEAD
---           Entries:             32
-=======
---           Entries:             20
->>>>>>> origin
+--           Entries:             34
 --       Security:
 --         Authentication:         2
 --         Authorization:          2
@@ -140,7 +127,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Bike Selling Application'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220522115412'
+,p_last_upd_yyyymmddhh24miss=>'20220605232528'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -240,6 +227,15 @@ wwv_flow_api.create_list_item(
 ,p_parent_list_item_id=>wwv_flow_api.id(3816730496249555)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'24'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(9715302056898027)
+,p_list_item_display_sequence=>150
+,p_list_item_link_text=>'Income Tax Base'
+,p_list_item_link_target=>'f?p=&APP_ID.:34:&APP_SESSION.::&DEBUG.:::'
+,p_parent_list_item_id=>wwv_flow_api.id(3816730496249555)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'34,35'
 );
 wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(6817404959697570)
@@ -687,6 +683,20 @@ wwv_flow_api.create_menu_option(
 ,p_short_name=>'Single Use Supplies'
 ,p_link=>'f?p=&APP_ID.:32:&APP_SESSION.::&DEBUG.:::'
 ,p_page_id=>32
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(9716075193898028)
+,p_parent_id=>wwv_flow_api.id(3818374582281946)
+,p_short_name=>'Income Tax Base'
+,p_link=>'f?p=&APP_ID.:34:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>34
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(9717203532898030)
+,p_parent_id=>wwv_flow_api.id(9716075193898028)
+,p_short_name=>'Add Income Tax'
+,p_link=>'f?p=&APP_ID.:35:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>35
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10178729384271423)
@@ -12988,7 +12998,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220410162428'
+,p_last_upd_yyyymmddhh24miss=>'20220522131123'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3415968184720613)
@@ -12997,7 +13007,7 @@ wwv_flow_api.create_page_plug(
 ,p_plug_template=>wwv_flow_api.id(10236192890271473)
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_source=>'Welcome to the Bike Selling Application!'
+,p_plug_source=>'Welcome to the Bike Selling Application!!'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'HTML'
@@ -19478,7 +19488,6 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_report_columns=>'ID:NAME:DATEPURCHASED:DESCRIPTION:COST:UNITCOST:USAGES:ISUSEDUP'
-<<<<<<< HEAD
 ,p_sort_column_1=>'NAME'
 ,p_sort_direction_1=>'ASC NULLS FIRST'
 ,p_sort_column_2=>'0'
@@ -19491,8 +19500,6 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_sort_direction_5=>'ASC'
 ,p_sort_column_6=>'0'
 ,p_sort_direction_6=>'ASC'
-=======
->>>>>>> origin
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(16856010769019578)
@@ -22181,6 +22188,335 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_report_columns=>'PROJECT_ID:TITLE:NAME:DESCRIPTION:DATEPURCHASED:UNITCOST:UNITSPURCHASED:ISPENDING:REVENUEITEM_ID'
+);
+end;
+/
+prompt --application/pages/page_00034
+begin
+wwv_flow_api.create_page(
+ p_id=>34
+,p_user_interface_id=>wwv_flow_api.id(10325719747271546)
+,p_name=>'Income Tax Base'
+,p_alias=>'INCOME-TAX-BASE'
+,p_step_title=>'Income Tax Base'
+,p_autocomplete_on_off=>'OFF'
+,p_page_template_options=>'#DEFAULT#'
+,p_protection_level=>'C'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220605232528'
+);
+wwv_flow_api.create_report_region(
+ p_id=>wwv_flow_api.id(9713363001898025)
+,p_name=>'Base Income Tax'
+,p_template=>wwv_flow_api.id(10236192890271473)
+,p_display_sequence=>10
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#'
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'TABLE'
+,p_query_table=>'BSA_TAX_INCOME'
+,p_include_rowid_column=>false
+,p_ajax_enabled=>'Y'
+,p_lazy_loading=>false
+,p_query_row_template=>wwv_flow_api.id(10254644259271484)
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
+,p_pagination_display_position=>'BOTTOM_RIGHT'
+,p_csv_output=>'Y'
+,p_csv_output_link_text=>'Download'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(9713760264898026)
+,p_query_column_id=>1
+,p_column_alias=>'ID'
+,p_column_display_sequence=>1
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(9714156514898026)
+,p_query_column_id=>2
+,p_column_alias=>'YEAR'
+,p_column_display_sequence=>2
+,p_column_heading=>'Year'
+,p_use_as_row_header=>'N'
+,p_column_alignment=>'CENTER'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(9714579628898026)
+,p_query_column_id=>3
+,p_column_alias=>'ESTIMATEDINCOME'
+,p_column_display_sequence=>3
+,p_column_heading=>'Estimated Income'
+,p_use_as_row_header=>'N'
+,p_column_format=>'FML999G999G999G999G990D00'
+,p_column_alignment=>'CENTER'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_report_columns(
+ p_id=>wwv_flow_api.id(9714968424898026)
+,p_query_column_id=>4
+,p_column_alias=>'ACTUALINCOME'
+,p_column_display_sequence=>4
+,p_column_heading=>'Actual Income'
+,p_use_as_row_header=>'N'
+,p_column_format=>'FML999G999G999G999G990D00'
+,p_column_alignment=>'CENTER'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(9716250840898029)
+,p_plug_name=>'Breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10245532811271478)
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_menu_id=>wwv_flow_api.id(10178561499271422)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>wwv_flow_api.id(10302683604271516)
+);
+wwv_flow_api.create_page_button(
+ p_id=>wwv_flow_api.id(9717427524898030)
+,p_button_sequence=>30
+,p_button_plug_id=>wwv_flow_api.id(9713363001898025)
+,p_button_name=>'CREATE'
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>wwv_flow_api.id(10301237433271515)
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Create'
+,p_button_position=>'EDIT'
+,p_button_redirect_url=>'f?p=&APP_ID.:35:&SESSION.::&DEBUG.:35'
+);
+end;
+/
+prompt --application/pages/page_00035
+begin
+wwv_flow_api.create_page(
+ p_id=>35
+,p_user_interface_id=>wwv_flow_api.id(10325719747271546)
+,p_name=>'Add Income Tax'
+,p_alias=>'ADD-INCOME-TAX'
+,p_step_title=>'Add Income Tax'
+,p_autocomplete_on_off=>'OFF'
+,p_page_template_options=>'#DEFAULT#'
+,p_protection_level=>'C'
+,p_last_updated_by=>'DEV'
+,p_last_upd_yyyymmddhh24miss=>'20220605232447'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(9707026347898014)
+,p_plug_name=>'Add Income Tax'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>wwv_flow_api.id(10236192890271473)
+,p_plug_display_sequence=>10
+,p_query_type=>'TABLE'
+,p_query_table=>'BSA_TAX_INCOME'
+,p_include_rowid_column=>false
+,p_is_editable=>true
+,p_edit_operations=>'i:u:d'
+,p_lost_update_check_type=>'VALUES'
+,p_plug_source_type=>'NATIVE_FORM'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(9716867713898030)
+,p_plug_name=>'Breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(10245532811271478)
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_menu_id=>wwv_flow_api.id(10178561499271422)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>wwv_flow_api.id(10302683604271516)
+);
+wwv_flow_api.create_page_button(
+ p_id=>wwv_flow_api.id(9711175899898022)
+,p_button_sequence=>30
+,p_button_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_button_name=>'SAVE'
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>wwv_flow_api.id(10301237433271515)
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Apply Changes'
+,p_button_position=>'CHANGE'
+,p_button_condition=>'P35_ID'
+,p_button_condition_type=>'ITEM_IS_NOT_NULL'
+,p_database_action=>'UPDATE'
+);
+wwv_flow_api.create_page_button(
+ p_id=>wwv_flow_api.id(9710149271898022)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_button_name=>'CANCEL'
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>wwv_flow_api.id(10301237433271515)
+,p_button_image_alt=>'Cancel'
+,p_button_position=>'CLOSE'
+,p_button_redirect_url=>'f?p=&APP_ID.:34:&SESSION.::&DEBUG.:::'
+);
+wwv_flow_api.create_page_button(
+ p_id=>wwv_flow_api.id(9711528273898023)
+,p_button_sequence=>40
+,p_button_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_button_name=>'CREATE'
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>wwv_flow_api.id(10301237433271515)
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Create'
+,p_button_position=>'CREATE'
+,p_button_condition=>'P35_ID'
+,p_button_condition_type=>'ITEM_IS_NULL'
+,p_database_action=>'INSERT'
+);
+wwv_flow_api.create_page_button(
+ p_id=>wwv_flow_api.id(9710716809898022)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_button_name=>'DELETE'
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>wwv_flow_api.id(10301237433271515)
+,p_button_image_alt=>'Delete'
+,p_button_position=>'DELETE'
+,p_button_execute_validations=>'N'
+,p_confirm_message=>'&APP_TEXT$DELETE_MSG!RAW.'
+,p_confirm_style=>'danger'
+,p_button_condition=>'P35_ID'
+,p_button_condition_type=>'ITEM_IS_NOT_NULL'
+,p_database_action=>'DELETE'
+);
+wwv_flow_api.create_page_branch(
+ p_id=>wwv_flow_api.id(9711866583898023)
+,p_branch_action=>'f?p=&APP_ID.:34:&SESSION.::&DEBUG.&success_msg=#SUCCESS_MSG#'
+,p_branch_point=>'AFTER_PROCESSING'
+,p_branch_type=>'REDIRECT_URL'
+,p_branch_sequence=>1
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(9707334422898016)
+,p_name=>'P35_ID'
+,p_source_data_type=>'NUMBER'
+,p_is_primary_key=>true
+,p_is_query_only=>true
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_item_source_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_use_cache_before_default=>'NO'
+,p_prompt=>'Id'
+,p_source=>'ID'
+,p_source_type=>'REGION_SOURCE_COLUMN'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_label_alignment=>'RIGHT'
+,p_field_template=>wwv_flow_api.id(10298784641271512)
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_protection_level=>'S'
+,p_attribute_01=>'Y'
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(9707704323898019)
+,p_name=>'P35_YEAR'
+,p_source_data_type=>'VARCHAR2'
+,p_is_required=>true
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_item_source_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_use_cache_before_default=>'NO'
+,p_prompt=>'Year'
+,p_source=>'YEAR'
+,p_source_type=>'REGION_SOURCE_COLUMN'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>32
+,p_cMaxlength=>4
+,p_label_alignment=>'RIGHT'
+,p_field_template=>wwv_flow_api.id(10300025768271513)
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attribute_01=>'N'
+,p_attribute_02=>'N'
+,p_attribute_03=>'N'
+,p_attribute_04=>'TEXT'
+,p_attribute_05=>'NONE'
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(9708131747898020)
+,p_name=>'P35_ESTIMATEDINCOME'
+,p_source_data_type=>'NUMBER'
+,p_is_required=>true
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_item_source_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_use_cache_before_default=>'NO'
+,p_prompt=>'Estimatedincome'
+,p_source=>'ESTIMATEDINCOME'
+,p_source_type=>'REGION_SOURCE_COLUMN'
+,p_display_as=>'NATIVE_NUMBER_FIELD'
+,p_cSize=>32
+,p_cMaxlength=>255
+,p_cHeight=>1
+,p_label_alignment=>'RIGHT'
+,p_field_template=>wwv_flow_api.id(10300025768271513)
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attribute_03=>'right'
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(9708597880898020)
+,p_name=>'P35_ACTUALINCOME'
+,p_source_data_type=>'NUMBER'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_item_source_plug_id=>wwv_flow_api.id(9707026347898014)
+,p_use_cache_before_default=>'NO'
+,p_prompt=>'Actualincome'
+,p_source=>'ACTUALINCOME'
+,p_source_type=>'REGION_SOURCE_COLUMN'
+,p_display_as=>'NATIVE_NUMBER_FIELD'
+,p_cSize=>32
+,p_cMaxlength=>255
+,p_cHeight=>1
+,p_label_alignment=>'RIGHT'
+,p_field_template=>wwv_flow_api.id(10298784641271512)
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attribute_03=>'right'
+);
+wwv_flow_api.create_page_process(
+ p_id=>wwv_flow_api.id(9712799045898024)
+,p_process_sequence=>10
+,p_process_point=>'AFTER_SUBMIT'
+,p_region_id=>wwv_flow_api.id(9707026347898014)
+,p_process_type=>'NATIVE_FORM_DML'
+,p_process_name=>'Process form Add Income Tax'
+,p_attribute_01=>'REGION_SOURCE'
+,p_attribute_05=>'Y'
+,p_attribute_06=>'Y'
+,p_attribute_08=>'Y'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+);
+wwv_flow_api.create_page_process(
+ p_id=>wwv_flow_api.id(9712327646898024)
+,p_process_sequence=>10
+,p_process_point=>'BEFORE_HEADER'
+,p_region_id=>wwv_flow_api.id(9707026347898014)
+,p_process_type=>'NATIVE_FORM_INIT'
+,p_process_name=>'Initialize form Add Income Tax'
 );
 end;
 /

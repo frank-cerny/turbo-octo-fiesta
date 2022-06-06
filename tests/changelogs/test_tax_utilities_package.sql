@@ -134,10 +134,10 @@ as
         ut.expect(taxDue).to_( equal(0) );
         -- Then check the estimated string
         taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 1);
-        ut.expect(taxString).to_( equal('; 2021 Tax = 0') );
+        ut.expect(taxString).to_( equal('; 2021 Tax = N/A') );
         -- And finally check the actual string
         taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 0);
-        ut.expect(taxString).to_( equal('; 2021 Tax = 0') );
+        ut.expect(taxString).to_( equal('; 2021 Tax = N/A') );
     end;
 
     procedure test_aggregate_tax_calculation_single_year_single_project is
