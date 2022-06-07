@@ -63,6 +63,7 @@ as
     procedure test_aggregate_tax_caclulation_empty_project is
         taxDue number(10, 2);
         projectId int;
+        taxString varchar2(150);
     begin
         -- Create a project
         INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
@@ -75,11 +76,11 @@ as
         WHERE year in ('2021', '2022');
 
         -- Add estimated/actual tax values for 2022 (all revenue items will be in 2022)
-        INSERT INTO dev_ws.bsa_tax_income (year, estimatedIncome, actualIncome)
-        VALUES ('2022', 50000, 67500);
+        INSERT INTO dev_ws.bsa_tax_income (year, income)
+        VALUES ('2022', 50000);
 
         -- Act
-        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId, 0);
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId);
         -- Assert
         ut.expect(taxDue).to_( equal(0) );
     end;
@@ -93,17 +94,12 @@ as
         WHERE year in ('2021', '2022');
         -- Act
         -- As there are no values in the database for 2021 or 2022, we should recieve a 0 return value
-        ret := taxu.bsa_func_validate_income_params(1, '2021');
+        ret := taxu.bsa_func_validate_income_params('2021');
         -- Assert
         ut.expect(ret).to_( equal(0) );
-        ret := taxu.bsa_func_validate_income_params(2, '2022');
-        ut.expect(ret).to_( equal(0) );
         -- Now insert certain values for certain years and validate (estimated income cannot be null by table design)
-        INSERT INTO bsa_tax_income (year, estimatedIncome, actualIncome) VALUES ('2015', 50, NULL);
-        INSERT INTO bsa_tax_income (year, estimatedIncome, actualIncome) VALUES ('2016', 100, 100);
-        ret := taxu.bsa_func_validate_income_params(1, '2015');
-        ut.expect(ret).to_( equal(1) );
-        ret := taxu.bsa_func_validate_income_params(2, '2016');
+        INSERT INTO bsa_tax_income (year, income) VALUES ('2015', 50);
+        ret := taxu.bsa_func_validate_income_params('2015');
         ut.expect(ret).to_( equal(1) );
     end;
 
@@ -123,8 +119,8 @@ as
         WHERE year in ('2021', '2022');
 
         -- Add estimated/actual tax values for 2021 (all revenue items will be in 2021)
-        INSERT INTO dev_ws.bsa_tax_income (year, estimatedIncome, actualIncome)
-        VALUES ('2022', 50000, 67500);
+        INSERT INTO dev_ws.bsa_tax_income (year, income)
+        VALUES ('2022', 50000);
 
         -- Then add two revenue items to each project 
         INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
@@ -133,18 +129,77 @@ as
         VALUES (projectId1, 'temp 22222', 'description', 20, 'Ebay', 'N', Date '2021-04-20');
 
         -- Act & Assert
-        -- First check the estimated value (should be 0, since no incomes values are set in the database for 2021)
-        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 1);
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1);
         ut.expect(taxDue).to_( equal(0) );
-        -- Then check the actual
-        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 0);
+        -- Then check the string version
+        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1);
+        ut.expect(taxString).to_( equal('2021 Tax = N/A') );
+    end;
+
+    -- Show that only certain types of revenue items are considered for tax purposes (non pending items and Ebay only for now)
+    procedure test_revenue_items_filtered_on_tax_calculation is
+        taxDue number(10, 2);
+        taxString varchar2(150);
+        projectId1 int;
+    begin
+        -- Create 3 projects
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 11111', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Project 11111';
+
+        -- Remove current year values if they exist in the DB
+        DELETE 
+        FROM dev_ws.bsa_tax_income
+        WHERE year in ('2021', '2022');
+
+        -- Add estimated/actual tax values for 2021 (all revenue items will be in 2021)
+        INSERT INTO dev_ws.bsa_tax_income (year, income)
+        VALUES ('2021', 67500);
+        INSERT INTO dev_ws.bsa_tax_income (year, income)
+        VALUES ('2022', 150000);
+
+        -- Then add two revenue items to each project (one is Ebay pending, the other is not Ebay)
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId1, 'temp 11111', 'description', 10, 'Ebay', 'Y', Date '2021-05-20');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId1, 'temp 55555', 'description', 20, 'Ebay', 'Y', Date '2022-09-15');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId1, 'temp 22222', 'description', 20, 'Goodwill', 'N', Date '2021-04-20');
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId1, 'temp 44444', 'description', 20, 'Goodwill', 'N', Date '2022-04-20');
+
+        -- Act & Assert (All for project 1)
+        -- Should be 0 tax to start
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1);
         ut.expect(taxDue).to_( equal(0) );
-        -- Then check the estimated string
-        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 1);
-        ut.expect(taxString).to_( equal('2021 Tax = N/A') );
-        -- And finally check the actual string
-        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 0);
-        ut.expect(taxString).to_( equal('2021 Tax = N/A') );
+        -- Then check the string
+        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1);
+        ut.expect(taxString).to_( be_null() );
+
+        -- Now update the item to be not pending and check again
+        UPDATE bsa_revenue_item
+        SET ispending = 'N'
+        WHERE project_id = projectId1 and name in ('temp 11111', 'temp 55555');
+
+        -- Add another non-ebay item for good measure
+        INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
+        VALUES (projectId1, 'temp 33333', 'description', 10, 'Facebook Marketplace', 'Y', Date '2021-05-20');
+
+        -- Example:
+        -- Total Project Revenue = 10
+        -- Total Project 1 Revenue = 10
+        -- Total Outside Income = 67500
+        -- Total Outside Income Tax = 10598.5
+        -- Total Combined Tax = 10600.70
+        -- Tax for all projects = 2.20
+        -- Project 1 tax = (10/10) * 2.20 = 2.20 
+
+        -- Should be 0 tax to start
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1);
+        ut.expect(taxDue).to_( equal(6.6) );
+        -- Then check the string
+        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1);
+        ut.expect(taxString).to_( equal('2021 Tax = $2.2; 2022 Tax = $4.4') );
     end;
 
     procedure test_aggregate_tax_calculation_single_year_single_project is
@@ -163,8 +218,8 @@ as
         WHERE year in ('2021', '2022');
 
         -- Add estimated/actual tax values for 2021 (all revenue items will be in 2021)
-        INSERT INTO dev_ws.bsa_tax_income (year, estimatedIncome, actualIncome)
-        VALUES ('2021', 50000, 67500);
+        INSERT INTO dev_ws.bsa_tax_income (year, income)
+        VALUES ('2021', 67500);
 
         -- Then add two revenue items to each project 
         INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
@@ -183,17 +238,10 @@ as
         -- Tax for all projects = 6.60
         -- Project 1 tax = (30/30) * 1 = 6.60
 
-        -- First check the estimated value (the values are the same here because the tax brackets are the same)
-        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 1);
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1);
         ut.expect(taxDue).to_( equal(6.60) );
-        -- Then check the actual
-        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 0);
-        ut.expect(taxDue).to_( equal(6.60) );
-        -- Then check the estimated string
-        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 1);
-        ut.expect(taxString).to_( equal('2021 Tax = $6.6') );
-        -- And finally check the actual string
-        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 0);
+        -- Then check the string
+        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1);
         ut.expect(taxString).to_( equal('2021 Tax = $6.6') );
     end;
 
@@ -223,8 +271,8 @@ as
         WHERE year in ('2021', '2022');
 
         -- Add estimated/actual tax values for 2022 (all revenue items will be in 2022)
-        INSERT INTO dev_ws.bsa_tax_income (year, estimatedIncome, actualIncome)
-        VALUES ('2022', 50000, 67500);
+        INSERT INTO dev_ws.bsa_tax_income (year, income)
+        VALUES ('2022', 67500);
 
         -- Then add two revenue items to each project 
         INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
@@ -253,17 +301,10 @@ as
         -- Tax for all projects = 35.52
         -- Project 1 tax = (30/296) * 35.52 = 3.60
 
-        -- First check the estimated value (the values are the same here because the tax brackets are the same)
-        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 1);
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1);
         ut.expect(taxDue).to_( equal(3.60) );
-        -- Then check the actual
-        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 0);
-        ut.expect(taxDue).to_( equal(3.60) );
-        -- Then check the estimated string
-        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 1);
-        ut.expect(taxString).to_( equal('; 2022 Tax = $3.6') );
         -- And finally check the actual string
-        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 0);
+        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1);
         ut.expect(taxString).to_( equal('; 2022 Tax = $3.6') );
     end;
 
@@ -283,10 +324,10 @@ as
         WHERE year in ('2021', '2022');
 
         -- Add estimated/actual tax values for 2021 (all revenue items will be in 2021)
-        INSERT INTO dev_ws.bsa_tax_income (year, estimatedIncome, actualIncome)
-        VALUES ('2021', 50000, 67500);
-        INSERT INTO dev_ws.bsa_tax_income (year, estimatedIncome, actualIncome)
-        VALUES ('2022', 150000, 250000);
+        INSERT INTO dev_ws.bsa_tax_income (year, income)
+        VALUES ('2021', 50000);
+        INSERT INTO dev_ws.bsa_tax_income (year, income)
+        VALUES ('2022', 250000);
 
         -- Then add two revenue items to each project (2 for each year)
         INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
@@ -321,16 +362,10 @@ as
         -- Project 1 tax = (734/734) * 1 = 176.16 
 
         -- First check the estimated value (the values are the same here because the tax brackets are the same)
-        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 1);
-        ut.expect(taxDue).to_( equal(168.08) );
-        -- Then check the actual
-        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 0);
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1);
         ut.expect(taxDue).to_( equal(182.76) );
-        -- Then check the estimated string
-        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 1);
-        ut.expect(taxString).to_( equal('2021 Tax = $6.6; 2022 Tax = $161.48') );
-        -- And finally check the actual string
-        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 0);
+        -- Then check the string
+        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1);
         ut.expect(taxString).to_( equal('2021 Tax = $6.6; 2022 Tax = $176.16') );
     end;
 
@@ -360,10 +395,10 @@ as
         WHERE year in ('2021', '2022');
 
         -- Add estimated/actual tax values for 2021 (all revenue items will be in 2021)
-        INSERT INTO dev_ws.bsa_tax_income (year, estimatedIncome, actualIncome)
-        VALUES ('2021', 50000, 67500);
-        INSERT INTO dev_ws.bsa_tax_income (year, estimatedIncome, actualIncome)
-        VALUES ('2022', 150000, 250000);
+        INSERT INTO dev_ws.bsa_tax_income (year, income)
+        VALUES ('2021', 67500);
+        INSERT INTO dev_ws.bsa_tax_income (year, income)
+        VALUES ('2022', 250000);
 
         -- Then add two revenue items to each project (2 for each year; 4 total for each project)
         INSERT INTO dev_ws.bsa_revenue_item (project_id, name, description, saleprice, platformsoldon, ispending, datesold)
@@ -415,17 +450,10 @@ as
         -- Tax for all projects = 528.48
         -- Project 1 tax = (734/2202) * 1 = 176.16 
 
-        -- First check the estimated value (the values are the same here because the tax brackets are the same)
-        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 1);
-        ut.expect(taxDue).to_( equal(168.08) );
-        -- Then check the actual
-        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1, 0);
+        taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId1);
         ut.expect(taxDue).to_( equal(182.76) );
-        -- Then check the estimated string
-        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 1);
-        ut.expect(taxString).to_( equal('2021 Tax = $6.6; 2022 Tax = $161.48') );
-        -- And finally check the actual string
-        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1, 0);
+        -- Then check the string
+        taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(projectId1);
         ut.expect(taxString).to_( equal('2021 Tax = $6.6; 2022 Tax = $176.16') );
     end;
 end test_tax_utilities_package;

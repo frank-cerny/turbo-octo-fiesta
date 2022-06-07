@@ -5,24 +5,14 @@ as
     -- Returns:
     --  0 = false
     --  1 = true
-    function bsa_func_validate_income_params (isEstimated IN int, yearToCheck IN varchar2)
+    function bsa_func_validate_income_params (yearToCheck IN varchar2)
     RETURN number
     AS
-        ret int;
-        actualIncome number(10,2);
-        estimatedIncome number(10,2);
+        income number (10,2);
     BEGIN
-        if (isEstimated = 1) THEN
-            SELECT ti.estimatedIncome INTO estimatedIncome from bsa_tax_income ti WHERE year = yearToCheck;
-            -- If there is a null value in the database, also return 0, since null = no value here
-            if (estimatedIncome is NULL) THEN
-                return 0;
-            end if;
-        else
-            SELECT ti.actualIncome INTO actualIncome from bsa_tax_income ti WHERE year = yearToCheck;
-            if (actualIncome is NULL) THEN
-                return 0;
-            end if;
+        SELECT ti.income INTO income from bsa_tax_income ti WHERE year = yearToCheck;
+        if (income is NULL) THEN
+            return 0;
         end if;
         return 1;
         EXCEPTION
@@ -30,9 +20,8 @@ as
             return 0;
     END;
 
-    -- If isEstimated = 1, then use estimated income value from db, instead of actual
     -- See below, except we should return a string for each year that can be added to a project page
-    function bsa_func_calculate_yearly_federal_tax_string (projectId IN int, isEstimated IN int)
+    function bsa_func_calculate_yearly_federal_tax_string (projectId IN int)
     RETURN varchar2
     AS
         numberOfRevenueItems int;
@@ -43,20 +32,20 @@ as
         taxDueOnProject := 0;
         -- For each year, call a helper function to make updating this easier in the future :)
         -- 2021
-        SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2021';
+        SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2021' and ispending = 'N' and platformsoldon = 'Ebay';
         if numberOfRevenueItems > 0 THEN
-            if (bsa_func_validate_income_params(isEstimated, '2021') = 1) THEN
-                taxDueOnProject := bsa_func_calculate_federal_tax_helper_2021(projectId, isEstimated);
+            if (bsa_func_validate_income_params('2021') = 1) THEN
+                taxDueOnProject := bsa_func_calculate_federal_tax_helper_2021(projectId);
                 taxString := ('2021 Tax = $' || taxDueOnProject);
             else
                 taxString := '2021 Tax = N/A';
             end if;
         end if;
         -- 2022
-        SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2022';
+        SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2022' and ispending = 'N' and platformsoldon = 'Ebay';
         if numberOfRevenueItems > 0 THEN
-            if (bsa_func_validate_income_params(isEstimated, '2022') = 1) THEN
-                taxDueOnProject := bsa_func_calculate_federal_tax_helper_2022(projectId, isEstimated);
+            if (bsa_func_validate_income_params('2022') = 1) THEN
+                taxDueOnProject := bsa_func_calculate_federal_tax_helper_2022(projectId);
                 taxString := (taxString || '; 2022 Tax = $' || taxDueOnProject);
             else
                 taxString := (taxString || '; 2022 Tax = N/A');
@@ -66,43 +55,40 @@ as
     END;
 
     -- If isEstimated = 1, then use estimated income value from db, instead of actual
-    function bsa_func_calculate_total_federal_tax (projectId IN int, isEstimated IN int)
+    function bsa_func_calculate_total_federal_tax (projectId IN int)
     RETURN number
     AS
         numberOfRevenueItems int;
         taxDueOnProject number(10,2);
-        actualIncome number(10,2);
-        estimatedIncome number(10,2);
     BEGIN
         numberOfRevenueItems := 0;
         taxDueOnProject := 0;
         -- For each year, call a helper function to make updating this easier in the future :)
         -- 2021
-        SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2021';
+        SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2021' and ispending = 'N' and platformsoldon = 'Ebay';
         if numberOfRevenueItems > 0 THEN
             -- Ensure the income table has the correct values for the computation
-            if (bsa_func_validate_income_params(isEstimated, '2021') = 1) THEN
-                taxDueOnProject := taxDueOnProject + bsa_func_calculate_federal_tax_helper_2021(projectId, isEstimated);
+            if (bsa_func_validate_income_params('2021') = 1) THEN
+                taxDueOnProject := taxDueOnProject + bsa_func_calculate_federal_tax_helper_2021(projectId);
             end if;
         end if;
         -- 2022
-        SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2022';
+        SELECT count(id) INTO numberOfRevenueItems from bsa_revenue_item WHERE project_id = projectId and EXTRACT(YEAR FROM dateSold) = '2022' and ispending = 'N' and platformsoldon = 'Ebay';
         if numberOfRevenueItems > 0 THEN
-            if (bsa_func_validate_income_params(isEstimated, '2022') = 1) THEN
-                taxDueOnProject := taxDueOnProject + bsa_func_calculate_federal_tax_helper_2022(projectId, isEstimated);
+            if (bsa_func_validate_income_params('2022') = 1) THEN
+                taxDueOnProject := taxDueOnProject + bsa_func_calculate_federal_tax_helper_2022(projectId);
             end if;
         end if;
         return taxDueOnProject;
     END;
 
     -- Number of revenue items for 2021 must be greater than 0, otherwise the behavior of this function is undefined
-    function bsa_func_calculate_federal_tax_helper_2021 (projectId IN int, isEstimated IN int)
+    function bsa_func_calculate_federal_tax_helper_2021 (projectId IN int)
     RETURN number
     AS
         totalProjectRevenue number(10,2);
         projectRevenue number(10,2);
-        estimatedIncome number(10,2);
-        actualIncome number(10,2);
+        income number(10,2);
         taxFromIncome number(10,2);
         taxFromIncomeWithRevenue number(10,2);
         taxDueOnProject number(10,2);
@@ -113,21 +99,15 @@ as
         taxDueOnProject := 0;
         -- For each year, get all income from project
         -- Get all income from all projects
-        SELECT sum(salePrice) INTO totalProjectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute;
+        SELECT sum(salePrice) INTO totalProjectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute and ispending = 'N' and platformsoldon = 'Ebay';
         -- Get income from single project
-        SELECT sum(salePrice) INTO projectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute and project_id = projectId;
+        SELECT sum(salePrice) INTO projectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute and project_id = projectId and ispending = 'N' and platformsoldon = 'Ebay';
         -- Get income from income table (outside base income)
-        SELECT ti.actualIncome, ti.estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income ti WHERE year = yearToCompute;
+        SELECT ti.income INTO income from bsa_tax_income ti WHERE year = yearToCompute;
         -- Get tax for base income (use isEstimated to determine if we should use estimate or actual income)
-        if isEstimated = 1 then
-            -- Estimated
-            taxFromIncome := bsa_func_calculate_federal_income_tax_2021(estimatedIncome);
-            -- Get tax from income with revenue added on
-            taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2021(estimatedIncome + totalProjectRevenue);
-        else
-            taxFromIncome := bsa_func_calculate_federal_income_tax_2021(actualIncome);
-            taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2021(actualIncome + totalProjectRevenue);
-        end if;
+        taxFromIncome := bsa_func_calculate_federal_income_tax_2021(income);
+        -- Get tax from income with revenue added on
+        taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2021(income + totalProjectRevenue);
         -- Divide tax by ratio of project income vs all projects
         revenueRatio := projectRevenue / totalProjectRevenue;
         taxDueOnProject := taxDueOnProject + (revenueRatio * (taxFromIncomeWithRevenue - taxFromIncome));
@@ -136,13 +116,12 @@ as
     END;
 
     -- Number of revenue items for 2022 must be greater than 0, otherwise the behavior of this function is undefined
-    function bsa_func_calculate_federal_tax_helper_2022 (projectId IN int, isEstimated IN int)
+    function bsa_func_calculate_federal_tax_helper_2022 (projectId IN int)
     RETURN number
     AS
         totalProjectRevenue number(10,2);
         projectRevenue number(10,2);
-        estimatedIncome number(10,2);
-        actualIncome number(10,2);
+        income number(10,2);
         taxFromIncome number(10,2);
         taxFromIncomeWithRevenue number(10,2);
         taxDueOnProject number(10,2);
@@ -153,21 +132,15 @@ as
         taxDueOnProject := 0;
         -- For each year, get all income from project
         -- Get all income from all projects
-        SELECT sum(salePrice) INTO totalProjectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute;
+        SELECT sum(salePrice) INTO totalProjectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute and ispending = 'N' and platformsoldon = 'Ebay';
         -- Get income from single project
-        SELECT sum(salePrice) INTO projectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute and project_id = projectId;
+        SELECT sum(salePrice) INTO projectRevenue from bsa_revenue_item where (SELECT EXTRACT(YEAR FROM dateSold) FROM DUAL) = yearToCompute and project_id = projectId and ispending = 'N' and platformsoldon = 'Ebay';
         -- Get income from income table (outside base income)
-        SELECT ti.actualIncome, ti.estimatedIncome INTO actualIncome, estimatedIncome from bsa_tax_income ti WHERE year = yearToCompute;
-        -- Get tax for base income (use isEstimated to determine if we should use estimate or actual income)
-        if isEstimated = 1 then
-            -- Estimated
-            taxFromIncome := bsa_func_calculate_federal_income_tax_2022(estimatedIncome);
-            -- Get tax from income with revenue added on
-            taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2022(estimatedIncome + totalProjectRevenue);
-        else
-            taxFromIncome := bsa_func_calculate_federal_income_tax_2022(actualIncome);
-            taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2022(actualIncome + totalProjectRevenue);
-        end if;
+        SELECT ti.income INTO income from bsa_tax_income ti WHERE year = yearToCompute;
+        -- Get tax for base income 
+        taxFromIncome := bsa_func_calculate_federal_income_tax_2022(income);
+        -- Get tax from income with revenue added on
+        taxFromIncomeWithRevenue := bsa_func_calculate_federal_income_tax_2022(income + totalProjectRevenue);
         -- Divide tax by ratio of project income vs all projects
         revenueRatio := projectRevenue / totalProjectRevenue;
         taxDueOnProject := taxDueOnProject + (revenueRatio * (taxFromIncomeWithRevenue - taxFromIncome));

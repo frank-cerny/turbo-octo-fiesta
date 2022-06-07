@@ -9,6 +9,8 @@ as
     procedure test_tax_calculation_2022;
     -- %test(Test Tax Calculations Empty Project)
     procedure test_aggregate_tax_caclulation_empty_project;
+    -- %test(Test Revenue Items Filtered on Tax Calculation)
+    procedure test_revenue_items_filtered_on_tax_calculation;
     -- %test(Test Tax Calculations Single Year Single Project)
     procedure test_aggregate_tax_calculation_single_year_single_project;
     -- %test(Test Tax Calculations Single Year Multi Projects)

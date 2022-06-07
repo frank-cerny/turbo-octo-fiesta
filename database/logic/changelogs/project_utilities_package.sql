@@ -23,6 +23,7 @@ as
         fixedSupplyCost number;
         nonFixedSupplyCost number;
         revenue number;
+        taxDue number;
         BEGIN
             -- APEX_DEBUG.ENABLE(apex_debug.c_log_level_engine_trace);
             SELECT sum(purchaseprice) into bikeCost from bsa_bike where project_id = projectId;
@@ -50,6 +51,7 @@ as
             if revenue is NULL then
                 revenue := 0;
             end if;
+            taxDue := taxu.bsa_func_calculate_total_federal_tax(projectId);
             -- apex_debug.info('Bike Purchase Price: ' || bikeCost);
             -- apex_debug.info('Tool Cost: ' || toolCost);
             -- apex_debug.info('Single Use Supply Cost: ' || singleUseSupplyCost);
@@ -57,7 +59,7 @@ as
             -- apex_debug.info('Non Fixed Supply Cost: ' || nonFixedSupplyCost);
             -- apex_debug.info('Revenue: ' || revenue);
             -- Setting the out value is the same as "returning a value"
-            return  (revenue - bikeCost - toolCost - singleUseSupplyCost - fixedSupplyCost - nonFixedSupplyCost);
+            return  (revenue - bikeCost - toolCost - singleUseSupplyCost - fixedSupplyCost - nonFixedSupplyCost - taxDue);
         END;
 
     -- projectIdString is a colon separated project id string

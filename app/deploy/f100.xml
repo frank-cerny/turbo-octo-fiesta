@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="9bd4cb5720fafae85d94764ca0b99f9cca5dd6d4" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="c5061045606b4d2ca6de119ad5fdf56b7676d3a8" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/set_environment
 set define off verify off feedback off
@@ -127,7 +127,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Bike Selling Application'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220606063830'
+,p_last_upd_yyyymmddhh24miss=>'20220607071712'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -13139,7 +13139,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_api.id(22430574793507174)
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220521204943'
+,p_last_upd_yyyymmddhh24miss=>'20220607071712'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(6211061407520447)
@@ -13473,6 +13473,7 @@ wwv_flow_api.create_page_plug(
 '    projectDateStarted date;',
 '    projectDateEnded date;',
 '    netValue number(6,2);',
+'    taxString varchar2(150);',
 'BEGIN',
 '    -- Multiple values with INTO is special: https://www.oracletutorial.com/plsql-tutorial/plsql-select-into/',
 '    SELECT p.title, p.description, p.datestarted, p.dateended',
@@ -13485,6 +13486,10 @@ wwv_flow_api.create_page_plug(
 '    htp.header(4, ''Date Started: '' || projectDateStarted);',
 '    htp.header(4, ''Date Ended: '' || projectDateEnded);',
 '    netValue := PU.BSA_FUNC_CALCULATE_NET_PROJECT_VALUE(:P3_PROJECT_ID);',
+'    -- Show income tax string',
+'    taxString := taxu.bsa_func_calculate_yearly_federal_tax_string(:P3_PROJECT_ID);',
+'    sys.htp.paragraph(NULL, NULL, NULL, ''style="color:red"'');',
+'    htp.p(''Income Tax: '' || taxString);',
 '    if netValue < 0 then',
 '        -- Set color to red',
 '        sys.htp.paragraph(NULL, NULL, NULL, ''style="color:red"'');',
@@ -14122,6 +14127,9 @@ wwv_flow_api.create_report_columns(
 ,p_derived_column=>'N'
 ,p_include_in_export=>'Y'
 );
+end;
+/
+begin
 wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(10589122765056345)
 ,p_query_column_id=>7
@@ -14132,9 +14140,6 @@ wwv_flow_api.create_report_columns(
 ,p_derived_column=>'N'
 ,p_include_in_export=>'Y'
 );
-end;
-/
-begin
 wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(14663162116564721)
 ,p_query_column_id=>8
@@ -22196,7 +22201,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220606063830'
+,p_last_upd_yyyymmddhh24miss=>'20220607064515'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(9713363001898025)
@@ -22283,42 +22288,31 @@ wwv_flow_api.create_region_column(
 ,p_include_in_export=>true
 );
 wwv_flow_api.create_region_column(
- p_id=>wwv_flow_api.id(7703794553321215)
-,p_name=>'ESTIMATEDINCOME'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'ESTIMATEDINCOME'
-,p_data_type=>'NUMBER'
-,p_is_query_only=>false
-,p_item_type=>'NATIVE_NUMBER_FIELD'
-,p_heading=>'Estimated Income'
-,p_heading_alignment=>'CENTER'
-,p_display_sequence=>50
-,p_value_alignment=>'CENTER'
-,p_attribute_03=>'right'
-,p_format_mask=>'FML999G999G999G999G990D00'
-,p_is_required=>true
-,p_enable_filter=>true
-,p_filter_is_required=>false
-,p_filter_lov_type=>'NONE'
-,p_use_as_row_header=>false
-,p_enable_sort_group=>true
-,p_enable_control_break=>true
-,p_enable_hide=>true
-,p_is_primary_key=>false
-,p_duplicate_value=>true
-,p_include_in_export=>true
+ p_id=>wwv_flow_api.id(7703995753321217)
+,p_name=>'APEX$ROW_ACTION'
+,p_item_type=>'NATIVE_ROW_ACTION'
+,p_display_sequence=>20
 );
 wwv_flow_api.create_region_column(
- p_id=>wwv_flow_api.id(7703840225321216)
-,p_name=>'ACTUALINCOME'
+ p_id=>wwv_flow_api.id(7704013120321218)
+,p_name=>'APEX$ROW_SELECTOR'
+,p_item_type=>'NATIVE_ROW_SELECTOR'
+,p_display_sequence=>10
+,p_attribute_01=>'Y'
+,p_attribute_02=>'Y'
+,p_attribute_03=>'N'
+);
+wwv_flow_api.create_region_column(
+ p_id=>wwv_flow_api.id(7704289187321220)
+,p_name=>'INCOME'
 ,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'ACTUALINCOME'
+,p_source_expression=>'INCOME'
 ,p_data_type=>'NUMBER'
 ,p_is_query_only=>false
 ,p_item_type=>'NATIVE_NUMBER_FIELD'
-,p_heading=>'Actual Income'
+,p_heading=>'Income'
 ,p_heading_alignment=>'CENTER'
-,p_display_sequence=>60
+,p_display_sequence=>50
 ,p_value_alignment=>'CENTER'
 ,p_attribute_03=>'right'
 ,p_format_mask=>'FML999G999G999G999G990D00'
@@ -22333,21 +22327,6 @@ wwv_flow_api.create_region_column(
 ,p_is_primary_key=>false
 ,p_duplicate_value=>true
 ,p_include_in_export=>true
-);
-wwv_flow_api.create_region_column(
- p_id=>wwv_flow_api.id(7703995753321217)
-,p_name=>'APEX$ROW_ACTION'
-,p_item_type=>'NATIVE_ROW_ACTION'
-,p_display_sequence=>20
-);
-wwv_flow_api.create_region_column(
- p_id=>wwv_flow_api.id(7704013120321218)
-,p_name=>'APEX$ROW_SELECTOR'
-,p_item_type=>'NATIVE_ROW_SELECTOR'
-,p_display_sequence=>10
-,p_attribute_01=>'Y'
-,p_attribute_02=>'Y'
-,p_attribute_03=>'N'
 );
 wwv_flow_api.create_interactive_grid(
  p_id=>wwv_flow_api.id(7703439470321212)
@@ -22409,26 +22388,18 @@ wwv_flow_api.create_ig_report_column(
 ,p_is_frozen=>false
 );
 wwv_flow_api.create_ig_report_column(
- p_id=>wwv_flow_api.id(9727229786489336)
-,p_view_id=>wwv_flow_api.id(9724976304489325)
-,p_display_seq=>3
-,p_column_id=>wwv_flow_api.id(7703794553321215)
-,p_is_visible=>true
-,p_is_frozen=>false
-);
-wwv_flow_api.create_ig_report_column(
- p_id=>wwv_flow_api.id(9728104010489338)
-,p_view_id=>wwv_flow_api.id(9724976304489325)
-,p_display_seq=>4
-,p_column_id=>wwv_flow_api.id(7703840225321216)
-,p_is_visible=>true
-,p_is_frozen=>false
-);
-wwv_flow_api.create_ig_report_column(
  p_id=>wwv_flow_api.id(9729033933489340)
 ,p_view_id=>wwv_flow_api.id(9724976304489325)
 ,p_display_seq=>0
 ,p_column_id=>wwv_flow_api.id(7703995753321217)
+,p_is_visible=>true
+,p_is_frozen=>false
+);
+wwv_flow_api.create_ig_report_column(
+ p_id=>wwv_flow_api.id(9815810394180858)
+,p_view_id=>wwv_flow_api.id(9724976304489325)
+,p_display_seq=>5
+,p_column_id=>wwv_flow_api.id(7704289187321220)
 ,p_is_visible=>true
 ,p_is_frozen=>false
 );
