@@ -96,3 +96,6 @@ Workspace User: DEV_WS:DEV:Passw0rd! (or Passw0rd!!) (Default Schema is DEV_WS)
 OR
 
 Drop dev_ws locally. Re-create the schema then re-import the application locally.
+
+- Run DROP USER dev_ws CASCADE;
+- Run CREATE USER dev_ws IDENTIFIED BY "dev_ws" QUOTA UNLIMITED ON USERS;
