@@ -15,6 +15,7 @@
   <include file="table/bsa_project_tool_table.xml"/> 
   <include file="table/bsa_revenue_item_table.xml"/> 
   <include file="table/bsa_single_use_supply_table.xml"/> 
+  <include file="table/bsa_tax_income_table.xml"/> 
   <include file="table/bsa_tool_table.xml"/> 
   <include file="view/bsa_view_project_fixed_supply_view.xml"/> 
   <include file="view/bsa_view_project_non_fixed_supply_view.xml"/> 
@@ -34,6 +35,7 @@
   <include file="package_spec/project_utilities_package_spec.xml"/> 
   <include file="package_spec/revenue_item_utilities_package_spec.xml"/> 
   <include file="package_spec/single_use_supply_utilities_package_spec.xml"/> 
+  <include file="package_spec/tax_utilities_package_spec.xml"/> 
   <include file="package_spec/test_fixed_supp_utitlities_package_spec.xml"/> 
   <include file="package_spec/test_fixed_use_supply_triggers_package_spec.xml"/> 
   <include file="package_spec/test_non_fixed_supp_utitlities_package_spec.xml"/> 
@@ -45,6 +47,7 @@
   <include file="package_spec/test_single_use_supply_triggers_package_spec.xml"/> 
   <include file="package_spec/test_single_use_supply_utilities_package_spec.xml"/> 
   <include file="package_spec/test_single_use_supply_validation_package_spec.xml"/> 
+  <include file="package_spec/test_tax_utilities_package_package_spec.xml"/> 
   <include file="package_spec/test_tool_triggers_package_spec.xml"/> 
   <include file="package_spec/test_tool_utilities_package_spec.xml"/> 
   <include file="package_spec/tool_utilities_package_spec.xml"/> 
@@ -53,6 +56,7 @@
   <include file="synonym/pu_synonym.xml"/> 
   <include file="synonym/ru_synonym.xml"/> 
   <include file="synonym/sus_synonym.xml"/> 
+  <include file="synonym/taxu_synonym.xml"/> 
   <include file="synonym/tu_synonym.xml"/> 
   <include file="index/bsa_bike_uk_index.xml"/> 
   <include file="index/bsa_fixed_quantity_supply_index.xml"/> 
@@ -88,9 +92,10 @@
   <include file="package_body/test_project_utilities_package_package_body.xml"/> 
   <include file="package_body/fixed_supp_utilities_package_body.xml"/> 
   <include file="package_body/test_tool_triggers_package_body.xml"/> 
+  <include file="package_body/test_tax_utilities_package_package_body.xml"/> 
   <include file="package_body/test_single_use_supply_validation_package_body.xml"/> 
   <include file="package_body/test_single_use_supply_utilities_package_body.xml"/> 
-  <include file="package_body/test_single_use_supply_triggers_package_body.xml"/> 
+  <include file="package_body/tax_utilities_package_body.xml"/> 
   <include file="package_body/test_fixed_supp_utitlities_package_body.xml"/> 
   <include file="package_body/test_fixed_use_supply_triggers_package_body.xml"/> 
   <include file="package_body/test_non_fixed_supp_utitlities_package_body.xml"/> 
@@ -98,6 +103,7 @@
   <include file="package_body/test_revenue_item_triggers_package_body.xml"/> 
   <include file="package_body/test_revenue_item_utilities_package_body.xml"/> 
   <include file="package_body/test_revenue_item_validation_package_body.xml"/> 
+  <include file="package_body/test_single_use_supply_triggers_package_body.xml"/> 
   <include file="package_body/tool_utilities_package_body.xml"/> 
   <include file="package_body/single_use_supply_utilities_package_body.xml"/> 
   <include file="package_body/revenue_item_utilities_package_body.xml"/> 

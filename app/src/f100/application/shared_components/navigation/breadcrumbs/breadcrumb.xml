@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="1e4213a96a90b9e9e102f6a1089b96e9af4e6a2c" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="40cbea3141101a74325bc7928dcf84593a9ba36c" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
@@ -111,6 +111,13 @@ wwv_flow_api.create_menu_option(
 ,p_short_name=>'Single Use Supplies'
 ,p_link=>'f?p=&APP_ID.:32:&APP_SESSION.::&DEBUG.:::'
 ,p_page_id=>32
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(9716075193898028)
+,p_parent_id=>wwv_flow_api.id(3818374582281946)
+,p_short_name=>'Income Tax Base'
+,p_link=>'f?p=&APP_ID.:34:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>34
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10178729384271423)
