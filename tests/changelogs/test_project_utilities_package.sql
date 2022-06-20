@@ -17,10 +17,14 @@ as
     procedure test_project_get_total_bike_cost_zero;
     --%test(Test Get Total Bike Cost For Project Non-Zero)
     procedure test_project_get_total_bike_cost_non_zero;
-    -- --%test(Test Get Total Single Use Supply Cost For Project 0)
-    -- procedure test_project_get_total_single_use_supply_cost_zero;
-    -- --%test(Test Get Total Single Use Supply Cost For Project Non-Zero)
-    -- procedure test_project_get_total_single_use_supply_cost_non_zero;
+    --%test(Test Get Total Single Use Supply Cost For Project 0)
+    procedure test_project_get_total_single_use_supply_cost_zero;
+    --%test(Test Get Total Single Use Supply Cost For Project Non-Zero)
+    procedure test_project_get_total_single_use_supply_cost_non_zero;
+    --%test(Test Get Total Tool Cost For Project 0)
+    procedure test_project_get_total_tool_cost_zero;
+    --%test(Test Get Total Tool Cost For Project Non-Zero)
+    procedure test_project_get_total_tool_cost_non_zero;
 end test_project_utilities_package;
 /
 
@@ -250,6 +254,157 @@ as
 
         cost := pu.bsa_func_return_bike_cost_for_project(projectId1);
         ut.expect(cost).to_( equal(192.75) );
+    end;
+
+    procedure test_project_get_total_single_use_supply_cost_zero is
+        cost number(10,2);
+        projectId1 int;
+        projectId2 int;
+    begin
+        -- First, create a project
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 11111', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Project 11111';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId2 FROM dev_ws.bsa_project p where p.title = 'Project 22222';
+
+        -- Add a single use supply to project 2
+        INSERT INTO dev_ws.bsa_single_use_supply (name, description, datepurchased, project_id, ispending, unitcost, unitspurchased, revenueitem_id)
+        VALUES ('temp supply 11111', 'description', CURRENT_DATE, projectId2, 'Y', 1.50, 10, null);
+
+        -- Act
+        cost := pu.bsa_func_return_single_use_supply_cost_for_project(projectId1);
+
+        -- Assert
+        ut.expect(cost).to_( equal(0) );
+    end;
+
+    procedure test_project_get_total_single_use_supply_cost_non_zero is
+        cost number(10,2);
+        projectId1 int;
+        projectId2 int;
+    begin
+        -- First, create two projects
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 11111', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Project 11111';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId2 FROM dev_ws.bsa_project p where p.title = 'Project 22222';
+
+        -- Then add bikes to each project
+        INSERT INTO dev_ws.bsa_single_use_supply (name, description, datepurchased, project_id, ispending, unitcost, unitspurchased, revenueitem_id)
+        VALUES ('temp supply 11111', 'description', CURRENT_DATE, projectId1, 'Y', 1.50, 10, null);
+
+        INSERT INTO dev_ws.bsa_single_use_supply (name, description, datepurchased, project_id, ispending, unitcost, unitspurchased, revenueitem_id)
+        VALUES ('temp supply 22222', 'description', CURRENT_DATE, projectId2, 'Y', 1.50, 10, null);
+
+        -- Act
+        cost := pu.bsa_func_return_single_use_supply_cost_for_project(projectId1);
+
+        -- Assert
+        ut.expect(cost).to_( equal(15) );
+
+        -- Now add 2 more bikes and test again
+
+        INSERT INTO dev_ws.bsa_single_use_supply (name, description, datepurchased, project_id, ispending, unitcost, unitspurchased, revenueitem_id)
+        VALUES ('temp supply 33333', 'description', CURRENT_DATE, projectId1, 'Y', 1, 25, null);
+
+        INSERT INTO dev_ws.bsa_single_use_supply (name, description, datepurchased, project_id, ispending, unitcost, unitspurchased, revenueitem_id)
+        VALUES ('temp supply 44444', 'description', CURRENT_DATE, projectId1, 'Y', 2, 15.50, null);
+
+        INSERT INTO dev_ws.bsa_single_use_supply (name, description, datepurchased, project_id, ispending, unitcost, unitspurchased, revenueitem_id)
+        VALUES ('temp supply 55555', 'description', CURRENT_DATE, projectId2, 'Y', 1.50, 10, null);
+
+        cost := pu.bsa_func_return_single_use_supply_cost_for_project(projectId1);
+        ut.expect(cost).to_( equal(71) );
+    end;
+
+    procedure test_project_get_total_tool_cost_zero is
+        cost number(10,2);
+        projectId1 int;
+        projectId2 int;
+        toolId1 int;
+        toolId2 int;
+    begin
+        -- First, create two projects
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 11111', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Project 11111';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId2 FROM dev_ws.bsa_project p where p.title = 'Project 22222';
+
+        -- Then create some tools
+        INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
+        VALUES ('New Tool 11111', 'A new tool!', CURRENT_DATE, 5);
+        SELECT t.id INTO toolId1 FROM BSA_TOOL t WHERE t.name = 'New Tool 11111' and t.datepurchased = CURRENT_DATE;
+
+        INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
+        VALUES ('New Tool 22222', 'A new tool!', CURRENT_DATE, 25);
+        SELECT t.id INTO toolId2 FROM BSA_TOOL t WHERE t.name = 'New Tool 22222' and t.datepurchased = CURRENT_DATE;
+        -- Add tool mappings (only to project 2)
+        INSERT INTO bsa_view_project_tool (tool_id, name, ToolDescription, datepurchased, totalcost, project_id)
+        VALUES (toolId1, NULL, NULL, NULL, NULL, projectId2);
+        INSERT INTO bsa_view_project_tool (tool_id, name, ToolDescription, datepurchased, totalcost, project_id)
+        VALUES (toolId2, NULL, NULL, NULL, NULL, projectId2);
+
+        -- Act
+        cost := pu.bsa_func_return_tool_cost_for_project(projectId1);
+
+        -- Assert
+        ut.expect(cost).to_( equal(0) );
+    end;
+
+    procedure test_project_get_total_tool_cost_non_zero is
+        cost number(10,2);
+        projectId1 int;
+        projectId2 int;
+        toolId1 int;
+        toolId2 int;
+    begin
+        -- First, create two projects
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 11111', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Project 11111';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId2 FROM dev_ws.bsa_project p where p.title = 'Project 22222';
+
+        -- Create tools
+        INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
+        VALUES ('New Tool 11111', 'A new tool!', CURRENT_DATE, 5);
+        SELECT t.id INTO toolId1 FROM BSA_TOOL t WHERE t.name = 'New Tool 11111' and t.datepurchased = CURRENT_DATE;
+
+        INSERT INTO BSA_TOOL (name, description, datepurchased, totalcost)
+        VALUES ('New Tool 22222', 'A new tool!', CURRENT_DATE, 25);
+        SELECT t.id INTO toolId2 FROM BSA_TOOL t WHERE t.name = 'New Tool 22222' and t.datepurchased = CURRENT_DATE;
+
+        -- Add tool mappings
+        INSERT INTO bsa_view_project_tool (tool_id, name, ToolDescription, datepurchased, totalcost, project_id)
+        VALUES (toolId1, NULL, NULL, NULL, NULL, projectId2);
+        INSERT INTO bsa_view_project_tool (tool_id, name, ToolDescription, datepurchased, totalcost, project_id)
+        VALUES (toolId2, NULL, NULL, NULL, NULL, projectId2);
+        INSERT INTO bsa_view_project_tool (tool_id, name, ToolDescription, datepurchased, totalcost, project_id)
+        VALUES (toolId2, NULL, NULL, NULL, NULL, projectId2);
+
+        INSERT INTO bsa_view_project_tool (tool_id, name, ToolDescription, datepurchased, totalcost, project_id)
+        VALUES (toolId1, NULL, NULL, NULL, NULL, projectId1);
+        INSERT INTO bsa_view_project_tool (tool_id, name, ToolDescription, datepurchased, totalcost, project_id)
+        VALUES (toolId2, NULL, NULL, NULL, NULL, projectId1);
+
+        -- Act
+        cost := pu.bsa_func_return_tool_cost_for_project(projectId1);
+
+        -- Assert
+        -- Tool 1 has cost 5, number of uses = 2 (2.50 per use)
+        -- Tool 2 has cost 25, number of uses = 3 (8.33)
+        ut.expect(cost).to_( equal(10.83) );
     end;
 end test_project_utilities_package;
 /
