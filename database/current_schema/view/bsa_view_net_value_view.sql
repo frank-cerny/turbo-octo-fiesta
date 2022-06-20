@@ -1,0 +1,4 @@
+CREATE OR REPLACE FORCE EDITIONABLE VIEW "DEV_WS"."BSA_VIEW_NET_VALUE" 
+ ( "ID", "TITLE", "BIKECOST", "TOOLCOST", "SINGLEUSESUPPLYCOST", "FIXEDUSESUPPLYCOST", "NONFIXEDSUPPLYCOST", "REVENUE", "TAX", "NETVALUE"
+  )  AS 
+  SELECT p.id, p.title, pu.bsa_func_return_bike_cost_for_project(id) as BikeCost, pu.bsa_func_return_tool_cost_for_project(id) as toolCost, pu.bsa_func_return_single_use_supply_cost_for_project(id) as SingleUseSupplyCost, pu.bsa_func_return_fixed_supply_cost_for_project(id) as FixedUseSupplyCost, pu.bsa_func_return_non_fixed_supply_cost_for_project(id) as NonFixedSupplyCost, pu.bsa_func_return_revenue_for_project(id) as Revenue, taxu.bsa_func_calculate_total_federal_tax(id) as Tax, pu.bsa_func_calculate_net_project_value(id) as NetValue from bsa_project p

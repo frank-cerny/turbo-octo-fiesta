@@ -17,6 +17,7 @@
   <include file="table/bsa_single_use_supply_table.xml"/> 
   <include file="table/bsa_tax_income_table.xml"/> 
   <include file="table/bsa_tool_table.xml"/> 
+  <include file="view/bsa_view_net_value_view.xml"/> 
   <include file="view/bsa_view_project_fixed_supply_view.xml"/> 
   <include file="view/bsa_view_project_non_fixed_supply_view.xml"/> 
   <include file="view/bsa_view_project_tool_view.xml"/> 
@@ -74,19 +75,10 @@
   <include file="trigger/bsa_trigger_after_update_fixed_use_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_after_update_non_fixed_use_supply_trigger.xml"/> 
   <include file="trigger/bsa_trigger_after_update_tool_trigger.xml"/> 
-  <include file="trigger/bsa_trigger_delete_project_fixed_supply_trigger.xml"/> 
-  <include file="trigger/bsa_trigger_delete_project_non_fixed_supply_trigger.xml"/> 
-  <include file="trigger/bsa_trigger_delete_project_tool_trigger.xml"/> 
   <include file="trigger/bsa_trigger_delete_revenue_item_trigger.xml"/> 
   <include file="trigger/bsa_trigger_delete_single_use_supply_trigger.xml"/> 
-  <include file="trigger/bsa_trigger_insert_project_fixed_supply_trigger.xml"/> 
-  <include file="trigger/bsa_trigger_insert_project_non_fixed_supply_trigger.xml"/> 
-  <include file="trigger/bsa_trigger_insert_project_tool_trigger.xml"/> 
   <include file="trigger/bsa_trigger_insert_revenue_item_trigger.xml"/> 
   <include file="trigger/bsa_trigger_insert_single_use_supply_trigger.xml"/> 
-  <include file="trigger/bsa_trigger_update_project_fixed_supply_trigger.xml"/> 
-  <include file="trigger/bsa_trigger_update_project_non_fixed_supply_trigger.xml"/> 
-  <include file="trigger/bsa_trigger_update_project_tool_trigger.xml"/> 
   <include file="trigger/bsa_trigger_update_revenue_item_trigger.xml"/> 
   <include file="trigger/bsa_trigger_update_single_use_supply_trigger.xml"/> 
   <include file="package_body/test_project_utilities_package_package_body.xml"/> 

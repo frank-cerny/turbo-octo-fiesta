@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="9c8b410d8b5507dfc50378602e7957b38d134514" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="04eac91d58ac018cd507694e5167f7e28102ae71" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/set_environment
 set define off verify off feedback off
@@ -127,7 +127,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Bike Selling Application'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220614205619'
+,p_last_upd_yyyymmddhh24miss=>'20220620085252'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -22217,7 +22217,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'DEV'
-,p_last_upd_yyyymmddhh24miss=>'20220614205619'
+,p_last_upd_yyyymmddhh24miss=>'20220620085252'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10802805767700153)
@@ -22237,18 +22237,9 @@ wwv_flow_api.create_page_plug(
 ,p_region_template_options=>'#DEFAULT#'
 ,p_plug_template=>wwv_flow_api.id(10234211057271472)
 ,p_plug_display_sequence=>10
-,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT p.title, sum(purchaseprice) as BikeCost, sum(vpt.costbasis) as ToolCost, sum(sus.unitcost*sus.unitspurchased) as SingleUseSupplyCost, sum(vpfs.costbasis) as FixedSupplyCost, sum(vpnfs.costbasis) as NonFixedSupplyCost, sum(r.saleprice) as Reven'
-||'ue, taxu.bsa_func_calculate_total_federal_tax(p.id) as Tax, pu.bsa_func_calculate_net_project_value(p.id) as NetValue from bsa_project p',
-'INNER join bsa_bike b on b.project_id = p.id',
-'INNER join bsa_view_project_tool vpt on vpt.project_id = p.id',
-'INNER join bsa_single_use_supply sus on sus.project_id = p.id',
-'INNER join bsa_view_project_fixed_supply vpfs on vpfs.project_id = p.id',
-'INNER join bsa_view_project_non_fixed_supply vpnfs on vpnfs.project_id = p.id',
-'INNER join bsa_revenue_item r on r.project_id = p.id',
-'GROUP by p.title, p.id',
-''))
+,p_query_type=>'TABLE'
+,p_query_table=>'BSA_VIEW_NET_VALUE'
+,p_include_rowid_column=>false
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_prn_page_header=>'Net Value Report'
@@ -22269,86 +22260,102 @@ wwv_flow_api.create_worksheet(
 ,p_internal_uid=>10803503667700155
 );
 wwv_flow_api.create_worksheet_column(
- p_id=>wwv_flow_api.id(10803995943700157)
-,p_db_column_name=>'TITLE'
-,p_display_order=>1
-,p_column_identifier=>'A'
-,p_column_label=>'Title'
-,p_column_type=>'STRING'
-,p_heading_alignment=>'LEFT'
-,p_tz_dependent=>'N'
-);
-wwv_flow_api.create_worksheet_column(
- p_id=>wwv_flow_api.id(7704436855321222)
-,p_db_column_name=>'BIKECOST'
-,p_display_order=>11
-,p_column_identifier=>'C'
-,p_column_label=>'Bikecost'
+ p_id=>wwv_flow_api.id(7705268322321230)
+,p_db_column_name=>'ID'
+,p_display_order=>10
+,p_column_identifier=>'K'
+,p_column_label=>'Id'
 ,p_column_type=>'NUMBER'
-,p_column_alignment=>'RIGHT'
-);
-wwv_flow_api.create_worksheet_column(
- p_id=>wwv_flow_api.id(7704575166321223)
-,p_db_column_name=>'TOOLCOST'
-,p_display_order=>21
-,p_column_identifier=>'D'
-,p_column_label=>'Toolcost'
-,p_column_type=>'NUMBER'
-,p_column_alignment=>'RIGHT'
-);
-wwv_flow_api.create_worksheet_column(
- p_id=>wwv_flow_api.id(7704699914321224)
-,p_db_column_name=>'SINGLEUSESUPPLYCOST'
-,p_display_order=>31
-,p_column_identifier=>'E'
-,p_column_label=>'Singleusesupplycost'
-,p_column_type=>'NUMBER'
-,p_column_alignment=>'RIGHT'
-);
-wwv_flow_api.create_worksheet_column(
- p_id=>wwv_flow_api.id(7704702349321225)
-,p_db_column_name=>'FIXEDSUPPLYCOST'
-,p_display_order=>41
-,p_column_identifier=>'F'
-,p_column_label=>'Fixedsupplycost'
-,p_column_type=>'NUMBER'
-,p_column_alignment=>'RIGHT'
-);
-wwv_flow_api.create_worksheet_column(
- p_id=>wwv_flow_api.id(7704864857321226)
-,p_db_column_name=>'NONFIXEDSUPPLYCOST'
-,p_display_order=>51
-,p_column_identifier=>'G'
-,p_column_label=>'Nonfixedsupplycost'
-,p_column_type=>'NUMBER'
-,p_column_alignment=>'RIGHT'
-);
-wwv_flow_api.create_worksheet_column(
- p_id=>wwv_flow_api.id(7704988710321227)
-,p_db_column_name=>'REVENUE'
-,p_display_order=>61
-,p_column_identifier=>'H'
-,p_column_label=>'Revenue'
-,p_column_type=>'NUMBER'
-,p_column_alignment=>'RIGHT'
-);
-wwv_flow_api.create_worksheet_column(
- p_id=>wwv_flow_api.id(7705051770321228)
-,p_db_column_name=>'TAX'
-,p_display_order=>71
-,p_column_identifier=>'I'
-,p_column_label=>'Tax'
-,p_column_type=>'NUMBER'
-,p_column_alignment=>'RIGHT'
+,p_display_text_as=>'HIDDEN_ESCAPE_SC'
 );
 wwv_flow_api.create_worksheet_column(
  p_id=>wwv_flow_api.id(7705113524321229)
 ,p_db_column_name=>'NETVALUE'
-,p_display_order=>81
+,p_display_order=>20
 ,p_column_identifier=>'J'
-,p_column_label=>'Netvalue'
+,p_column_label=>'Net Value'
 ,p_column_type=>'NUMBER'
-,p_column_alignment=>'RIGHT'
+,p_column_alignment=>'CENTER'
+,p_format_mask=>'FML999G999G999G999G990D00'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(10803995943700157)
+,p_db_column_name=>'TITLE'
+,p_display_order=>30
+,p_column_identifier=>'A'
+,p_column_label=>'Title'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(7704436855321222)
+,p_db_column_name=>'BIKECOST'
+,p_display_order=>40
+,p_column_identifier=>'C'
+,p_column_label=>'Bike Cost'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'CENTER'
+,p_format_mask=>'FML999G999G999G999G990D00'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(7704575166321223)
+,p_db_column_name=>'TOOLCOST'
+,p_display_order=>50
+,p_column_identifier=>'D'
+,p_column_label=>'Tool Cost'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'CENTER'
+,p_format_mask=>'FML999G999G999G999G990D00'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(7704699914321224)
+,p_db_column_name=>'SINGLEUSESUPPLYCOST'
+,p_display_order=>60
+,p_column_identifier=>'E'
+,p_column_label=>'Single Use Supply Cost'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'CENTER'
+,p_format_mask=>'FML999G999G999G999G990D00'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(7705324892321231)
+,p_db_column_name=>'FIXEDUSESUPPLYCOST'
+,p_display_order=>70
+,p_column_identifier=>'L'
+,p_column_label=>'Fixed Use Supply Cost'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'CENTER'
+,p_format_mask=>'FML999G999G999G999G990D00'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(7704864857321226)
+,p_db_column_name=>'NONFIXEDSUPPLYCOST'
+,p_display_order=>80
+,p_column_identifier=>'G'
+,p_column_label=>'Non Fixed Use Supply Cost'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'CENTER'
+,p_format_mask=>'FML999G999G999G999G990D00'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(7704988710321227)
+,p_db_column_name=>'REVENUE'
+,p_display_order=>90
+,p_column_identifier=>'H'
+,p_column_label=>'Revenue'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'CENTER'
+,p_format_mask=>'FML999G999G999G999G990D00'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(7705429913321232)
+,p_db_column_name=>'TAX'
+,p_display_order=>100
+,p_column_identifier=>'M'
+,p_column_label=>'Tax'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'CENTER'
+,p_format_mask=>'FML999G999G999G999G990D00'
 );
 wwv_flow_api.create_worksheet_rpt(
  p_id=>wwv_flow_api.id(10805886260721082)
@@ -22357,7 +22364,37 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_report_alias=>'108059'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'TITLE:BIKECOST:TOOLCOST:SINGLEUSESUPPLYCOST:FIXEDSUPPLYCOST:NONFIXEDSUPPLYCOST:REVENUE:TAX:NETVALUE'
+,p_report_columns=>'TITLE:BIKECOST:TOOLCOST:SINGLEUSESUPPLYCOST:NONFIXEDSUPPLYCOST:FIXEDUSESUPPLYCOST:TAX:REVENUE:NETVALUE:'
+);
+wwv_flow_api.create_worksheet_condition(
+ p_id=>wwv_flow_api.id(11411840132266596)
+,p_report_id=>wwv_flow_api.id(10805886260721082)
+,p_name=>'Green Net Value'
+,p_condition_type=>'HIGHLIGHT'
+,p_allow_delete=>'Y'
+,p_column_name=>'NETVALUE'
+,p_operator=>'>'
+,p_expr=>'0'
+,p_condition_sql=>' (case when ("NETVALUE" > to_number(#APXWS_EXPR#)) then #APXWS_HL_ID# end) '
+,p_condition_display=>'#APXWS_COL_NAME# > #APXWS_EXPR_NUMBER#  '
+,p_enabled=>'Y'
+,p_highlight_sequence=>10
+,p_column_font_color=>'#3baa2c'
+);
+wwv_flow_api.create_worksheet_condition(
+ p_id=>wwv_flow_api.id(11412235545266596)
+,p_report_id=>wwv_flow_api.id(10805886260721082)
+,p_name=>'Red Net Value'
+,p_condition_type=>'HIGHLIGHT'
+,p_allow_delete=>'Y'
+,p_column_name=>'NETVALUE'
+,p_operator=>'<'
+,p_expr=>'0'
+,p_condition_sql=>' (case when ("NETVALUE" < to_number(#APXWS_EXPR#)) then #APXWS_HL_ID# end) '
+,p_condition_display=>'#APXWS_COL_NAME# < #APXWS_EXPR_NUMBER#  '
+,p_enabled=>'Y'
+,p_highlight_sequence=>10
+,p_column_font_color=>'#ea1a1a'
 );
 end;
 /
