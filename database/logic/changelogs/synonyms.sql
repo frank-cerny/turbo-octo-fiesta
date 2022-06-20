@@ -20,5 +20,10 @@ for dev_ws.project_utilities;
 create or replace synonym ru
 for dev_ws.revenue_item_utilities;
 
+--changeset fcerny:6 runOnChange:true
 create or replace synonym sus
 for dev_ws.single_use_supply_utilities;
+
+--changeset fcerny:7 runOnChange:true
+create or replace synonym taxu
+for dev_ws.tax_utilities;

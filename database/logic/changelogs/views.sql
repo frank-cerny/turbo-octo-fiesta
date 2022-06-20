@@ -20,3 +20,8 @@ AS
 select nfqs.id as supply_id, nfqs.name, nfqs.description, nfqs.datepurchased, nfqs.cost, pt.quantity, pt.project_id, (nfqs.cost / NFSU.bsa_func_get_non_fixed_supply_usages(nfqs.id)) as unitcost, ((nfqs.cost / NFSU.bsa_func_get_non_fixed_supply_usages(nfqs.id)) * quantity) as costbasis
 from bsa_non_fixed_quantity_supply nfqs 
 inner join bsa_project_non_fixed_quantity_supply pt on pt.supply_id = nfqs.id;
+
+--changeset fcerny:4 runOnChange:true
+create or replace view bsa_view_net_value
+AS
+SELECT p.id, p.title, pu.bsa_func_return_bike_cost_for_project(id) as BikeCost, pu.bsa_func_return_tool_cost_for_project(id) as toolCost, pu.bsa_func_return_single_use_supply_cost_for_project(id) as SingleUseSupplyCost, pu.bsa_func_return_fixed_supply_cost_for_project(id) as FixedUseSupplyCost, pu.bsa_func_return_non_fixed_supply_cost_for_project(id) as NonFixedSupplyCost, pu.bsa_func_return_revenue_for_project(id) as Revenue, taxu.bsa_func_calculate_total_federal_tax(id) as Tax, pu.bsa_func_calculate_net_project_value(id) as NetValue from bsa_project p;
