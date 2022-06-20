@@ -7,6 +7,18 @@ as
     return number;
     function bsa_func_return_project_name_string_from_ids (projectIdString IN varchar2)
     return varchar2;
+    function bsa_func_return_bike_cost_for_project(projectId IN int)
+    return number;
+    function bsa_func_return_single_use_supply_cost_for_project(projectId IN int)
+    return number;
+    function bsa_func_return_tool_cost_for_project(projectId IN int)
+    return number;
+    function bsa_func_return_revenue_for_project(projectId IN int)
+    return number;
+    function bsa_func_return_fixed_supply_cost_for_project(projectId IN int)
+    return number;
+    function bsa_func_return_non_fixed_supply_cost_for_project(projectId IN int)
+    return number;
 end project_utilities;
 /
 
@@ -26,12 +38,12 @@ as
         taxDue number;
         BEGIN
             -- APEX_DEBUG.ENABLE(apex_debug.c_log_level_engine_trace);
-            SELECT sum(purchaseprice) into bikeCost from bsa_bike where project_id = projectId;
-            SELECT sum(costbasis) into toolCost FROM bsa_view_project_tool WHERE project_id = projectId;
-            SELECT sum(unitcost*unitspurchased) into singleUseSupplyCost from bsa_single_use_supply where project_id = projectId;
-            SELECT sum(costbasis) into fixedSupplyCost FROM bsa_view_project_fixed_supply WHERE project_id = projectId;
-            SELECT sum(costbasis) into nonFixedSupplyCost FROM bsa_view_project_non_fixed_supply WHERE project_id = projectId;
-            SELECT sum(saleprice) into revenue FROM bsa_revenue_item WHERE project_id = projectId;
+            bikeCost := bsa_func_return_bike_cost_for_project(projectId);
+            toolCost := bsa_func_return_tool_cost_for_project(projectId);
+            singleUseSupplyCost := bsa_func_return_single_use_supply_cost_for_project(projectId);
+            fixedSupplyCost := bsa_func_return_fixed_supply_cost_for_project(projectId);
+            nonFixedSupplyCost := bsa_func_return_non_fixed_supply_cost_for_project(projectId);
+            revenue := bsa_func_return_revenue_for_project(projectId);
             -- Check for any null values
             if bikeCost is NULL then
                 bikeCost := 0;
@@ -89,5 +101,96 @@ as
             end loop;
             return projectNameString;
         END;
+
+    function bsa_func_return_bike_cost_for_project(projectId IN int)
+    RETURN number
+    AS
+        cost number(10,2);
+        numBikes int;
+        BEGIN
+            -- If count returns 0, an exception will not be thrown
+            select count(id) into numBikes from bsa_bike where project_id = projectId;
+            if numBikes = 0 THEN
+                return 0;
+            end if;
+            select sum(purchaseprice) into cost from bsa_bike where project_id = projectId;
+            return cost;
+        END;
+
+    function bsa_func_return_single_use_supply_cost_for_project(projectId IN int)
+    RETURN number
+    AS
+        cost number(10,2);
+        numSingleUseSupplies int;
+        BEGIN
+            -- If count returns 0, an exception will not be thrown
+            select count(id) into numSingleUseSupplies from bsa_single_use_supply where project_id = projectId;
+            if numSingleUseSupplies = 0 THEN
+                return 0;
+            end if;
+            select sum(unitcost*unitspurchased) into cost from bsa_single_use_supply where project_id = projectId;
+            return cost;
+        END;
+
+    function bsa_func_return_tool_cost_for_project(projectId IN int)
+    RETURN number
+    AS
+        cost number(10,2);
+        numTools int;
+        BEGIN
+            -- If count returns 0, an exception will not be thrown
+            select count(tool_id) into numTools from bsa_view_project_tool where project_id = projectId;
+            if numTools = 0 THEN
+                return 0;
+            end if;
+            select sum(costbasis) into cost from bsa_view_project_tool where project_id = projectId;
+            return cost;
+        END;
+
+    function bsa_func_return_revenue_for_project(projectId IN int)
+    RETURN number
+    AS
+        revenue number(10,2);
+        numRevenueItems int;
+        BEGIN
+            -- If count returns 0, an exception will not be thrown
+            select count(id) into numRevenueItems from bsa_revenue_item where project_id = projectId;
+            if numRevenueItems = 0 THEN
+                return 0;
+            end if;
+            select sum(saleprice) into revenue from bsa_revenue_item where project_id = projectId;
+            return revenue;
+        END;
+
+    function bsa_func_return_fixed_supply_cost_for_project(projectId IN int)
+    RETURN number
+    AS
+        cost number(10,2);
+        numItems int;
+        BEGIN
+            -- If count returns 0, an exception will not be thrown
+            select count(costbasis) into numItems from bsa_view_project_fixed_supply where project_id = projectId;
+            if numItems = 0 THEN
+                return 0;
+            end if;
+            select sum(costbasis) into cost from bsa_view_project_fixed_supply where project_id = projectId;
+            return cost;
+        END;
+
+    function bsa_func_return_non_fixed_supply_cost_for_project(projectId IN int)
+    RETURN number
+    AS
+        cost number(10,2);
+        numItems int;
+        BEGIN
+            -- If count returns 0, an exception will not be thrown
+            select count(costbasis) into numItems from bsa_view_project_non_fixed_supply where project_id = projectId;
+            if numItems = 0 THEN
+                return 0;
+            end if;
+            select sum(costbasis) into cost from bsa_view_project_non_fixed_supply where project_id = projectId;
+            return cost;
+        END;
+
 end project_utilities;
 /

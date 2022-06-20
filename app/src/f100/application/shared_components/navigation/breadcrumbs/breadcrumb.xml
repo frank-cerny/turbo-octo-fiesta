@@ -5,7 +5,7 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-	<changeSet id="40cbea3141101a74325bc7928dcf84593a9ba36c" author="(DEV_WS)-Generated" failOnError="false"    >
+	<changeSet id="add9eadb2941fb8ed0f9ccc54aa4b843fce435be" author="(DEV_WS)-Generated" failOnError="false"    >
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
@@ -138,6 +138,13 @@ wwv_flow_api.create_menu_option(
 ,p_short_name=>'Edit Project'
 ,p_link=>'f?p=&APP_ID.:3:&APP_SESSION.::&DEBUG.:::'
 ,p_page_id=>3
+);
+wwv_flow_api.create_menu_option(
+ p_id=>wwv_flow_api.id(10803207000700154)
+,p_parent_id=>wwv_flow_api.id(6818034017703480)
+,p_short_name=>'Net Value Report'
+,p_link=>'f?p=&APP_ID.:33:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>33
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(10958476044436354)
