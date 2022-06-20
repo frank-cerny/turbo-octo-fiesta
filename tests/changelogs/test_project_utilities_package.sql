@@ -11,9 +11,16 @@ as
     procedure test_project_id_string_single_project;
     --%test(Test Project Id String Conversion on Multiple Project)
     procedure test_project_id_string_multi_project;
-    -- TODO
     --%test(Test Project Get Net Value)
     procedure test_project_get_net_value;
+    --%test(Test Get Total Bike Cost For Project 0)
+    procedure test_project_get_total_bike_cost_zero;
+    --%test(Test Get Total Bike Cost For Project Non-Zero)
+    procedure test_project_get_total_bike_cost_non_zero;
+    -- --%test(Test Get Total Single Use Supply Cost For Project 0)
+    -- procedure test_project_get_total_single_use_supply_cost_zero;
+    -- --%test(Test Get Total Single Use Supply Cost For Project Non-Zero)
+    -- procedure test_project_get_total_single_use_supply_cost_non_zero;
 end test_project_utilities_package;
 /
 
@@ -176,7 +183,73 @@ as
 
         -- Assert
         ut.expect(netIncome).to_( equal(-22.09) );
+    end;
 
+    procedure test_project_get_total_bike_cost_zero is
+        cost number(10,2);
+        projectId1 int;
+        projectId2 int;
+    begin
+        -- First, create a project
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 11111', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Project 11111';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId2 FROM dev_ws.bsa_project p where p.title = 'Project 22222';
+
+        -- Add a bike to project 2
+        INSERT INTO BSA_BIKE (serialNumber, make, model, year, purchaseprice, purchasedfrom, datepurchased, description, project_id)
+        VALUES ('22222', 'Schwinn', 'Tempo', 1988, 45.50, 'FBM', CURRENT_DATE, 'A simple bike!', projectId2);
+
+        -- Act
+        cost := pu.bsa_func_return_bike_cost_for_project(projectId1);
+
+        -- Assert
+        ut.expect(cost).to_( equal(0) );
+    end;
+
+    procedure test_project_get_total_bike_cost_non_zero is
+        cost number(10,2);
+        projectId1 int;
+        projectId2 int;
+    begin
+        -- First, create two projects
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 11111', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId1 FROM dev_ws.bsa_project p where p.title = 'Project 11111';
+
+        INSERT INTO dev_ws.bsa_project (description, title, datestarted, dateended)
+        VALUES ('A very simple testing project!', 'Project 22222', CURRENT_DATE, NULL);
+        SELECT p.id INTO projectId2 FROM dev_ws.bsa_project p where p.title = 'Project 22222';
+
+        -- Then add bikes to each project
+        INSERT INTO BSA_BIKE (serialNumber, make, model, year, purchaseprice, purchasedfrom, datepurchased, description, project_id)
+        VALUES ('11111', 'Schwinn', 'Tempo', 1988, 20, 'FBM', CURRENT_DATE, 'A simple bike!', projectId1);
+
+        INSERT INTO BSA_BIKE (serialNumber, make, model, year, purchaseprice, purchasedfrom, datepurchased, description, project_id)
+        VALUES ('44444', 'Schwinn', 'Tempo', 1988, 20, 'FBM', CURRENT_DATE, 'A simple bike!', projectId2);
+
+        -- Act
+        cost := pu.bsa_func_return_bike_cost_for_project(projectId1);
+
+        -- Assert
+        ut.expect(cost).to_( equal(20) );
+
+        -- Now add 2 more bikes and test again
+
+        INSERT INTO BSA_BIKE (serialNumber, make, model, year, purchaseprice, purchasedfrom, datepurchased, description, project_id)
+        VALUES ('22222', 'Schwinn', 'Tempo', 1988, 45.50, 'FBM', CURRENT_DATE, 'A simple bike!', projectId1);
+
+        INSERT INTO BSA_BIKE (serialNumber, make, model, year, purchaseprice, purchasedfrom, datepurchased, description, project_id)
+        VALUES ('33333', 'Schwinn', 'Tempo', 1988, 127.25, 'FBM', CURRENT_DATE, 'A simple bike!', projectId1);
+
+        INSERT INTO BSA_BIKE (serialNumber, make, model, year, purchaseprice, purchasedfrom, datepurchased, description, project_id)
+        VALUES ('55555', 'Schwinn', 'Tempo', 1988, 127.25, 'FBM', CURRENT_DATE, 'A simple bike!', projectId2);
+
+        cost := pu.bsa_func_return_bike_cost_for_project(projectId1);
+        ut.expect(cost).to_( equal(192.75) );
     end;
 end test_project_utilities_package;
 /

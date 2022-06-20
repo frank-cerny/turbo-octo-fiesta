@@ -7,6 +7,10 @@ as
     return number;
     function bsa_func_return_project_name_string_from_ids (projectIdString IN varchar2)
     return varchar2;
+    function bsa_func_return_bike_cost_for_project(projectId IN int)
+    return number;
+    function bsa_func_return_single_use_supply_cost_for_project(projectId IN int)
+    return number;
 end project_utilities;
 /
 
@@ -89,5 +93,36 @@ as
             end loop;
             return projectNameString;
         END;
+
+    function bsa_func_return_bike_cost_for_project(projectId IN int)
+    RETURN number
+    AS
+        cost number(10,2);
+        numBikes int;
+        BEGIN
+            -- If count returns 0, an exception will not be thrown
+            select count(id) into numBikes from bsa_bike where project_id = projectId;
+            if numBikes = 0 THEN
+                return 0;
+            end if;
+            select sum(purchaseprice) into cost from bsa_bike where project_id = projectId;
+            return cost;
+        END;
+
+    function bsa_func_return_single_use_supply_cost_for_project(projectId IN int)
+    RETURN number
+    AS
+        cost number(10,2);
+        numSingleUseSupplies int;
+        BEGIN
+            -- If count returns 0, an exception will not be thrown
+            select count(id) into numSingleUseSupplies from bsa_single_use_supply where project_id = projectId;
+            if numSingleUseSupplies = 0 THEN
+                return 0;
+            end if;
+            select sum(unitcost*unitspurchased) into cost from bsa_single_use_supply where project_id = projectId;
+            return cost;
+        END;
+
 end project_utilities;
 /
