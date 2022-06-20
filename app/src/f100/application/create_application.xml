@@ -5,7 +5,11 @@
 	xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+<<<<<<< HEAD
 	<changeSet id="72800875b108ce6272c039df5522e78bdf905be5" author="(DEV_WS)-Generated" failOnError="false"    >
+=======
+	<changeSet id="64198c6756e54a61df8a412fc6d1e5a88aa4bfc6" author="(DEV_WS)-Generated" failOnError="false"    >
+>>>>>>> d991ec7b8aba31fa5f9d8c4af75ae4938f0b82c2
 		<n0:runOracleScript objectName="SCRIPT" objectType="APEX" ownerName="DEV_WS" sourceType="STRING"  >
 			<n0:source><![CDATA[prompt --application/create_application
 begin
